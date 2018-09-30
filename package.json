@@ -2,7 +2,9 @@
   "name": "swipe.me",
   "version": "0.1.0",
   "private": true,
+  "homepage": "git@github.com:cadesalaberry/swipe.me",
   "scripts": {
+    "deploy": "vue-gh-pages",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -21,6 +23,7 @@
     "@vue/cli-service": "^3.0.4",
     "@vue/eslint-config-standard": "^3.0.4",
     "lint-staged": "^7.2.2",
+    "vue-gh-pages": "^1.19.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
