@@ -19,7 +19,7 @@ export default {
     patchURL: (imageURL) => {
       // HACK: Keep compatibility with old website
       if (imageURL.startsWith('./')) {
-        return 'https://cadesalaberry.github.io/lucky-you/' + imageURL
+        return '//cadesalaberry.github.io/lucky-you/' + imageURL
       }
 
       return imageURL
