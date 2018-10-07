@@ -54,6 +54,12 @@ export default {
         // maxThrowOutDistance: 300
         rotation: (x, y, target, max) => {
           return Math.min(x / 20, max)
+        },
+        throwOutConfidence: (xOffset, yOffset, element) => {
+          const xConfidence = Math.min(1.3 * Math.abs(xOffset) / element.offsetWidth, 1)
+          const yConfidence = Math.min(1.3 * Math.abs(yOffset) / element.offsetHeight, 1)
+
+          return Math.max(xConfidence, yConfidence)
         }
       },
       loading: true,
@@ -100,15 +106,15 @@ export default {
   height: 100%;
 }
 .card {
-  height: 584px;
-  width: 360px;
+  height: 560px;
+  width: 350px;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 
   position: absolute;
   top: calc(50% - 292px);
-  left: calc(50% - 180px);
+  left: calc(50% - 175px);
 }
 .card:nth-last-child(2) {
   top: calc(50% - 267px);
@@ -117,9 +123,6 @@ export default {
 .card:nth-last-child(n+3) {
   top: calc(50% - 242px);
   transform: scale(0.9);
-}
-h3 {
-  /* margin: 40px 0 0; */
 }
 a {
   color: #42b983;
