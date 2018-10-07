@@ -7,8 +7,8 @@ export default {
   name: 'Loader'
 }
 </script>
+<style scoped>
 
-<style>
 .spinner {
   width: 40px;
   height: 40px;
@@ -17,6 +17,10 @@ export default {
   border-radius: 100%;
 
   animation: sk-scaleout 1.0s infinite ease-in-out;
+
+  position: absolute;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
 }
 
 @-webkit-keyframes sk-scaleout {
