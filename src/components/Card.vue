@@ -38,6 +38,12 @@ export default {
   width: 100%;
   height: 300px;
 }
+.card > h1 {
+  padding: 0 10px;
+}
+.card > p {
+  padding: 0 10px;
+}
 a {
   color: #42b983;
 }
