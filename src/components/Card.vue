@@ -35,7 +35,7 @@ export default {
   background-color: #fff;
 }
 .card__image {
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
   height: 50%;
 }
