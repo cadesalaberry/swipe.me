@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
-    <img class="card-image" :src="patchURL(imageURL)" />
+  <div class="card__container">
+    <img class="card__image" :src="patchURL(imageURL)" />
 
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
+    <h1 class="card__title">{{ title }}</h1>
+    <div class="card__description" v-html="description"></div>
   </div>
 </template>
 
@@ -30,18 +30,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card {
+.card__container {
+  height: 100%;
   background-color: #fff;
 }
-.card-image {
+.card__image {
   object-fit: cover;
   width: 100%;
-  height: 300px;
+  height: 50%;
 }
-.card > h1 {
+.card__title {
   padding: 0 10px;
 }
-.card > p {
+.card__description {
   padding: 0 10px;
 }
 a {
