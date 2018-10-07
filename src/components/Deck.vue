@@ -49,9 +49,12 @@ export default {
           // VueSwing.Direction.DOWN,
           VueSwing.Direction.LEFT,
           VueSwing.Direction.RIGHT
-        ]
+        ],
         // minThrowOutDistance: 250,
         // maxThrowOutDistance: 300
+        rotation: (x, y, target, max) => {
+          return Math.min(x / 20, max)
+        }
       },
       loading: true,
       cards: []
