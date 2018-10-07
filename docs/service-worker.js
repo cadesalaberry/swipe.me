@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.4a109bf4ccfc3ea405468cbdfb9013de.js"
+  "/precache-manifest.eb4d697918a6f307c08c91b15c44266a.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "swipe.me"});
