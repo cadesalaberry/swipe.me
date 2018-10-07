@@ -129,4 +129,18 @@ export default {
 a {
   color: #42b983;
 }
+@media all and (max-width: 350px) {
+  .card {
+    height: 480px;
+    width: 300px;
+    top: calc(50% - 240px);
+    left: calc(50% - 150px);
+  }
+  .card:nth-last-child(2) {
+    top: calc(50% - 220px);
+  }
+  .card:nth-last-child(n+3) {
+    top: calc(50% - 200px);
+  }
+}
 </style>
