@@ -119,10 +119,12 @@ export default {
 .card:nth-last-child(2) {
   top: calc(50% - 267px);
   transform: scale(0.95);
+  pointer-events: none;
 }
 .card:nth-last-child(n+3) {
   top: calc(50% - 242px);
   transform: scale(0.9);
+  pointer-events: none;
 }
 a {
   color: #42b983;
