@@ -23,9 +23,12 @@ provider:
   runtime: nodejs8.10
 
 # you can overwrite defaults here
-#  stage: dev
+  stage: dev
   region: eu-west-3
 
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -58,6 +61,8 @@ provider:
 functions:
   hello:
     handler: handler.hello
+  log_event:
+    handler: handler.log_event
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

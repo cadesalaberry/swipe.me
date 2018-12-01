@@ -1,0 +1,16 @@
+{
+  "name": "serverless.swipe.me",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "git@github.com:cadesalaberry/swipe.me/serverless",
+  "scripts": {
+    "dev": "serverless offline start"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "serverless": "^1.32.0",
+    "serverless-dynamodb-local": "^0.2.35",
+    "serverless-offline": "^3.31.3"
+  }
+}
