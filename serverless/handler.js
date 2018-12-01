@@ -16,8 +16,6 @@ Handler.hello = async (event, context) => {
 }
 
 Handler.log_event = async (event, context) => {
-  console.log('[logEvent]', event)
-
   return {
     statusCode: 200,
     body: JSON.stringify({
@@ -30,4 +28,4 @@ Handler.log_event = async (event, context) => {
   // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 }
 
-export default Handler
+module.exports = Handler
