@@ -18,6 +18,25 @@ tenant: cadesalaberry
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+    # serverless-offline:
+    #   provider:
+    #     environment: ${file(env.yml)}
+  dynamodb:
+    start:
+      inMemory: true
+      migrate: true
+    #   seed: true
+    # seed:
+    #   domain:
+    #     sources:
+    #       - table: "${self:provider.environment.DYNAMODB_TABLE}"
+    #         sources: [./seed.json]
+
 provider:
   name: aws
   runtime: nodejs8.10
@@ -26,11 +45,13 @@ provider:
   stage: dev
   region: eu-west-3
 
-plugins:
-  - serverless-dynamodb-local
-  - serverless-offline
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
+    # you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:ListBucket"
@@ -46,9 +67,10 @@ plugins:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
+  environment:
 #    variable1: value1
 
+    DYNAMODB_TABLE: ${self:service}-${self:provider.stage}
 # you can add packaging information here
 #package:
 #  include:
@@ -59,17 +81,23 @@ plugins:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  history:
+    handler: handler.getInteractionEventHistory
     events:
       - http:
-          path: hello
+          path: history
           method: get
   log_event:
-    handler: handler.log_event
+    handler: handler.recordInteractionEvent
     events:
       - http:
           path: log
+          method: post
+  my_history:
+    handler: handler.getMyInteractionEventHistory
+    events:
+      - http:
+          path: me/history
           method: get
 
 #    The following are a few example events you can configure
@@ -106,7 +134,7 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
-#resources:
+resources:
 #  Resources:
 #    NewResource:
 #      Type: AWS::S3::Bucket
@@ -116,3 +144,21 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+  Resources:
+    NicknamesTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: cardId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: cardId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}

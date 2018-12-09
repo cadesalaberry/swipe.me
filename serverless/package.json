@@ -7,6 +7,8 @@
     "dev": "serverless offline start"
   },
   "dependencies": {
+    "aws-sdk": "^2.368.0",
+    "bluebird": "^3.5.3"
   },
   "devDependencies": {
     "serverless": "^1.32.0",
