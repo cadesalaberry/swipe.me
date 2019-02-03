@@ -7,12 +7,12 @@
     "dev": "serverless offline start"
   },
   "dependencies": {
-    "aws-sdk": "^2.368.0",
+    "aws-sdk": "^2.395.0",
     "bluebird": "^3.5.3"
   },
   "devDependencies": {
-    "serverless": "^1.32.0",
-    "serverless-dynamodb-local": "^0.2.35",
-    "serverless-offline": "^3.31.3"
+    "serverless": "^1.36.3",
+    "serverless-dynamodb-local": "0.2.35",
+    "serverless-offline": "^4.2.1"
   }
 }
