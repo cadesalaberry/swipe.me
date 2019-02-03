@@ -86,19 +86,19 @@ provider:
 
 functions:
   history:
-    handler: handler.getInteractionEventHistory
+    handler: events.getInteractionEventHistory
     events:
       - http:
           path: history
           method: get
   log_event:
-    handler: handler.recordInteractionEvent
+    handler: events.recordInteractionEvent
     events:
       - http:
           path: log
           method: post
   my_history:
-    handler: handler.getMyInteractionEventHistory
+    handler: events.getMyInteractionEventHistory
     events:
       - http:
           path: me/history
