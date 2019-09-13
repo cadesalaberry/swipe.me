@@ -22,7 +22,6 @@
     "@vue/cli-plugin-pwa": "^3.11.0",
     "@vue/cli-service": "^3.11.0",
     "@vue/eslint-config-standard": "^4.0.0",
-    "eslint": "^6.3.0",
     "lint-staged": "^9.2.5",
     "vue-gh-pages": "^1.19.0",
     "vue-template-compiler": "^2.6.10"
