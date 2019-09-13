@@ -22,6 +22,14 @@
       </div>
     </vue-swing>
     <loader v-else></loader>
+    <div class="bottom-bar">
+      <transition name="slide-fade">
+        <div
+          v-if="hiddenCards.length"
+          v-on:click="undo"
+          class="back-button" />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -63,7 +71,8 @@ export default {
         }
       },
       loading: true,
-      cards: []
+      cards: [],
+      hiddenCards: []
     }
   },
 
@@ -85,12 +94,24 @@ export default {
     add () {
       console.log('add', this.$refs)
     },
-    remove () {
-      console.log('remove', this.$refs)
+    undo () {
+      const card = this.hiddenCards.pop()
+
+      if (!card) {
+        return
+      }
+
+      this.cards.push(card)
     },
     onThrowout ({ target, throwDirection }) {
-      this.cards.pop()
       console.log(`Threw out ${target.textContent}!`)
+      const card = this.cards.pop()
+
+      if (!card) {
+        return
+      }
+
+      this.hiddenCards.push(card)
     }
   }
 }
@@ -102,8 +123,33 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.back-button {
+  height: 96px;
+  width: 96px;
+  transform: scale(0.8);
+  transition: transform 0.1s;
+  background-image: url(~/img/undo-96.png);
+  background-position: center;
+  background-size: 100%;
+}
+
+.back-button:active,
+{
+  transform: scale(1.2);
+  transition: transform 0.2s;
+}
 .vueswing {
-  height: 100%;
+  height: 90%;
 }
 .card {
   height: 560px;
@@ -113,16 +159,17 @@ export default {
   overflow: hidden;
 
   position: absolute;
-  top: calc(50% - 292px);
+  top: calc(45% - 292px);
   left: calc(50% - 175px);
+  animation: top 0.3s, transform 0.3s;
 }
 .card:nth-last-child(2) {
-  top: calc(50% - 267px);
+  top: calc(45% - 267px);
   transform: scale(0.95);
   pointer-events: none;
 }
 .card:nth-last-child(n+3) {
-  top: calc(50% - 242px);
+  top: calc(45% - 242px);
   transform: scale(0.9);
   pointer-events: none;
 }
@@ -133,14 +180,26 @@ a {
   .card {
     height: 480px;
     width: 300px;
-    top: calc(50% - 240px);
+    top: calc(45% - 240px);
     left: calc(50% - 150px);
   }
   .card:nth-last-child(2) {
-    top: calc(50% - 220px);
+    top: calc(45% - 220px);
   }
   .card:nth-last-child(n+3) {
-    top: calc(50% - 200px);
+    top: calc(45% - 200px);
   }
+}
+
+/* Handle back button show/hide animations */
+.slide-fade-enter-active {
+  transition: all .2s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all .1s ease-in;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateY(40px);
+  opacity: 0;
 }
 </style>
