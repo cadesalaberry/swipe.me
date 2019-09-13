@@ -138,7 +138,7 @@ export default {
   width: 96px;
   transform: scale(0.8);
   transition: transform 0.1s;
-  background-image: url(~/img/undo-96.png);
+  background-image: url(../assets/undo-96.png);
   background-position: center;
   background-size: 100%;
 }
