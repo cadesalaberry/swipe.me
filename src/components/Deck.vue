@@ -143,7 +143,7 @@ export default {
   background-size: 100%;
 }
 
-.back-button:active,
+.back-button:active
 {
   transform: scale(1.2);
   transition: transform 0.2s;
