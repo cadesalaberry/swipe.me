@@ -6,6 +6,7 @@ service: api-swipe-me
 
 custom:
   usersTableName: "users-table-${self:provider.stage}"
+  decksTableName: "decks-table-${self:provider.stage}"
 
 provider:
   name: aws
@@ -24,9 +25,11 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
+        - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
 
   environment:
     USERS_TABLE: ${self:custom.usersTableName}
+    DECKS_TABLE: ${self:custom.decksTableName}
 
 functions:
   app:
@@ -52,3 +55,18 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.usersTableName}
+    DecksDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: deckId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: deckId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.decksTableName}
