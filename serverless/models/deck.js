@@ -1,7 +1,9 @@
 const AWS = require('aws-sdk')
 
 const DECKS_TABLE = process.env.DECKS_TABLE
-const dynamoDb = new AWS.DynamoDB.DocumentClient()
+const dynamoDb = new AWS.DynamoDB.DocumentClient({
+  ...process.env.IS_OFFLINE ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT } : {}
+})
 
 function getDeckById (req, res) {
   const params = {

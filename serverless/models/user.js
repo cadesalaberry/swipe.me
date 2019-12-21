@@ -1,7 +1,9 @@
 const AWS = require('aws-sdk')
 
 const USERS_TABLE = process.env.USERS_TABLE
-const dynamoDb = new AWS.DynamoDB.DocumentClient()
+const dynamoDb = new AWS.DynamoDB.DocumentClient({
+  ...process.env.IS_OFFLINE ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT } : {}
+})
 
 function getUserById (req, res) {
   const params = {
