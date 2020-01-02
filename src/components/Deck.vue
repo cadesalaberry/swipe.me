@@ -77,8 +77,7 @@ export default {
   },
 
   mounted: function () {
-    this.$http
-      .get('//cadesalaberry.github.io/lucky-you/content.json')
+    this.$http({ url: './lucky-you/content.json' })
       .then(this.replaceCards)
       .catch((err) => {
         console.error('Eror getting content')
