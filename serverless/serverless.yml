@@ -16,8 +16,16 @@ custom:
   dynamodb:
     start:
       migrate: true
+      seed: true
     stages:
       - ${self:provider.stage}
+    seed:
+      development:
+        sources:
+          - table: ${self:custom.usersTableName}
+            sources: [./seeds/users.json]
+          - table: ${self:custom.decksTableName}
+            sources: [./seeds/decks.json]
 
 provider:
   name: aws

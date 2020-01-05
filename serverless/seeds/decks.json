@@ -1,0 +1,58 @@
+[
+  {
+    "deckId": "banana",
+    "deckHandle": "banana",
+    "cards": [
+      {
+        "title" : "Degree",
+        "description" : "I am finishing my Bachelor's Degree in Software Engineering at <a href='https://mcgill.ca' target='_blank'>McGill University</a>. I have 5 classes remaining in my degree which I expect to finish by December 2014.",
+        "picture_path" : "./assets/images/mcgill-logo-transparent.png"
+      },
+      {
+        "title" : "C",
+        "description" : "I have developed a simple file system in C (<a href='https://github.com/cadesalaberry/SimpleFS' target='_blank'>SimpleFS</a>). Although the system is not yet production ready, the accompanying document should help you understand how it works.",
+        "picture_path" : "./assets/images/simplefs.png"
+      },
+      {
+        "title" : "C++",
+        "description" : "I have not had a lot of experience with C++, but I am not afraid to learn. After playing a bit with MIPS, I must admit the prospect of learning a new programming language tickles my fancy.",
+        "picture_path" : "./assets/images/simplefs.png"
+      },
+      {
+        "title" : "OSS",
+        "description" : "I have never bought a single software in my life: The Open Source Mentality might be one of my strongest traits as of today (after being awesome obviously).",
+        "picture_path" : "./assets/images/opensourceinitiative.png"
+      },
+      {
+        "title" : "TCP/IP",
+        "description" : "Last semester, a close friend and I started <a href='https://bit.ly/airplay-report' target='_blank'> to perform an in-depth study on the AirPlay Protocol</a>. You can also check out <a href='https://bit.ly/airplay-presentation' target='_blank'>the presentation</a>.",
+        "picture_path" : "./assets/images/airplay-logo-small.png"
+      },
+      {
+        "title" : "OOP",
+        "description" : "Even if it is not my favourite language, I must admit Java is one of my strong suits. My team and I got the highest number of goals with our <a href='https://github.com/cadesalaberry/StormChaser' target='_blank'>StormChaser</a> back in 2012.",
+        "picture_path" : "./assets/images/programming-small.jpg"
+      },
+      {
+        "title" : "Networking",
+        "description" : "<i>Assuming you are talking about Computer Networking ;).</i> I have extensively used tools such as Bactrack, its successor, <a href='http://www.kali.org/' target='_blank'>Kali</a>, and used my home server for a year as an exit node on the Tor Network</a>.",
+        "picture_path" : "./assets/images/kali-small.png"
+      },
+      {
+        "title" : "Cross-Platform",
+        "description" : "I tried my first linux distro (Mandriva) in 2004, and quickly gave up on Windows back in 2008. I switched distros multiple times - going from Mint, Ubuntu, elementaryOS and Puppy - to end up on Fedora, on which I have been for the past 4 years.",
+        "picture_path" : "./assets/images/fedora-small.png"
+      },
+      {
+        "title" : "Version Control",
+        "description" : "I only swear by git. I have tried others such as SVN and Mercurial, but the hype around GitHub made me throw everything on git. No regrets fosho.",
+        "picture_path" : "./assets/images/github.png"
+      },
+      {
+        "title" : "Documentation",
+        "description" : "For what concerns documentation, I cultivate a strong hatred for github repositories without README...",
+        "picture_path" : "./assets/images/github.png"
+      }
+    ]
+  }
+]
