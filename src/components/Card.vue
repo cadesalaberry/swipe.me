@@ -18,7 +18,7 @@ export default {
   methods: {
     patchURL: (imageURL) => {
       // HACK: Keep compatibility with old website
-      if (imageURL.startsWith('./')) {
+      if (imageURL.startsWith('./assets/images/')) {
         return '//cadesalaberry.github.io/lucky-you/' + imageURL
       }
 

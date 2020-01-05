@@ -1,17 +1,10 @@
 <template>
-  <div id="app">
-    <Deck msg="banana"/>
-  </div>
+  <router-view id="app"></router-view>
 </template>
 
 <script>
-import Deck from './components/Deck.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Deck
-  }
+  name: 'App'
 }
 </script>
 

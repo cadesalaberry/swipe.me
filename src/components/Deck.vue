@@ -1,5 +1,19 @@
 <template>
   <div class="deck">
+    <div
+      v-if="error"
+      class="vueswing"
+    >
+      <div
+        class="card"
+      >
+        <card
+          title="Oops..."
+          :imageURL="oopsImageUrl"
+          description="I looked everywhere, but eh, I have nothing to show you!"
+        />
+      </div>
+    </div>
     <vue-swing
       v-if="!loading"
       @throwout="onThrowout"
@@ -37,6 +51,7 @@
 import Card from './Card.vue'
 import Loader from './Loader.vue'
 import VueSwing from 'vue-swing'
+import OopsImage from '../assets/oops.png'
 
 export default {
   name: 'Deck',
@@ -70,24 +85,29 @@ export default {
           return Math.max(xConfidence, yConfidence)
         }
       },
+      oopsImageUrl: OopsImage,
       loading: true,
+      error: false,
       cards: [],
       hiddenCards: []
     }
   },
 
   mounted: function () {
-    this.$http.get('decks/banana')
+    const deckId = this.$route.params.deckId
+    console.log('Loading deck #' + deckId)
+    this.$http.get(`decks/${deckId}`)
       .then(this.replaceCards)
       .catch((err) => {
+        this.error = true
         throw err
       })
+      .finally(() => { this.loading = false })
   },
 
   methods: {
     replaceCards (response) {
       this.cards = response.data.cards
-      this.loading = false
     },
     add () {
       console.log('add', this.$refs)
