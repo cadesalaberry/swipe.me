@@ -25,16 +25,18 @@ function getDeckById (req, res) {
     if (result.Item) {
       const {
         deckId,
-        deckHandle
+        deckHandle,
+        cards
       } = result.Item
 
       res.json({
         deckId,
-        deckHandle
+        deckHandle,
+        cards
       })
     } else {
       res.status(404).json({
-        error: 'Deck not found'
+        error: 'deck not found'
       })
     }
   })
@@ -43,7 +45,8 @@ function getDeckById (req, res) {
 function createDeck (req, res) {
   const {
     deckId,
-    deckHandle
+    deckHandle,
+    cards
   } = req.body
 
   if (typeof deckId !== 'string') {
@@ -59,8 +62,9 @@ function createDeck (req, res) {
   const params = {
     TableName: DECKS_TABLE,
     Item: {
-      deckId: deckId,
-      deckHandle: deckHandle
+      deckId,
+      deckHandle,
+      cards
     }
   }
 
@@ -69,13 +73,14 @@ function createDeck (req, res) {
       console.log(error)
 
       res.status(400).json({
-        error: 'Could not create user'
+        error: 'could not create deck'
       })
     }
 
     res.json({
       deckId,
-      deckHandle
+      deckHandle,
+      cards
     })
   })
 }
