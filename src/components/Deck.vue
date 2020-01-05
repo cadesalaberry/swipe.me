@@ -77,17 +77,16 @@ export default {
   },
 
   mounted: function () {
-    this.$http({ url: './lucky-you/content.json' })
+    this.$http.get('decks/banana')
       .then(this.replaceCards)
       .catch((err) => {
-        console.error('Eror getting content')
         throw err
       })
   },
 
   methods: {
     replaceCards (response) {
-      this.cards = response.data.categories[0].cards
+      this.cards = response.data.cards
       this.loading = false
     },
     add () {
