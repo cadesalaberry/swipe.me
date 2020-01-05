@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "sls offline start"
+    "serve": "sls offline start",
+    "seed:remote": "sls dynamodb seed --online --region us-east-1"
   },
   "dependencies": {
     "aws-sdk": "^2.597.0",
