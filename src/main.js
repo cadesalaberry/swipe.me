@@ -1,6 +1,9 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import axios from 'axios'
 import App from './App.vue'
+import Deck from './components/Deck.vue'
+import Home from './components/Home.vue'
 import './registerServiceWorker'
 
 let API_BASE_URL = ''
@@ -22,6 +25,25 @@ Vue.prototype.$http = axios.create({
   baseURL: API_BASE_URL
 })
 
+const routes = [
+  {
+    path: '/',
+    component: App,
+    children: [
+      { path: '', component: Home },
+      { path: '/decks/:deckId', component: Deck }
+    ]
+  }
+]
+
+const router = new VueRouter({
+  // mode: 'history',
+  routes // short for `routes: routes`
+})
+// injects $router and $route to all router-enabled child components
+Vue.use(VueRouter)
+
 new Vue({
-  render: h => h(App)
+  render: h => h(App),
+  router
 }).$mount('#app')
