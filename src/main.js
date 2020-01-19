@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import App from './App.vue'
 import Deck from './components/Deck.vue'
+import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
 import './registerServiceWorker'
 
@@ -31,6 +32,8 @@ const routes = [
     component: App,
     children: [
       { path: '', component: Home },
+      { path: '/decks', component: Home },
+      { path: '/decks/new', component: EditableDeck },
       { path: '/decks/:deckId', component: Deck }
     ]
   }
