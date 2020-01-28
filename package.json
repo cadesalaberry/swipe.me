@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "git@github.com:cadesalaberry/swipe.me",
   "scripts": {
-    "deploy": "vue-gh-pages",
+    "deploy": "vue-gh-pages -p -m \"chore(deploy): :rocket: deploy new version\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
