@@ -2,12 +2,11 @@
   "name": "swipe.me",
   "version": "0.1.0",
   "private": true,
-  "homepage": "git@github.com:cadesalaberry/swipe.me",
   "scripts": {
-    "deploy": "vue-gh-pages -p -m \"chore(deploy): :rocket: deploy new version\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service s3-deploy"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -62,6 +61,7 @@
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
+  "homepage": "git@github.com:cadesalaberry/swipe.me",
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",
