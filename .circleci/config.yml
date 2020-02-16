@@ -12,7 +12,17 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
       - run: yarn
+      - save_cache:
+          key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
       - run: yarn build
       - run: yarn deploy
 
