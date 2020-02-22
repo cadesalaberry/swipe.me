@@ -1,13 +1,22 @@
 <template>
   <div class="card__container">
     <img class="card__image" :src="card.picture_path" />
-    <input v-model="card.picture_path" placeholder="image URL">
+    <input
+      v-model="card.picture_path"
+      v-on:keyup="this.onCardEdited"
+      placeholder="image URL">
 
     <h1 class="card__title">
-      <input v-model="card.title" placeholder="Title">
+      <input
+        v-model="card.title"
+        v-on:keyup="this.onCardEdited"
+        placeholder="Title">
     </h1>
     <div class="card__description">
-      <textarea v-model="card.description" placeholder="Some short description"></textarea>
+      <textarea
+        v-model="card.description"
+        v-on:keyup="this.onCardEdited"
+        placeholder="Some short description"></textarea>
     </div>
   </div>
 </template>
@@ -23,6 +32,9 @@ export default {
     }
   },
   methods: {
+    onCardEdited: function () {
+      this.$emit('onCardEdited')
+    }
   }
 }
 </script>

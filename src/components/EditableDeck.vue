@@ -1,5 +1,18 @@
 <template>
   <div class="editable-deck">
+
+    <div class="top-bar">
+      <input
+        class="deck-name"
+        v-model="deck.deckHandle"
+        v-on:keyup="saveDeckLocally"
+        placeholder="Name of the deck">
+
+      <!-- <button
+        v-on:click="saveDeckLocally(deck)"
+        class="">Create</button> -->
+    </div>
+
     <div
       v-for="(card, index) in deck.cards"
       :key="index"
@@ -8,17 +21,13 @@
       <editable-card
         :key="index"
         :card="card"
+        @onCardEdited="saveDeckLocally"
       />
     </div>
     <button
       v-on:click="addEmptyCard(deck)"
       class="">Add card</button>
 
-    <input v-model="deck.deckHandle" placeholder="Name of the deck">
-
-    <button
-      v-on:click="save(deck)"
-      class="">Save</button>
   </div>
 </template>
 
@@ -46,20 +55,16 @@ export default {
   mounted: function () {
     this.deck = JSON.parse(localStorage.getItem('decks/new')) || { cards: [] }
 
-    if (!this.deck.cards.length) {
-      this.deck.cards.push({
-        title: '',
-        picture_path: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
-        description: ''
-      })
+    if (!this.deck?.cards?.length) {
+      this.addEmptyCard()
     }
 
     console.log('Loading deck from localStorage', this.deck)
   },
 
   methods: {
-    save: (deck) => {
-      const deckToSave = JSON.stringify(deck)
+    saveDeckLocally () {
+      const deckToSave = JSON.stringify(this.deck)
 
       console.log('Saving deck', deckToSave)
 
@@ -86,31 +91,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .editable-deck {
-  /* height: 100%; */
-  overflow-y: scroll;
   display: grid;
   justify-items: center;
   grid-gap: 16px;
   padding-bottom: 32px;
   padding-top: 32px;
 }
-.sync-button {
-  height: 96px;
-  width: 96px;
-  transform: rotate(0) scale(0.8);
-  transition: transform 0.1s;
-  background-image: url(../assets/sync.png);
-  background-position: center;
-  background-size: 100%;
-  /* animation: spin 1s linear infinite; */
+.top-bar {
+  display: flex;
 }
-
-@keyframes spin { 100% { transform:rotate(360deg) scale(0.8); } }
-
-.sync-button:active
-{
-  transform: rotate(0) scale(1.2);
-  transition: transform 0.2s;
+.deck-name {
+  font-size: 1.5rem;
+  width: 100%;
+  padding: 0 10px;
 }
 .card {
   height: 560px;
@@ -143,5 +136,14 @@ a {
 .slide-fade-enter, .slide-fade-leave-to {
   transform: translateY(40px);
   opacity: 0;
+}
+
+input {
+  border:none;
+  background-image:none;
+  background-color:transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 </style>

@@ -20,6 +20,9 @@ export default {
 </script>
 
 <style>
+.home {
+  height: 100%;
+}
 .center-title {
   display: flex;
   text-align: center;

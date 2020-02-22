@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
+
+import './registerServiceWorker'
+
 import App from './App.vue'
 import Deck from './components/Deck.vue'
 import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
-import './registerServiceWorker'
 
 let API_BASE_URL = 'https://ossn0ul273.execute-api.us-east-1.amazonaws.com/dev'
 
