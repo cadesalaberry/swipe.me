@@ -79,8 +79,8 @@ export default {
           return Math.min(x / 20, max)
         },
         throwOutConfidence: (xOffset, yOffset, element) => {
-          const xConfidence = Math.min(1.7 * Math.abs(xOffset) / element.offsetWidth, 1)
-          const yConfidence = Math.min(1.7 * Math.abs(yOffset) / element.offsetHeight, 1)
+          const xConfidence = Math.min(2.5 * Math.abs(xOffset) / element.offsetWidth, 1)
+          const yConfidence = Math.min(2.5 * Math.abs(yOffset) / element.offsetHeight, 1)
 
           return Math.max(xConfidence, yConfidence)
         }
