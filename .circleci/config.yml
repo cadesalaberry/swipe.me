@@ -18,6 +18,7 @@ jobs:
           key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+      - run: yarn lint
       - run: yarn build
       - run: yarn deploy
 
