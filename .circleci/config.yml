@@ -20,13 +20,13 @@ jobs:
             - node_modules
       - run: yarn lint
       - run: yarn build
-      - run: yarn deploy
+      - run: |
+          if [ "$CIRCLE_BRANCH" = "master" ]; then
+            yarn deploy
+          fi
 
 # Orchestrate or schedule a set of jobs
 workflows:
   deploy:
     jobs:
-      - deploy_frontend:
-          filters:
-            branches:
-              only: master
+      - deploy_frontend
