@@ -40,10 +40,11 @@ export default {
   height: 50%;
 }
 .card__title {
-  padding: 0 10px;
+  padding: 0 15px;
+  margin-block-start: 0;
 }
 .card__description {
-  padding: 0 10px;
+  padding: 0 15px;
 }
 a {
   color: #42b983;
