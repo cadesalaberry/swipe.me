@@ -196,16 +196,25 @@ a {
 }
 @media all and (max-width: 350px) {
   .card {
-    height: 480px;
-    width: 300px;
+    height: 450px;
+    width: 280px;
     top: calc(45% - 240px);
-    left: calc(50% - 150px);
+    left: calc(50% - 280px / 2);
   }
   .card:nth-last-child(2) {
-    top: calc(45% - 220px);
+    top: calc(45% - ( 450px / 2 ) + 2px );
   }
   .card:nth-last-child(n+3) {
-    top: calc(45% - 200px);
+    top: calc(45% - ( 450px / 2 ) + 20px );
+  }
+
+  .back-button {
+    width: 74px;
+    height: 74px;
+  }
+
+  .bottom-bar {
+    height: 100px;
   }
 }
 
