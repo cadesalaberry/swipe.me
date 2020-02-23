@@ -25,6 +25,10 @@
         v-for="(card, index) in cards"
         :key="card.title"
         class="card"
+        v-bind:class="{
+          'card--current': index === currentIndex,
+          'card--next': index === currentIndex + 1,
+        }"
       >
         <card
           :key="card.title"
@@ -39,8 +43,8 @@
     <div class="bottom-bar">
       <transition name="slide-fade">
         <div
-          v-if="hiddenCards.length"
-          v-on:click="undo"
+          v-if="this.currentIndex"
+          v-on:click="previousCard"
           class="back-button" />
       </transition>
     </div>
@@ -48,9 +52,10 @@
 </template>
 
 <script>
+import VueSwing from 'vue-swing'
 import Card from './Card.vue'
 import Loader from './Loader.vue'
-import VueSwing from 'vue-swing'
+
 import OopsImage from '../assets/oops.png'
 
 export default {
@@ -68,12 +73,10 @@ export default {
     return {
       config: {
         allowedDirections: [
-          // VueSwing.Direction.UP,
-          // VueSwing.Direction.DOWN,
           VueSwing.Direction.LEFT,
           VueSwing.Direction.RIGHT
         ],
-        // minThrowOutDistance: 250,
+        minThrowOutDistance: 500,
         // maxThrowOutDistance: 300
         rotation: (x, y, target, max) => {
           return Math.min(x / 20, max)
@@ -89,7 +92,7 @@ export default {
       loading: true,
       error: false,
       cards: [],
-      hiddenCards: []
+      currentIndex: 0
     }
   },
 
@@ -109,27 +112,35 @@ export default {
     replaceCards (response) {
       this.cards = response.data.cards
     },
-    add () {
-      console.log('add', this.$refs)
+    previousCard () {
+      const swingCard = this.$refs.vueswing.cards[this.currentIndex - 1]
+      const card = this.cards[this.currentIndex - 1]
+
+      if (!card) return false
+
+      const throwFrom = card.swipedDirection === VueSwing.Direction.LEFT ? -500 : 500
+
+      swingCard.throwIn(throwFrom, 0)
+
+      card.swipedDirection = null
+      this.currentIndex--
+
+      return true
     },
-    undo () {
-      const card = this.hiddenCards.pop()
+    nextCard (throwDirection) {
+      const card = this.cards[this.currentIndex + 1]
 
-      if (!card) {
-        return
-      }
+      if (!card) return false
 
-      this.cards.push(card)
+      this.cards[this.currentIndex].swipedDirection = throwDirection
+      this.currentIndex++
+
+      return true
     },
     onThrowout ({ target, throwDirection }) {
-      console.log(`Threw out ${target.textContent}!`)
-      const card = this.cards.pop()
+      console.log(`Threw out ${this.currentIndex} ${target.textContent}!`)
 
-      if (!card) {
-        return
-      }
-
-      this.hiddenCards.push(card)
+      this.nextCard(throwDirection)
     }
   }
 }
@@ -140,6 +151,11 @@ export default {
 .deck {
   height: 100%;
   overflow: hidden;
+
+  /* HACK: For some reason a scrollbar appears
+   * if the cards are thrown to the right of the visible area
+   */
+  transform: scale(1);
 }
 .bottom-bar {
   position: absolute;
@@ -179,18 +195,14 @@ export default {
   position: absolute;
   top: calc(45% - 292px);
   left: calc(50% - 175px);
-  animation: top 0.3s, transform 0.3s;
 }
-.card:nth-last-child(2) {
-  top: calc(45% - 267px);
-  transform: scale(0.95);
-  pointer-events: none;
+.card--current {
+  z-index: 2;
 }
-.card:nth-last-child(n+3) {
-  top: calc(45% - 242px);
-  transform: scale(0.9);
-  pointer-events: none;
+.card--next {
+  z-index: 1;
 }
+
 a {
   color: #42b983;
 }
@@ -200,12 +212,6 @@ a {
     width: 280px;
     top: calc(45% - 240px);
     left: calc(50% - 280px / 2);
-  }
-  .card:nth-last-child(2) {
-    top: calc(45% - ( 450px / 2 ) + 2px );
-  }
-  .card:nth-last-child(n+3) {
-    top: calc(45% - ( 450px / 2 ) + 20px );
   }
 
   .back-button {
