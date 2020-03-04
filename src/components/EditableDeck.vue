@@ -8,10 +8,11 @@
         v-on:keyup="saveDeckLocally"
         placeholder="Name of the deck">
 
-      <!-- <button
-        v-on:click="saveDeckLocally(deck)"
-        class="">Create</button> -->
+      <button
+        v-on:click="createDeck()"
+        class="">Create</button>
     </div>
+    <loader v-if="loading"></loader>
 
     <div
       v-for="(card, index) in deck.cards"
@@ -33,6 +34,7 @@
 
 <script>
 import EditableCard from './EditableCard.vue'
+import Loader from './Loader.vue'
 
 export default {
   name: 'EditableDeck',
@@ -40,11 +42,13 @@ export default {
     subtitle: String
   },
   components: {
-    EditableCard
+    EditableCard,
+    Loader
   },
 
   data () {
     return {
+      loading: false,
       deck: {
         deckHandle: '',
         cards: []
@@ -63,6 +67,34 @@ export default {
   },
 
   methods: {
+    createDeck () {
+      this.loading = true
+      const deckToCreate = {
+        ...this.deck,
+        deckId: this.deck.deckHandle,
+        cards: this.deck.cards.filter(c => c.title)
+      }
+      console.log('Creating deck', deckToCreate)
+
+      this.$http.post('decks', deckToCreate)
+        .then((response) => {
+          const newDeck = response.data
+
+          console.log('Deck created', newDeck)
+
+          this.deck = { cards: [] }
+
+          this.saveDeckLocally()
+
+          this.$router.push(`/decks/${newDeck.deckHandle}`)
+        })
+        .catch((err) => {
+          this.error = true
+          throw err
+        })
+        .finally(() => { this.loading = false })
+    },
+
     saveDeckLocally () {
       const deckToSave = JSON.stringify(this.deck)
 
