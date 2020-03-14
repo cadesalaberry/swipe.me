@@ -1,5 +1,7 @@
 # swipe.me
 
+Trigger the serverless build process
+
 ## Project setup
 ```
 yarn install
