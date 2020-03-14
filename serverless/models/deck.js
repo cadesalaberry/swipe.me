@@ -6,23 +6,23 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient({
 })
 
 function getDeckById (req, res) {
+  const deckId = req.params.deckId
   const params = {
     TableName: DECKS_TABLE,
     Key: {
-      deckId: req.params.deckId
+      deckId
     }
   }
 
-  dynamoDb.get(params, (error, result) => {
-    if (error) {
-      console.log(error)
+  return dynamoDb.get(params)
+    .promise()
+    .then((result) => {
+      if (!result.Item) {
+        res.status(404).json({
+          error: 'deck not found'
+        })
+      }
 
-      res.status(400).json({
-        error: 'Could not get deck'
-      })
-    }
-
-    if (result.Item) {
       const {
         deckId,
         deckHandle,
@@ -34,12 +34,13 @@ function getDeckById (req, res) {
         deckHandle,
         cards
       })
-    } else {
-      res.status(404).json({
-        error: 'deck not found'
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: 'Could not get deck',
+        ...error
       })
-    }
-  })
+    })
 }
 
 function createDeck (req, res) {
@@ -50,12 +51,28 @@ function createDeck (req, res) {
   } = req.body
 
   if (typeof deckId !== 'string') {
-    res.status(400).json({
+    return res.status(400).json({
       error: '"deckId" must be a string'
     })
-  } else if (typeof deckHandle !== 'string') {
-    res.status(400).json({
+  }
+  if (typeof deckHandle !== 'string') {
+    return res.status(400).json({
       error: '"deckHandle" must be a string'
+    })
+  }
+  if (!Array.isArray(cards)) {
+    return res.status(400).json({
+      error: '"cards" must be an array'
+    })
+  }
+  if (cards.filter(c => c.description).length !== cards.length) {
+    return res.status(400).json({
+      error: 'a "description" must be provided for all cards'
+    })
+  }
+  if (cards.filter(c => c.title).length !== cards.length) {
+    return res.status(400).json({
+      error: 'a "title" must be provided for all cards'
     })
   }
 
@@ -65,24 +82,26 @@ function createDeck (req, res) {
       deckId,
       deckHandle,
       cards
-    }
+    },
+    ConditionExpression: 'attribute_not_exists(deckId) and attribute_not_exists(deckHandle)'
   }
 
-  dynamoDb.put(params, (error) => {
-    if (error) {
-      console.log(error)
-
-      res.status(400).json({
-        error: 'could not create deck'
+  return dynamoDb.put(params)
+    .promise()
+    .then((reply) => {
+      console.log('reply', reply)
+      res.json({
+        deckId,
+        deckHandle,
+        cards
       })
-    }
-
-    res.json({
-      deckId,
-      deckHandle,
-      cards
     })
-  })
+    .catch((error) => {
+      res.status(400).json({
+        error: 'could not create deck',
+        ...error
+      })
+    })
 }
 
 module.exports = {
