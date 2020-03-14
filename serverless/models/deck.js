@@ -6,23 +6,23 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient({
 })
 
 function getDeckById (req, res) {
+  const deckId = req.params.deckId
   const params = {
     TableName: DECKS_TABLE,
     Key: {
-      deckId: req.params.deckId
+      deckId
     }
   }
 
-  dynamoDb.get(params, (error, result) => {
-    if (error) {
-      console.log(error)
+  return dynamoDb.get(params)
+    .promise()
+    .then((result) => {
+      if (!result.Item) {
+        res.status(404).json({
+          error: 'deck not found'
+        })
+      }
 
-      res.status(400).json({
-        error: 'Could not get deck'
-      })
-    }
-
-    if (result.Item) {
       const {
         deckId,
         deckHandle,
@@ -34,12 +34,13 @@ function getDeckById (req, res) {
         deckHandle,
         cards
       })
-    } else {
-      res.status(404).json({
-        error: 'deck not found'
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: 'Could not get deck',
+        ...error
       })
-    }
-  })
+    })
 }
 
 function createDeck (req, res) {
@@ -48,8 +49,6 @@ function createDeck (req, res) {
     deckHandle,
     cards
   } = req.body
-
-  console.log(req.body)
 
   if (typeof deckId !== 'string') {
     return res.status(400).json({
@@ -84,31 +83,25 @@ function createDeck (req, res) {
       deckHandle,
       cards
     },
-    ConditionExpression: 'attribute_not_exists(deckId)'
+    ConditionExpression: 'attribute_not_exists(deckId) and attribute_not_exists(deckHandle)'
   }
 
-  try {
-    dynamoDb.put(params, (error) => {
-      if (error) {
-        console.log(error)
-
-        res.status(400).json({
-          error: 'could not create deck'
-        })
-      }
-
+  return dynamoDb.put(params)
+    .promise()
+    .then((reply) => {
+      console.log('reply', reply)
       res.json({
         deckId,
         deckHandle,
         cards
       })
     })
-  } catch (e) {
-    res.status(400).json({
-      error: 'could not create deck',
-      details: e
+    .catch((error) => {
+      res.status(400).json({
+        error: 'could not create deck',
+        ...error
+      })
     })
-  }
 }
 
 module.exports = {
