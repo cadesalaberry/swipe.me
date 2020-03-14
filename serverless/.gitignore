@@ -4,7 +4,8 @@ jspm_packages
 
 # Serverless directories
 .serverless
-
+serverless_sdk/*
+s_app.js
 
 # DynamoDB directories
 .dynamodb

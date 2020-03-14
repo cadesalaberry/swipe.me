@@ -25,8 +25,32 @@ jobs:
             yarn deploy
           fi
 
+  deploy_backend:
+    working_directory: ~/project/serverless
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+      - run: yarn
+      - save_cache:
+          key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: yarn build
+      - run: |
+          # if [ "$CIRCLE_BRANCH" = "master" ]; then
+          yarn deploy
+          #fi
+
 # Orchestrate or schedule a set of jobs
 workflows:
   deploy:
     jobs:
       - deploy_frontend
+      - deploy_backend

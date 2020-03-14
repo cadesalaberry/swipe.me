@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "deploy": "sls deploy",
     "serve": "sls offline start",
     "seed:remote": "sls dynamodb seed --online --region us-east-1"
   },
