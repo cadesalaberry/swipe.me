@@ -19,4 +19,18 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.card {
+  height: 560px;
+  width: 350px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+@media all and (max-width: 360px) {
+  .card {
+    height: 450px;
+    width: 280px;
+  }
+}
 </style>

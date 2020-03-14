@@ -186,15 +186,9 @@ export default {
   height: 90%;
 }
 .card {
-  height: 560px;
-  width: 350px;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-
   position: absolute;
-  top: calc(45% - 292px);
-  left: calc(50% - 175px);
+  top: calc(45% - 560px / 2);
+  left: calc(50% - 350px / 2);
 }
 .card--current {
   z-index: 2;
@@ -206,14 +200,11 @@ export default {
 a {
   color: #42b983;
 }
-@media all and (max-width: 350px) {
+@media all and (max-width: 360px) {
   .card {
-    height: 450px;
-    width: 280px;
-    top: calc(45% - 240px);
+    top: calc(45% - 450px / 2);
     left: calc(50% - 280px / 2);
   }
-
   .back-button {
     width: 74px;
     height: 74px;

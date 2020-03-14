@@ -105,25 +105,8 @@ export default {
   width: 100%;
   padding: 0 10px;
 }
-.card {
-  height: 560px;
-  width: 350px;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-
-  animation: top 0.3s, transform 0.3s;
-}
 a {
   color: #42b983;
-}
-@media all and (max-width: 350px) {
-  .card {
-    height: 480px;
-    width: 300px;
-    top: calc(45% - 240px);
-    left: calc(50% - 150px);
-  }
 }
 
 /* Handle back button show/hide animations */
