@@ -12,7 +12,7 @@ import Home from './components/Home.vue'
 let API_BASE_URL = 'https://ossn0ul273.execute-api.us-east-1.amazonaws.com/dev'
 
 if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
-  API_BASE_URL = 'http://localhost:3000'
+  API_BASE_URL = 'http://localhost:3000/dev'
 }
 
 if (process.env.API_BASE_URL) {
