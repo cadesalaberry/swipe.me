@@ -1,9 +1,6 @@
-const AWS = require('aws-sdk')
+import dynamoDb from '../libs/dynamodb-lib'
 
 const DECKS_TABLE = process.env.DECKS_TABLE
-const dynamoDb = new AWS.DynamoDB.DocumentClient({
-  ...process.env.IS_OFFLINE ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT } : {}
-})
 
 function getDeckById (req, res) {
   const deckId = req.params.deckId
@@ -14,8 +11,8 @@ function getDeckById (req, res) {
     }
   }
 
-  return dynamoDb.get(params)
-    .promise()
+  return dynamoDb
+    .call('get', params)
     .then((result) => {
       if (!result.Item) {
         res.status(404).json({
@@ -86,8 +83,8 @@ function createDeck (req, res) {
     ConditionExpression: 'attribute_not_exists(deckId) and attribute_not_exists(deckHandle)'
   }
 
-  return dynamoDb.put(params)
-    .promise()
+  return dynamoDb
+    .call('put', params)
     .then((reply) => {
       console.log('reply', reply)
       res.json({

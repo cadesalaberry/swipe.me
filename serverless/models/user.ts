@@ -1,9 +1,6 @@
-const AWS = require('aws-sdk')
+import dynamoDb from '../libs/dynamodb-lib'
 
 const USERS_TABLE = process.env.USERS_TABLE
-const dynamoDb = new AWS.DynamoDB.DocumentClient({
-  ...process.env.IS_OFFLINE ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT } : {}
-})
 
 function getUserById (req, res) {
   const params = {
@@ -13,16 +10,15 @@ function getUserById (req, res) {
     }
   }
 
-  dynamoDb.get(params, (error, result) => {
-    if (error) {
-      console.log(error)
+  return dynamoDb
+    .call('get', params)
+    .then((result) => {
+      if (!result.Item) {
+        return res.status(404).json({
+          error: 'User not found'
+        })
+      }
 
-      res.status(400).json({
-        error: 'Could not get user'
-      })
-    }
-
-    if (result.Item) {
       const {
         userId,
         name
@@ -32,12 +28,14 @@ function getUserById (req, res) {
         userId,
         name
       })
-    } else {
-      res.status(404).json({
-        error: 'User not found'
+    })
+    .catch((error) => {
+      console.log(error)
+
+      res.status(400).json({
+        error: 'Could not get user'
       })
-    }
-  })
+    })
 }
 
 function createUser (req, res) {
@@ -64,20 +62,20 @@ function createUser (req, res) {
     }
   }
 
-  dynamoDb.put(params, (error) => {
-    if (error) {
+  dynamoDb.call('put', params)
+    .then(() => {
+      res.json({
+        userId,
+        name
+      })
+    })
+    .catch((error) => {
       console.log(error)
 
       res.status(400).json({
         error: 'Could not create user'
       })
-    }
-
-    res.json({
-      userId,
-      name
     })
-  })
 }
 
 module.exports = {

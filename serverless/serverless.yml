@@ -1,16 +1,22 @@
+# serverless.yml
 org: cadesalaberry
 app: api-swipe-me
-# serverless.yml
 
 service: api-swipe-me
 
+# Create an optimized package for our functions
+package:
+  individually: true
+
 plugins:
+  - serverless-plugin-typescript # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
 
 custom:
-  usersTableName: "users-table-${self:provider.stage}"
-  decksTableName: "decks-table-${self:provider.stage}"
+  stage: ${opt:stage, 'dev'}
+  usersTableName: "users-table-${self:custom.stage}"
+  decksTableName: "decks-table-${self:custom.stage}"
   endpoints:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
@@ -18,7 +24,7 @@ custom:
       migrate: true
       seed: true
     stages:
-      - ${self:provider.stage}
+      - ${self:custom.stage}
     seed:
       development:
         sources:
@@ -30,7 +36,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: ${opt:stage, 'dev'}
+  stage: ${self:custom.stage}
   region: us-east-1
 
   iamRoleStatements:
@@ -58,35 +64,14 @@ functions:
       - http: ANY /
       - http: "ANY {proxy+}"
 
+# Create our resources with separate CloudFormation templates
 resources:
-  Resources:
-    UsersDynamoDBTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: userId
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: userId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:custom.usersTableName}
-    DecksDynamoDBTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: deckId
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: deckId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:custom.decksTableName}
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-tables.yml)}
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
