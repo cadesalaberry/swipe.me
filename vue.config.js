@@ -13,14 +13,14 @@ module.exports = {
       assetPath: 'dist',
       assetMatch: '**',
       deployPath: '/',
-      acl: undefined,
+      acl: 'private',
       pwa: true,
       pwaFiles: 'service-worker.js',
       enableCloudfront: false,
       cloudfrontId: 'banana',
       cloudfrontMatchers: '/*',
       uploadConcurrency: 5,
-      pluginVersion: '3.0.0'
+      pluginVersion: '4.0.0-rc3'
     }
   }
 }
