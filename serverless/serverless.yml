@@ -15,8 +15,15 @@ plugins:
 
 custom:
   stage: ${opt:stage, 'dev'}
-  usersTableName: "users-table-${self:custom.stage}"
-  decksTableName: "decks-table-${self:custom.stage}"
+  cognito:
+    identity-pool: ${self:custom.stage}-identity-pool
+    user-pool: ${self:custom.stage}-user-pool
+    user-pool-client: ${self:custom.stage}-user-pool-client
+  s3:
+    name: swipeme.io-${self:custom.stage}
+  tables:
+    users: users-table-${self:custom.stage}
+    decks: decks-table-${self:custom.stage}
   endpoints:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
@@ -28,16 +35,16 @@ custom:
     seed:
       development:
         sources:
-          - table: ${self:custom.usersTableName}
+          - table: ${self:custom.tables.users}
             sources: [./seeds/users.json]
-          - table: ${self:custom.decksTableName}
+          - table: ${self:custom.tables.decks}
             sources: [./seeds/decks.json]
 
 provider:
   name: aws
   runtime: nodejs10.x
   stage: ${self:custom.stage}
-  region: us-east-1
+  region: eu-west-1
 
   iamRoleStatements:
     - Effect: Allow
@@ -53,8 +60,8 @@ provider:
         - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
 
   environment:
-    USERS_TABLE: ${self:custom.usersTableName}
-    DECKS_TABLE: ${self:custom.decksTableName}
+    USERS_TABLE: ${self:custom.tables.users}
+    DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
 
 functions:
