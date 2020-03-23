@@ -9,11 +9,20 @@ package:
   individually: true
 
 plugins:
+  - serverless-domain-manager
   - serverless-plugin-typescript # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
 
 custom:
+  customDomain:
+    domainName: dev.swipeme.io
+    stage: ${self:custom.stage}
+    basePath: api
+    certificateName: dev.swipeme.io
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
   cognito:
     identity-pool: ${self:custom.stage}-identity-pool

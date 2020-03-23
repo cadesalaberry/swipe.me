@@ -10,7 +10,7 @@ import Deck from './components/Deck.vue'
 import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
 
-let API_BASE_URL = 'https://ossn0ul273.execute-api.us-east-1.amazonaws.com/dev'
+let API_BASE_URL = 'https://dev.swipeme.io/dev'
 
 if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
   API_BASE_URL = 'http://localhost:3000/dev'

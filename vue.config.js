@@ -13,7 +13,7 @@ setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL_CLIENT', `${stage}-user-pool-client
 setEnvIfUndefined('VUE_APP_COGNITO_IDENTITY_POOL', `${stage}-identity-pool`)
 setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL', `${stage}-user-pool`)
 setEnvIfUndefined('VUE_APP_S3_UPLOADS_BUCKET_NAME', `swipeme.io-${stage}`)
-setEnvIfUndefined('VUE_APP_API_BASE_URL', `https://ossn0ul273.execute-api.us-east-1.amazonaws.com/${stage}`)
+setEnvIfUndefined('VUE_APP_API_BASE_URL', `https://dev.swipeme.io/${stage}`)
 setEnvIfUndefined('VUE_APP_REGION', 'eu-west-1')
 
 module.exports = {
