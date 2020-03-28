@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "sls offline start",
+    "serve": "NODE_ENV=development sls offline start",
     "seed:remote": "sls dynamodb seed --online --region us-east-1"
   },
   "dependencies": {
