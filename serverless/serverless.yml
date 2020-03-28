@@ -72,7 +72,7 @@ provider:
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
-    NODE_ENV: ${env:NODE_ENV}
+    NODE_ENV: ${env:NODE_ENV, 'production'}
 
 functions:
   app:
