@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
-import Amplify from 'aws-amplify'
+// import Amplify from 'aws-amplify'
 
 import './registerServiceWorker'
 
@@ -12,32 +12,33 @@ import Home from './components/Home.vue'
 
 let API_BASE_URL = 'https://dev.swipeme.io/dev'
 
-if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
-  API_BASE_URL = 'http://localhost:3000/dev'
-}
-
 if (process.env.VUE_APP_API_BASE_URL) {
   API_BASE_URL = process.env.VUE_APP_API_BASE_URL
+}
+
+if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
+  API_BASE_URL = 'http://localhost:3000/dev'
 }
 
 if (!API_BASE_URL) {
   throw new Error('No API_BASE_URL given')
 }
+console.log(process.env)
 
-Amplify.configure({
-  Auth: {
-    mandatorySignIn: true,
-    region: process.env.VUE_APP_REGION,
-    userPoolId: process.env.VUE_APP_COGNITO_USER_POOL,
-    identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL,
-    userPoolWebClientId: process.env.VUE_APP_COGNITO_USER_POOL_CLIENT
-  },
-  Storage: {
-    region: process.env.VUE_APP_REGION,
-    bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
-    identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL
-  }
-})
+// Amplify.configure({
+//   Auth: {
+//     mandatorySignIn: true,
+//     region: process.env.VUE_APP_REGION,
+//     userPoolId: process.env.VUE_APP_COGNITO_USER_POOL,
+//     identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL,
+//     userPoolWebClientId: process.env.VUE_APP_COGNITO_USER_POOL_CLIENT
+//   },
+//   Storage: {
+//     region: process.env.VUE_APP_REGION,
+//     bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
+//     identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL
+//   }
+// })
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({
