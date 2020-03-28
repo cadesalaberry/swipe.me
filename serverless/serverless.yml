@@ -25,11 +25,11 @@ custom:
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
   cognito:
-    identity-pool: ${self:custom.stage}-identity-pool
-    user-pool: ${self:custom.stage}-user-pool
-    user-pool-client: ${self:custom.stage}-user-pool-client
+    identity-pool: eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994
+    user-pool: eu-west-1_maZXR6XzU
+    user-pool-client: 4ldbtdjcott19onil1ndjh1ei0
   s3:
-    name: swipeme.io-${self:custom.stage}
+    name: swipeme.io-dev
   tables:
     users: users-table-${self:custom.stage}
     decks: decks-table-${self:custom.stage}

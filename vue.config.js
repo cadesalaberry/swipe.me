@@ -9,11 +9,11 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_GIT_BRANCH = branch
 process.env.VUE_APP_STAGE = stage
 
-setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL_CLIENT', `${stage}-user-pool-client`)
-setEnvIfUndefined('VUE_APP_COGNITO_IDENTITY_POOL', `${stage}-identity-pool`)
-setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL', `${stage}-user-pool`)
-setEnvIfUndefined('VUE_APP_S3_UPLOADS_BUCKET_NAME', `swipeme.io-${stage}`)
-setEnvIfUndefined('VUE_APP_API_BASE_URL', `https://dev.swipeme.io/${stage}`)
+setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL_CLIENT', '4ldbtdjcott19onil1ndjh1ei0')
+setEnvIfUndefined('VUE_APP_COGNITO_IDENTITY_POOL', 'eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994')
+setEnvIfUndefined('VUE_APP_COGNITO_USER_POOL', 'eu-west-1_maZXR6XzU')
+setEnvIfUndefined('VUE_APP_S3_UPLOADS_BUCKET_NAME', 'swipeme.io-dev')
+setEnvIfUndefined('VUE_APP_API_BASE_URL', 'https://dev.swipeme.io/')
 setEnvIfUndefined('VUE_APP_REGION', 'eu-west-1')
 
 module.exports = {
