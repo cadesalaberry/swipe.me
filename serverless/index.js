@@ -27,5 +27,11 @@ app.post('/decks', deckModel.createDeck)
 const server = awsServerlessExpress.createServer(app)
 
 exports.handler = (event, context) => {
+  // HACK: Remove the stage
+  // https://github.com/awslabs/aws-serverless-express/issues/86
+  if (event.requestContext.stage) {
+    event.path = event.path.replace('/' + event.requestContext.stage, '')
+  }
+
   awsServerlessExpress.proxy(server, event, context)
 }
