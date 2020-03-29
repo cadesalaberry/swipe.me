@@ -30,8 +30,6 @@ function getUserById (req, res) {
       })
     })
     .catch((error) => {
-      console.log(error)
-
       res.status(400).json({
         error: 'Could not get user'
       })
@@ -70,8 +68,6 @@ function createUser (req, res) {
       })
     })
     .catch((error) => {
-      console.log(error)
-
       res.status(400).json({
         error: 'Could not create user'
       })
