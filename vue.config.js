@@ -1,9 +1,9 @@
-const branchName = require('current-git-branch')
+const branchName = require('current-git-branch')()
 const cleanBranch = (branch) => branch.replace(/[\W_]+/g, '-')
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }
 
-const branch = branchName()
-const stage = cleanBranch(branch)
+const branch = cleanBranch(branchName)
+const stage = branch === 'master' ? 'dev' : branch
 
 process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_GIT_BRANCH = branch
