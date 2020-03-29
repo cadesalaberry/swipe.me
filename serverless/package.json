@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "serve": "NODE_ENV=development sls offline start",
-    "seed:remote": "sls dynamodb seed --online --region us-east-1"
+    "seed:remote": "sls dynamodb seed --online --region eu-west-1"
   },
   "dependencies": {
     "aws-sdk": "^2.597.0",

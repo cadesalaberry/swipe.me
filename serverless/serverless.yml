@@ -18,16 +18,16 @@ custom:
   customDomain:
     domainName: dev.swipeme.io
     stage: ${self:custom.stage}
-    basePath: api
+    basePath: ${self:custom.stage}
     certificateName: dev.swipeme.io
     createRoute53Record: true
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
   cognito:
-    identity-pool: eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994
-    user-pool: eu-west-1_maZXR6XzU
-    user-pool-client: 4ldbtdjcott19onil1ndjh1ei0
+    identity-pool: swipeme_io_${file(./config.js):getSnakedStage}_id_pool
+    user-pool: swipeme.io-${self:custom.stage}-user-pool
+    user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
   s3:
     name: swipeme.io-dev
   tables:
