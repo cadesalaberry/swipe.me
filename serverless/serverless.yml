@@ -9,14 +9,30 @@ package:
   individually: true
 
 plugins:
+  - serverless-domain-manager
   - serverless-plugin-typescript # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
 
 custom:
+  customDomain:
+    domainName: dev.swipeme.io
+    stage: ${self:custom.stage}
+    basePath: ${self:custom.stage}
+    certificateName: dev.swipeme.io
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
-  usersTableName: "users-table-${self:custom.stage}"
-  decksTableName: "decks-table-${self:custom.stage}"
+  cognito:
+    identity-pool: swipeme_io_${file(./config.js):getSnakedStage}_id_pool
+    user-pool: swipeme.io-${self:custom.stage}-user-pool
+    user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
+  s3:
+    name: swipeme.io-dev
+  tables:
+    users: users-table-${self:custom.stage}
+    decks: decks-table-${self:custom.stage}
   endpoints:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
@@ -28,16 +44,16 @@ custom:
     seed:
       development:
         sources:
-          - table: ${self:custom.usersTableName}
+          - table: ${self:custom.tables.users}
             sources: [./seeds/users.json]
-          - table: ${self:custom.decksTableName}
+          - table: ${self:custom.tables.decks}
             sources: [./seeds/decks.json]
 
 provider:
   name: aws
   runtime: nodejs10.x
   stage: ${self:custom.stage}
-  region: us-east-1
+  region: eu-west-1
 
   iamRoleStatements:
     - Effect: Allow
@@ -53,16 +69,22 @@ provider:
         - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
 
   environment:
-    USERS_TABLE: ${self:custom.usersTableName}
-    DECKS_TABLE: ${self:custom.decksTableName}
+    USERS_TABLE: ${self:custom.tables.users}
+    DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
+    NODE_ENV: ${env:NODE_ENV, 'production'}
 
 functions:
   app:
     handler: index.handler
     events:
-      - http: ANY /
-      - http: "ANY {proxy+}"
+      - http: GET /
+      - http: POST /users
+      - http: GET /users
+      - http: GET /users/{userId}
+      - http: POST /decks
+      - http: GET /decks
+      - http: GET /decks/{deckId}
 
 # Create our resources with separate CloudFormation templates
 resources:

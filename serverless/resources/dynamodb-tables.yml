@@ -13,7 +13,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: ${self:custom.usersTableName}
+      TableName: ${self:custom.tables.users}
   DecksDynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
@@ -28,4 +28,4 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: ${self:custom.decksTableName}
+      TableName: ${self:custom.tables.decks}

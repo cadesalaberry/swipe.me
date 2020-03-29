@@ -86,7 +86,6 @@ function createDeck (req, res) {
   return dynamoDb
     .call('put', params)
     .then((reply) => {
-      console.log('reply', reply)
       res.json({
         deckId,
         deckHandle,

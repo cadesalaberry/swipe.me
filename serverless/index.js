@@ -1,4 +1,4 @@
-const serverless = require('serverless-http')
+const awsServerlessExpress = require('aws-serverless-express')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -24,4 +24,14 @@ app.post('/users', userModel.createUser)
 app.get('/decks/:deckId', deckModel.getDeckById)
 app.post('/decks', deckModel.createDeck)
 
-module.exports.handler = serverless(app)
+const server = awsServerlessExpress.createServer(app)
+
+exports.handler = (event, context) => {
+  // HACK: Remove the stage
+  // https://github.com/awslabs/aws-serverless-express/issues/86
+  if (event.requestContext.stage) {
+    event.path = event.path.replace('/' + event.requestContext.stage, '')
+  }
+
+  awsServerlessExpress.proxy(server, event, context)
+}
