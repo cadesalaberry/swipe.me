@@ -1,4 +1,5 @@
-const branchName = require('current-git-branch')()
+// HACK: Avoids getting -HEAD-detached-at-FETCH-HEAD- on netlify
+const branchName = process.env.BRANCH || require('current-git-branch')()
 const cleanBranch = (branch) => branch.replace(/[\W_]+/g, '-')
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }
 
