@@ -1,9 +1,11 @@
 <template>
   <div class="home">
-    <div class="center-title">
-      <div>Mmmmm you probably want to checkout</div>
-      <router-link class="cta" to="/decks/banana">this deck</router-link>
-    </div>
+    <md-empty-state
+      md-icon="accessible_forward"
+      md-label="Work in progress..."
+      md-description="You probably want to checkout the demo deck meanwhile.">
+      <md-button href="#/decks/banana" class="md-primary md-raised">Demo deck</md-button>
+    </md-empty-state>
 
     <md-button href="#/decks/new" class="md-fixed md-fab md-fab-bottom-right">
         <md-icon>add</md-icon>
