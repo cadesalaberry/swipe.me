@@ -22,6 +22,8 @@ export default {
 <style>
 .home {
   height: 100%;
+  display: flex;
+  position: relative;
 }
 .center-title {
   display: flex;

@@ -45,16 +45,9 @@ Vue.prototype.$http = axios.create({
 })
 
 const routes = [
-  {
-    path: '/',
-    component: App,
-    children: [
-      { path: '', component: Home },
-      { path: '/decks', component: Home },
-      { path: '/decks/new', component: EditableDeck },
-      { path: '/decks/:deckId', component: Deck }
-    ]
-  }
+  { path: '', component: Home },
+  { path: '/decks/new', component: EditableDeck },
+  { path: '/decks/:deckId', component: Deck }
 ]
 
 const router = new VueRouter({
