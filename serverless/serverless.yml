@@ -25,9 +25,9 @@ custom:
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
   cognito:
-    identity-pool: swipeme_io_${file(./config.js):getSnakedStage}_id_pool
-    user-pool: swipeme.io-${self:custom.stage}-user-pool
-    user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
+    identity-pool: swipeme_io_dev_id_pool
+    user-pool: swipeme.io-dev-user-pool
+    user-pool-client: swipeme.io-dev-user-pool-client
   s3:
     name: swipeme.io-dev
   tables:
