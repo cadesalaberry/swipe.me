@@ -17,7 +17,7 @@
     <div
       v-for="(card, index) in deck.cards"
       :key="index"
-      class="card"
+      class="card md-elevation-1"
     >
       <editable-card
         :key="index"
