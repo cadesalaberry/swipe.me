@@ -1,15 +1,13 @@
 <template>
   <div class="home">
-
     <div class="center-title">
       <div>Mmmmm you probably want to checkout</div>
       <router-link class="cta" to="/decks/banana">this deck</router-link>
     </div>
 
-    <router-link class="btn-add" to="/decks/new">
-      <img class="icon--plus" src="../assets/plus.png"/>
-    </router-link>
-
+    <md-button href="#/decks/new" class="md-fixed md-fab md-fab-bottom-right">
+        <md-icon>add</md-icon>
+    </md-button>
   </div>
 </template>
 
