@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import Amplify from 'aws-amplify'
+import VueMaterial from 'vue-material'
+
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
 
 import './registerServiceWorker'
 
@@ -38,6 +42,8 @@ Amplify.configure({
     identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL
   }
 })
+
+Vue.use(VueMaterial)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({

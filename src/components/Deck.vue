@@ -24,7 +24,7 @@
       <div
         v-for="(card, index) in cards"
         :key="card.title"
-        class="card"
+        class="card md-elevation-1"
         v-bind:class="{
           'card--current': index === currentIndex,
           'card--next': index === currentIndex + 1,

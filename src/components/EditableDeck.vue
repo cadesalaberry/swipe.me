@@ -25,10 +25,13 @@
         @onCardEdited="saveDeckLocally"
       />
     </div>
-    <button
-      v-on:click="addEmptyCard(deck)"
-      class="">Add card</button>
 
+    <md-button href="#/decks/new"
+               title="Add a card"
+               class="md-fixed md-fab md-primary md-fab-bottom-right"
+               v-on:click="addEmptyCard(deck)">
+      <md-icon>add</md-icon>
+    </md-button>
   </div>
 </template>
 
