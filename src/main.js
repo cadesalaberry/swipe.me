@@ -13,6 +13,7 @@ import App from './App.vue'
 import Deck from './components/Deck.vue'
 import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
+import Login from './components/Login.vue'
 
 let API_BASE_URL = 'https://dev.swipeme.io/dev'
 
@@ -52,6 +53,7 @@ Vue.prototype.$http = axios.create({
 
 const routes = [
   { path: '', component: Home },
+  { path: '/login', component: Login },
   { path: '/decks/new', component: EditableDeck },
   { path: '/decks/:deckId', component: Deck }
 ]
