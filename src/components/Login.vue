@@ -20,12 +20,16 @@
             <span v-else-if="!$v.emailValue.email"
                   class="md-error">Invalid email</span>
           </md-field>
-          <md-field :class="getValidationClass('password')">
+          <md-field :class="{
+            'md-invalid': errorMessage
+          }">
             <label for="password">Password</label>
             <md-input type="password" name="password" id="password"
                       autocomplete="password"
                       v-model="passwordValue"
                       :disabled="sending" />
+            <span v-if="errorMessage"
+                  class="md-error">{{ errorMessage }}</span>
           </md-field>
         </md-card-content>
 
@@ -42,13 +46,15 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import { Auth } from 'aws-amplify'
 
 export default {
   name: 'Home',
   data: () => ({
     emailValue: null,
     passwordValue: null,
-    sending: false
+    sending: false,
+    errorMessage: ''
   }),
   validations: {
     emailValue: {
@@ -69,19 +75,23 @@ export default {
         'md-invalid': field.$invalid && field.$dirty
       }
     },
-    saveUser () {
+    async saveUser () {
       this.sending = true
 
-      setTimeout(() => {
-        this.sending = false
-      }, 1500)
+      try {
+        await Auth.signIn(this.emailValue, this.passwordValue)
+      } catch (e) {
+        this.errorMessage = e.message
+        console.log('Error loging in', e)
+      }
+      this.sending = false
     },
     validateUser () {
       this.$v.$touch()
 
-      if (!this.$v.$invalid) {
-        this.saveUser()
-      }
+      if (this.$v.$invalid) return
+
+      this.saveUser()
     }
   }
 }
