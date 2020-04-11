@@ -1,9 +1,8 @@
 <template>
  <div id="app">
-    <md-avatar class="profile-bar md-elevation-8">
-      <router-link to="/login">
-        <img src="//lh3.googleusercontent.com/-ArNNO5jacX8/AAAAAAAAAAI/AAAAAAAAAAA/AAKWJJOtkZUGDPPkXTm3mwwBskO3eyYJ6Q.CMID/s64-c/photo.jpg">
-      </router-link>
+    <md-avatar class="profile-bar md-elevation-8"  v-on:click.native="onProfileClick()">
+      <img v-if="isAuthenticated" :title="userEmail" src="//lh3.googleusercontent.com/-ArNNO5jacX8/AAAAAAAAAAI/AAAAAAAAAAA/AAKWJJOtkZUGDPPkXTm3mwwBskO3eyYJ6Q.CMID/s64-c/photo.jpg">
+      <md-icon v-if="!isAuthenticated">lock</md-icon>
     </md-avatar>
   <router-view></router-view>
  </div>
@@ -11,7 +10,26 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    isAuthenticated () {
+      return this.$store.state.auth.isAuthenticated
+    },
+    userEmail () {
+      return this.$store.getters.getUserEmail
+    }
+  },
+  methods: {
+    async onProfileClick () {
+      if (this.isAuthenticated) {
+        return this.$store.dispatch('logoutUser')
+      }
+      this.$router.push('/login')
+    }
+  },
+  async created () {
+    this.$store.dispatch('fetchUserInfos')
+  }
 }
 </script>
 

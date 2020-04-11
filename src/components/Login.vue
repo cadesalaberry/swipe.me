@@ -46,15 +46,13 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import { Auth } from 'aws-amplify'
 
 export default {
   name: 'Home',
   data: () => ({
     emailValue: null,
     passwordValue: null,
-    sending: false,
-    errorMessage: ''
+    sending: false
   }),
   validations: {
     emailValue: {
@@ -63,6 +61,12 @@ export default {
     },
     passwordValue: {
       required
+    }
+  },
+  computed: {
+    errorMessage () {
+      const error = this.$store.getters.getAuthError
+      return error && error.message
     }
   },
   methods: {
@@ -78,13 +82,15 @@ export default {
     async saveUser () {
       this.sending = true
 
-      try {
-        await Auth.signIn(this.emailValue, this.passwordValue)
-      } catch (e) {
-        this.errorMessage = e.message
-        console.log('Error loging in', e)
-      }
+      await this.$store.dispatch('loginUser', {
+        email: this.emailValue,
+        password: this.passwordValue
+      })
       this.sending = false
+
+      if (!this.errorMessage) {
+        this.$router.push(this.$route.query.redirect || '/')
+      }
     },
     validateUser () {
       this.$v.$touch()
