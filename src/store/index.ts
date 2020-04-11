@@ -4,6 +4,17 @@ import { Auth } from 'aws-amplify'
 
 Vue.use(Vuex)
 
+interface IUserAttributes {
+  email: string;
+  // eslint-disable-next-line camelcase
+  email_verified: string;
+  sub: string;
+}
+
+interface IUserInformations {
+  attributes: IUserAttributes
+}
+
 export default new Vuex.Store({
   state: {
     auth: {
@@ -17,7 +28,7 @@ export default new Vuex.Store({
       return state.auth.error
     },
     getUserEmail (state) {
-      const infos = state.auth.infos
+      const infos = state.auth.infos as unknown as IUserInformations
       return infos && infos.attributes.email
     }
   },

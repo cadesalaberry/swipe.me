@@ -25,6 +25,10 @@
     "vuex": "^3.1.3"
   },
   "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/vue-material": "https://github.com/calebsander/vue-material-types",
+    "@types/vuelidate": "^0.7.12",
+    "@types/zen-observable": "^0.8.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "@vue/cli-plugin-babel": "^4.3.1",
@@ -57,7 +61,7 @@
     ],
     "rules": {},
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "postcss": {
