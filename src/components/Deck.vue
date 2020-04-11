@@ -187,7 +187,7 @@ export default {
 }
 .card {
   position: absolute;
-  top: calc(45% - 560px / 2);
+  top: calc(48% - 560px / 2);
   left: calc(50% - 350px / 2);
 }
 .card--current {
@@ -202,7 +202,7 @@ a {
 }
 @media all and (max-width: 360px) {
   .card {
-    top: calc(45% - 450px / 2);
+    top: calc(48% - 450px / 2);
     left: calc(50% - 280px / 2);
   }
   .back-button {

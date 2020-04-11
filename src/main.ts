@@ -3,16 +3,20 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import Amplify from 'aws-amplify'
 import VueMaterial from 'vue-material'
+import Vuelidate from 'vuelidate'
+import Vuex from 'vuex'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
 import './registerServiceWorker'
+import store from './store'
 
 import App from './App.vue'
 import Deck from './components/Deck.vue'
 import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
+import Login from './components/Login.vue'
 
 let API_BASE_URL = 'https://dev.swipeme.io/dev'
 
@@ -44,6 +48,8 @@ Amplify.configure({
 })
 
 Vue.use(VueMaterial)
+Vue.use(Vuelidate)
+Vue.use(Vuex)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({
@@ -52,6 +58,7 @@ Vue.prototype.$http = axios.create({
 
 const routes = [
   { path: '', component: Home },
+  { path: '/login', component: Login },
   { path: '/decks/new', component: EditableDeck },
   { path: '/decks/:deckId', component: Deck }
 ]
@@ -65,5 +72,6 @@ Vue.use(VueRouter)
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')
