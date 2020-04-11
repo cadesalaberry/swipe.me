@@ -4,11 +4,13 @@ import axios from 'axios'
 import Amplify from 'aws-amplify'
 import VueMaterial from 'vue-material'
 import Vuelidate from 'vuelidate'
+import Vuex from 'vuex'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
 import './registerServiceWorker'
+import store from './store'
 
 import App from './App.vue'
 import Deck from './components/Deck.vue'
@@ -47,6 +49,7 @@ Amplify.configure({
 
 Vue.use(VueMaterial)
 Vue.use(Vuelidate)
+Vue.use(Vuex)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({
@@ -69,5 +72,6 @@ Vue.use(VueRouter)
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')
