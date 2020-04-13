@@ -1,8 +1,15 @@
 import dynamoDb from '../libs/dynamodb-lib'
 
-const DECKS_TABLE = process.env.DECKS_TABLE
+// eslint-disable-next-line no-unused-vars
+import type { Handler } from 'express'
+// eslint-disable-next-line no-unused-vars
+import type { AWSError } from 'aws-sdk'
+// eslint-disable-next-line no-unused-vars
+import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
 
-function getDeckById (req, res) {
+const DECKS_TABLE = process.env.DECKS_TABLE || ''
+
+const getDeckById: Handler = (req, res) => {
   const deckId = req.params.deckId
   const params = {
     TableName: DECKS_TABLE,
@@ -12,10 +19,10 @@ function getDeckById (req, res) {
   }
 
   return dynamoDb
-    .call('get', params)
+    .get(params as GetItemInput)
     .then((result) => {
       if (!result.Item) {
-        res.status(404).json({
+        return res.status(404).json({
           error: 'deck not found'
         })
       }
@@ -26,21 +33,21 @@ function getDeckById (req, res) {
         cards
       } = result.Item
 
-      res.json({
+      return res.json({
         deckId,
         deckHandle,
         cards
       })
     })
     .catch((error) => {
-      res.status(400).json({
+      return res.status(400).json({
         error: 'Could not get deck',
         ...error
       })
     })
 }
 
-function createDeck (req, res) {
+const createDeck: Handler = (req, res) => {
   const {
     deckId,
     deckHandle,
@@ -84,7 +91,7 @@ function createDeck (req, res) {
   }
 
   return dynamoDb
-    .call('put', params)
+    .put(params as PutItemInput)
     .then((reply) => {
       res.json({
         deckId,
@@ -92,7 +99,7 @@ function createDeck (req, res) {
         cards
       })
     })
-    .catch((error) => {
+    .catch((error: AWSError) => {
       res.status(400).json({
         error: 'could not create deck',
         ...error
@@ -100,7 +107,7 @@ function createDeck (req, res) {
     })
 }
 
-module.exports = {
+export default {
   getDeckById,
   createDeck
 }

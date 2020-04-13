@@ -10,11 +10,15 @@ package:
 
 plugins:
   - serverless-domain-manager
-  - serverless-plugin-typescript # should be before dynamodb and offline
+  - serverless-webpack # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
+  - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
   customDomain:
     domainName: dev.swipeme.io
     stage: ${self:custom.stage}
@@ -51,9 +55,11 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   stage: ${self:custom.stage}
   region: eu-west-1
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
   iamRoleStatements:
     - Effect: Allow
@@ -69,6 +75,7 @@ provider:
         - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
 
   environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
@@ -76,7 +83,7 @@ provider:
 
 functions:
   app:
-    handler: index.handler
+    handler: src/index.handler
     events:
       - http: GET /
       - http: POST /users

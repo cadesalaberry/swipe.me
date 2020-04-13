@@ -1,12 +1,14 @@
-const awsServerlessExpress = require('aws-serverless-express')
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
+import * as awsServerlessExpress from 'aws-serverless-express'
+// eslint-disable-next-line no-unused-vars
+import type { Handler } from 'aws-lambda'
+import * as express from 'express'
+import * as bodyParser from 'body-parser'
+import * as cors from 'cors'
+
+import userModel from './models/user'
+import deckModel from './models/deck'
 
 const app = express()
-
-const userModel = require('./models/user')
-const deckModel = require('./models/deck')
 
 app.use(bodyParser.json({
   strict: false
@@ -15,7 +17,7 @@ app.use(cors({
   origin: '*' // TODO: Handle CORS properly once deployed on the server
 }))
 
-app.get('/', function (req, res) {
+app.get('/', function (_req, res) {
   res.send('Hello World!')
 })
 
@@ -26,7 +28,7 @@ app.post('/decks', deckModel.createDeck)
 
 const server = awsServerlessExpress.createServer(app)
 
-exports.handler = (event, context) => {
+const handler: Handler = (event, context) => {
   // HACK: Remove the stage
   // https://github.com/awslabs/aws-serverless-express/issues/86
   if (event.requestContext.stage) {
@@ -34,4 +36,8 @@ exports.handler = (event, context) => {
   }
 
   awsServerlessExpress.proxy(server, event, context)
+}
+
+export {
+  handler
 }
