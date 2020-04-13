@@ -1,17 +1,20 @@
 import dynamoDb from '../libs/dynamodb-lib'
 
-const USERS_TABLE = process.env.USERS_TABLE
+// eslint-disable-next-line no-unused-vars
+import type { Handler } from 'express'
 
-function getUserById (req, res) {
+const USERS_TABLE = process.env.USERS_TABLE || ''
+
+const getUserById: Handler = (req, res) => {
   const params = {
     TableName: USERS_TABLE,
     Key: {
-      userId: req.params.userId
+      userId: { S: req.params.userId }
     }
   }
 
   return dynamoDb
-    .call('get', params)
+    .get(params)
     .then((result) => {
       if (!result.Item) {
         return res.status(404).json({
@@ -31,12 +34,13 @@ function getUserById (req, res) {
     })
     .catch((error) => {
       res.status(400).json({
-        error: 'Could not get user'
+        message: 'Could not get user',
+        error
       })
     })
 }
 
-function createUser (req, res) {
+const createUser: Handler = (req, res) => {
   const {
     userId,
     name
@@ -60,7 +64,7 @@ function createUser (req, res) {
     }
   }
 
-  dynamoDb.call('put', params)
+  return dynamoDb.put(params)
     .then(() => {
       res.json({
         userId,
@@ -69,12 +73,13 @@ function createUser (req, res) {
     })
     .catch((error) => {
       res.status(400).json({
-        error: 'Could not create user'
+        message: 'Could not create user',
+        error
       })
     })
 }
 
-module.exports = {
+export default {
   getUserById,
   createUser
 }
