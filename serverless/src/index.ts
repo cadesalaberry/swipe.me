@@ -1,4 +1,5 @@
 import * as awsServerlessExpress from 'aws-serverless-express'
+// import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
 // eslint-disable-next-line no-unused-vars
 import type { Handler } from 'aws-lambda'
 import * as express from 'express'
@@ -16,6 +17,7 @@ app.use(bodyParser.json({
 app.use(cors({
   origin: '*' // TODO: Handle CORS properly once deployed on the server
 }))
+// app.use(awsServerlessExpressMiddleware.eventContext())
 
 app.get('/', function (_req, res) {
   res.send('Hello World!')

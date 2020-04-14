@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
-import Amplify from 'aws-amplify'
+import Amplify, * as AmplifyModules from 'aws-amplify'
+import { AmplifyPlugin } from 'aws-amplify-vue'
 import VueMaterial from 'vue-material'
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
@@ -44,9 +45,18 @@ Amplify.configure({
     region: process.env.VUE_APP_REGION,
     bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
     identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL
+  },
+  API: {
+    endpoints: [
+      {
+        name: 'main',
+        endpoint: API_BASE_URL
+      }
+    ]
   }
 })
 
+Vue.use(AmplifyPlugin, AmplifyModules)
 Vue.use(VueMaterial)
 Vue.use(Vuelidate)
 Vue.use(Vuex)
