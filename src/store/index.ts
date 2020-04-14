@@ -21,7 +21,10 @@ export default new Vuex.Store({
       error: null,
       isAuthenticated: false,
       infos: null
-    }
+    },
+    currentDeck: null,
+    isLoadingDeck: false,
+    loadingDeckError: null
   },
   getters: {
     getAuthError (state) {
@@ -30,6 +33,12 @@ export default new Vuex.Store({
     getUserEmail (state) {
       const infos = state.auth.infos as unknown as IUserInformations
       return infos && infos.attributes.email
+    },
+    getLoadingDeckError (state) {
+      return state.loadingDeckError
+    },
+    getLoadingDeckStatus (state) {
+      return state.isLoadingDeck
     }
   },
   mutations: {
@@ -40,6 +49,15 @@ export default new Vuex.Store({
     setAuthError (state, error) {
       state.auth.error = error
       state.auth.isAuthenticated = false
+    },
+    setCurrentDeck (state, currentDeck) {
+      state.currentDeck = currentDeck
+    },
+    setLoadingDeckStatus (state, status: boolean) {
+      state.isLoadingDeck = status
+    },
+    setLoadingDeckError (state, error) {
+      state.loadingDeckError = error
     }
   },
   actions: {
@@ -51,6 +69,22 @@ export default new Vuex.Store({
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
+    },
+    async fetchDeckByHandle ({ commit }, deckHandle: string) {
+      commit('setLoadingDeckStatus', true)
+
+      try {
+        // const deck = await API.get('main', `/decks/${deckHandle}`, {})
+        const response = await Vue.prototype.$http.get(`/decks/${deckHandle}`, {})
+
+        console.log(response)
+        commit('setCurrentDeck', response.data)
+      } catch (e) {
+        commit('setCurrentDeck', null)
+        commit('setLoadingDeckError', e)
+      }
+
+      commit('setLoadingDeckStatus', false)
     },
     async fetchUserInfos ({ commit }) {
       try {

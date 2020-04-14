@@ -89,29 +89,32 @@ export default {
         }
       },
       oopsImageUrl: OopsImage,
-      loading: true,
-      error: false,
-      cards: [],
       currentIndex: 0
     }
   },
-
+  computed: {
+    error () {
+      const error = this.$store.getters.getLoadingDeckError
+      return error && error.message
+    },
+    loading () {
+      return this.$store.state.loadingDeck
+    },
+    currentDeck () {
+      return this.$store.state.currentDeck
+    },
+    cards () {
+      const deck = this.currentDeck
+      return deck ? deck.cards : []
+    }
+  },
   mounted: function () {
     const deckId = this.$route.params.deckId
     console.log('Loading deck #' + deckId)
-    this.$http.get(`decks/${deckId}`)
-      .then(this.replaceCards)
-      .catch((err) => {
-        this.error = true
-        throw err
-      })
-      .finally(() => { this.loading = false })
+    this.$store.dispatch('fetchDeckByHandle', deckId)
   },
 
   methods: {
-    replaceCards (response) {
-      this.cards = response.data.cards
-    },
     previousCard () {
       const swingCard = this.$refs.vueswing.cards[this.currentIndex - 1]
       const card = this.cards[this.currentIndex - 1]
@@ -128,11 +131,11 @@ export default {
       return true
     },
     nextCard (throwDirection) {
-      const card = this.cards[this.currentIndex + 1]
+      const card = this.cards[this.currentIndex]
 
       if (!card) return false
 
-      this.cards[this.currentIndex].swipedDirection = throwDirection
+      card.swipedDirection = throwDirection
       this.currentIndex++
 
       return true
