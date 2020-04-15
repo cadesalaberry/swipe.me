@@ -50,65 +50,50 @@ export default {
   },
 
   data () {
-    return {
-      loading: false,
-      deck: {
-        deckHandle: '',
-        cards: []
-      }
+    return {}
+  },
+
+  computed: {
+    loading () {
+      return this.$store.getters.getLoadingDeckStatus
+    },
+    deck () {
+      return this.$store.state.newDeck
     }
   },
 
   mounted: function () {
-    this.deck = JSON.parse(localStorage.getItem('decks/new')) || { cards: [] }
-
     if (!this.deck?.cards?.length) {
       this.addEmptyCard()
     }
 
-    console.log('Loading deck from localStorage', this.deck)
+    this.saveDeckLocally()
   },
 
   methods: {
     createDeck () {
-      this.loading = true
-      const deckToCreate = {
-        ...this.deck,
-        deckId: this.deck.deckHandle,
-        cards: this.deck.cards.filter(c => c.title)
-      }
-      console.log('Creating deck', deckToCreate)
+      const deckToCreate = this.deck
 
-      this.$http.post('decks', deckToCreate)
-        .then((response) => {
-          const newDeck = response.data
-
-          console.log('Deck created', newDeck)
-
-          this.deck = { cards: [] }
-
-          this.saveDeckLocally()
-
-          this.$router.push(`/decks/${newDeck.deckHandle}`)
+      this.$store
+        .dispatch('createDeck', deckToCreate)
+        .then((newDeckHandle) => {
+          this.$router.push(`/decks/${newDeckHandle}`)
+          this.$store.commit('resetNewDeck')
         })
-        .catch((err) => {
-          this.error = true
-          throw err
-        })
-        .finally(() => { this.loading = false })
     },
 
     saveDeckLocally () {
-      const deckToSave = JSON.stringify(this.deck)
-
-      console.log('Saving deck', deckToSave)
-
-      localStorage.setItem('decks/new', deckToSave)
+      this.$store.commit('setNewDeck', this.deck)
     },
 
     addEmptyCard () {
       if (this.deck.cards.length >= 9) {
         return alert('You cannot add more than 9 cards')
+      }
+      const lastCard = this.deck.cards[this.deck.cards.length - 1]
+
+      if (lastCard && !lastCard.title && !lastCard.description) {
+        return console.warn('The last card is already empty')
       }
 
       this.deck.cards.push({
@@ -116,6 +101,8 @@ export default {
         picture_path: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
         description: ''
       })
+
+      this.saveDeckLocally()
 
       console.log('Adding empty card')
     }
