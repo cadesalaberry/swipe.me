@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import { Auth } from 'aws-amplify'
+import { Auth, API } from 'aws-amplify'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -110,11 +110,9 @@ export default new Vuex.Store({
       commit('setLoadingDeckStatus', true)
 
       try {
-        // const deck = await API.get('main', `/decks/${deckHandle}`, {})
-        const response = await Vue.prototype.$http.get(`/decks/${deckHandle}`, {})
+        const response = await API.get('main', `/decks/${deckHandle}`, {})
 
-        console.log(response)
-        commit('setCurrentDeck', response.data)
+        commit('setCurrentDeck', response)
       } catch (e) {
         commit('setCurrentDeck', null)
         commit('setLoadingDeckError', e)
@@ -133,13 +131,11 @@ export default new Vuex.Store({
       let deckHandle = null
 
       try {
-        // const deck = await API.post('main', `/decks`, deckToCreate)
-        const response = await Vue.prototype.$http.post('/decks', deckToCreate)
+        const response = await API.post('main', '/decks', { body: deckToCreate })
 
-        console.log(response)
-        commit('setNewDeck', response.data)
+        commit('setNewDeck', response)
 
-        deckHandle = response.data.deckHandle
+        deckHandle = response.deckHandle
       } catch (e) {
         commit('setNewDeckError', e)
       }

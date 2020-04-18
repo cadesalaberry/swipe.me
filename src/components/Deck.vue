@@ -110,7 +110,6 @@ export default {
   },
   mounted: function () {
     const deckId = this.$route.params.deckId
-    console.log('Loading deck #' + deckId)
     this.$store.dispatch('fetchDeckByHandle', deckId)
   },
 
@@ -141,8 +140,6 @@ export default {
       return true
     },
     onThrowout ({ target, throwDirection }) {
-      console.log(`Threw out ${this.currentIndex} ${target.textContent}!`)
-
       this.nextCard(throwDirection)
     }
   }

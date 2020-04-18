@@ -37,6 +37,10 @@ const handler: Handler = (event, context) => {
     event.path = event.path.replace('/' + event.requestContext.stage, '')
   }
 
+  // HACK: Headers are too big for express to handle
+  // https://github.com/awslabs/aws-serverless-express/issues/248
+  delete event.multiValueHeaders
+
   awsServerlessExpress.proxy(server, event, context)
 }
 
