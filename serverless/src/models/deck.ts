@@ -27,12 +27,14 @@ const getDeckByHandle = (deckHandle: string): Promise<IDeck> => {
       const {
         deckId,
         deckHandle,
+        createdAt,
         cards
       } = result.Item
 
       return {
         deckId,
         deckHandle,
+        createdAt,
         cards
       }
     })
@@ -52,12 +54,14 @@ const createDeck = ({ deckHandle, cards }: INewDeck): Promise<IDeck> => {
     throw new BackError('a "title" must be provided for all cards', 400)
   }
   const deckId = UUID.v1()
+  const createdAt = Date.now()
   const params = {
     TableName: DECKS_TABLE,
     Item: {
       deckId,
       deckHandle,
-      cards
+      cards,
+      createdAt
     },
     ConditionExpression: 'attribute_not_exists(deckId) and attribute_not_exists(deckHandle)'
   }
@@ -68,6 +72,7 @@ const createDeck = ({ deckHandle, cards }: INewDeck): Promise<IDeck> => {
       return {
         deckId,
         deckHandle,
+        createdAt,
         cards
       }
     })

@@ -21,6 +21,7 @@ export interface IDeck {
   deckHandle: string;
   deckId: string;
   cards: Array<ICard>;
+  createdAt: number;
 }
 export interface INewDeck {
   deckHandle: string;
