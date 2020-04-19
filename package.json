@@ -77,17 +77,18 @@
     "not ie <= 8"
   ],
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged && ./tools/branch-validator.js"
   },
   "homepage": "git@github.com:cadesalaberry/swipe.me",
   "lint-staged": {
+    "*.ts": [
+      "vue-cli-service lint"
+    ],
     "*.js": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ],
     "*.vue": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ]
   }
 }
