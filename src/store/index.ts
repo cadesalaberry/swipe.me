@@ -110,7 +110,7 @@ export default new Vuex.Store({
       commit('setLoadingDeckStatus', true)
 
       try {
-        const response = await API.get('main', `/decks/${deckHandle}`, {})
+        const response = await API.get('main', `decks/${deckHandle}`, {})
 
         commit('setCurrentDeck', response)
       } catch (e) {
@@ -131,7 +131,7 @@ export default new Vuex.Store({
       let deckHandle = null
 
       try {
-        const response = await API.post('main', '/decks', { body: deckToCreate })
+        const response = await API.post('main', 'decks', { body: deckToCreate })
 
         commit('setNewDeck', response)
 
