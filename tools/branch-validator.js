@@ -1,14 +1,26 @@
 #!/usr/bin/env node
 
-const getBranchName = require('current-git-branch')
+const getBranchNameFromGit = require('current-git-branch')
 
 const BranchValidator = {
+  /**
+   * Gets the name of the branch. Supports the folowing env:
+   *   * netlify
+   *   * CircleCI
+   *   * git
+   */
+  getBranchName: function () {
+    if (process.env.CIRCLECI_BRANCH) return process.env.CIRCLECI_BRANCH
+    if (process.env.NETLIFY) return process.env.HEAD
+    return getBranchNameFromGit()
+  },
+
   /**
    * Returns the branch name with all invalid characters
    * replaced by dashes (-).
    */
   getDashifiedBranch: function () {
-    return getBranchName().replace(/[\W_]+/g, '-')
+    return this.getBranchName().replace(/[\W_]+/g, '-')
   },
 
   /*

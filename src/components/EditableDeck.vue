@@ -77,6 +77,9 @@ export default {
       this.$store
         .dispatch('createDeck', deckToCreate)
         .then((newDeckHandle) => {
+          // An error must have occured
+          if (!newDeckHandle) return
+
           this.$router.push(`/decks/${newDeckHandle}`)
           this.$store.commit('resetNewDeck')
         })
