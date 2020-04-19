@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+// eslint-disable-next-line no-unused-vars
+import type { IUserInformations, IDeck } from './types'
+
 import { Auth, API } from 'aws-amplify'
 
 const vuexLocal = new VuexPersistence({
@@ -9,29 +12,6 @@ const vuexLocal = new VuexPersistence({
 })
 
 Vue.use(Vuex)
-
-interface IUserAttributes {
-  email: string;
-  // eslint-disable-next-line camelcase
-  email_verified: string;
-  sub: string;
-}
-
-interface IUserInformations {
-  attributes: IUserAttributes
-}
-
-interface ICards {
-  title: string;
-  description: string;
-  // eslint-disable-next-line camelcase
-  picture_path: string;
-}
-interface IDeck {
-  deckHandle: string;
-  deckId: string;
-  cards: Array<ICards>;
-}
 
 export default new Vuex.Store({
   plugins: [vuexLocal.plugin],
@@ -125,17 +105,16 @@ export default new Vuex.Store({
 
       const deckToCreate = {
         ...deck,
-        deckId: deck.deckHandle,
         cards: deck.cards.filter(c => c.title || c.description)
       }
       let deckHandle = null
 
       try {
-        const response = await API.post('main', 'decks', { body: deckToCreate })
+        const createdDeck = await API.post('main', 'decks', { body: deckToCreate })
 
-        commit('setNewDeck', response)
+        commit('setNewDeck', createdDeck)
 
-        deckHandle = response.deckHandle
+        deckHandle = createdDeck.deckHandle
       } catch (e) {
         commit('setNewDeckError', e)
       }

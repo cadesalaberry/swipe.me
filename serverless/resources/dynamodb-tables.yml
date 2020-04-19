@@ -21,11 +21,11 @@ Resources:
     Properties:
       AttributeDefinitions:
         -
-          AttributeName: deckId
+          AttributeName: deckHandle
           AttributeType: S
       KeySchema:
         -
-          AttributeName: deckId
+          AttributeName: deckHandle
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1

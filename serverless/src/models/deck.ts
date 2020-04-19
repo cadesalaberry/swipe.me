@@ -1,20 +1,19 @@
+import * as UUID from 'uuid'
 import dynamoDb from '../libs/dynamodb-lib'
+import BackError from '../libs/back.error'
 
 // eslint-disable-next-line no-unused-vars
-import type { Handler } from 'express'
-// eslint-disable-next-line no-unused-vars
-import type { AWSError } from 'aws-sdk'
-// eslint-disable-next-line no-unused-vars
 import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
+// eslint-disable-next-line no-unused-vars
+import type { IDeck, INewDeck } from '../../../src/store/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''
 
-const getDeckById: Handler = (req, res) => {
-  const deckId = req.params.deckId
+const getDeckByHandle = (deckHandle: string): Promise<IDeck> => {
   const params = {
     TableName: DECKS_TABLE,
     Key: {
-      deckId
+      deckHandle
     }
   }
 
@@ -22,92 +21,64 @@ const getDeckById: Handler = (req, res) => {
     .get(params as GetItemInput)
     .then((result) => {
       if (!result.Item) {
-        return res.status(404).json({
-          error: 'deck not found'
-        })
+        throw new BackError('deck not found', 404)
       }
 
       const {
         deckId,
         deckHandle,
+        createdAt,
         cards
       } = result.Item
 
-      return res.json({
+      return {
         deckId,
         deckHandle,
+        createdAt,
         cards
-      })
-    })
-    .catch((error) => {
-      return res.status(400).json({
-        error: 'Could not get deck',
-        ...error
-      })
+      }
     })
 }
 
-const createDeck: Handler = (req, res) => {
-  const {
-    deckId,
-    deckHandle,
-    cards
-  } = req.body
-
-  if (typeof deckId !== 'string') {
-    return res.status(400).json({
-      error: '"deckId" must be a string'
-    })
-  }
+const createDeck = ({ deckHandle, cards }: INewDeck): Promise<IDeck> => {
   if (typeof deckHandle !== 'string') {
-    return res.status(400).json({
-      error: '"deckHandle" must be a string'
-    })
+    throw new BackError('"deckHandle" must be a string', 400)
   }
   if (!Array.isArray(cards)) {
-    return res.status(400).json({
-      error: '"cards" must be an array'
-    })
+    throw new BackError('"cards" must be an array', 400)
   }
   if (cards.filter(c => c.description).length !== cards.length) {
-    return res.status(400).json({
-      error: 'a "description" must be provided for all cards'
-    })
+    throw new BackError('a "description" must be provided for all cards', 400)
   }
   if (cards.filter(c => c.title).length !== cards.length) {
-    return res.status(400).json({
-      error: 'a "title" must be provided for all cards'
-    })
+    throw new BackError('a "title" must be provided for all cards', 400)
   }
-
+  const deckId = UUID.v1()
+  const createdAt = Date.now()
   const params = {
     TableName: DECKS_TABLE,
     Item: {
       deckId,
       deckHandle,
-      cards
+      cards,
+      createdAt
     },
     ConditionExpression: 'attribute_not_exists(deckId) and attribute_not_exists(deckHandle)'
   }
 
   return dynamoDb
     .put(params as PutItemInput)
-    .then((reply) => {
-      res.json({
+    .then(() => {
+      return {
         deckId,
         deckHandle,
+        createdAt,
         cards
-      })
-    })
-    .catch((error: AWSError) => {
-      res.status(400).json({
-        error: 'could not create deck',
-        ...error
-      })
+      }
     })
 }
 
 export default {
-  getDeckById,
+  getDeckByHandle,
   createDeck
 }

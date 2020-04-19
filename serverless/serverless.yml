@@ -86,12 +86,9 @@ functions:
     handler: src/index.handler
     events:
       - http: GET /
-      - http: POST /users
-      - http: GET /users
-      - http: GET /users/{userId}
       - http: POST /decks
       - http: GET /decks
-      - http: GET /decks/{deckId}
+      - http: GET /decks/{deckHandle}
 
 # Create our resources with separate CloudFormation templates
 resources:
