@@ -25,8 +25,39 @@ app.get('/', function (_req, res) {
 
 app.get('/users/:userId', userModel.getUserById)
 app.post('/users', userModel.createUser)
-app.get('/decks/:deckId', deckModel.getDeckById)
-app.post('/decks', deckModel.createDeck)
+app.get('/decks/:deckHandle', (req, res) => {
+  const deckHandle = req.params.deckHandle
+
+  return deckModel
+    .getDeckByHandle(deckHandle)
+    .then((deck) => {
+      res.json(deck)
+    })
+    .catch((error) => {
+      res.status(error.statusCode || 500).json({
+        error: 'Could not get deck',
+        ...error
+      })
+    })
+})
+app.post('/decks', (req, res) => {
+  const {
+    deckHandle,
+    cards
+  } = req.body
+
+  return deckModel
+    .createDeck({ deckHandle, cards })
+    .then((deck) => {
+      res.json(deck)
+    })
+    .catch((error) => {
+      res.status(error.statusCode || 500).json({
+        error: 'Could not create deck',
+        ...error
+      })
+    })
+})
 
 const server = awsServerlessExpress.createServer(app)
 

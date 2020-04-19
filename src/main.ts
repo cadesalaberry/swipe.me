@@ -19,14 +19,14 @@ import EditableDeck from './components/EditableDeck.vue'
 import Home from './components/Home.vue'
 import Login from './components/Login.vue'
 
-let API_BASE_URL = 'https://dev.swipeme.io/dev'
+let API_BASE_URL = 'https://dev.swipeme.io/dev/'
 
 if (process.env.VUE_APP_API_BASE_URL) {
   API_BASE_URL = process.env.VUE_APP_API_BASE_URL
 }
 
 if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
-  API_BASE_URL = 'http://localhost:3000/dev'
+  API_BASE_URL = 'http://localhost:3000/dev/'
 }
 
 if (!API_BASE_URL) {
