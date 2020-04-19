@@ -11,7 +11,7 @@ const BranchValidator = {
    */
   getBranchName: function () {
     if (process.env.CIRCLECI_BRANCH) return process.env.CIRCLECI_BRANCH
-    if (process.env.BRANCH) return process.env.BRANCH
+    if (process.env.NETLIFY) return process.env.HEAD
     return getBranchNameFromGit()
   },
 
