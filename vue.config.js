@@ -1,10 +1,13 @@
 // HACK: Avoids getting -HEAD-detached-at-FETCH-HEAD- on netlify
-const branchName = process.env.BRANCH || require('current-git-branch')()
-const cleanBranch = (branch) => branch.replace(/[\W_]+/g, '-')
+const branchValidator = require('./tools/branch-validator')
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }
 
-const branch = cleanBranch(branchName)
-const stage = branch === 'master' ? 'dev' : branch
+const stageName = branchValidator.getDashifiedBranch()
+const branch = branchValidator.getBranchName()
+const stage = stageName === 'master' ? 'dev' : stageName
+
+console.log(`Using branch name: ${branch}`)
+console.log(`Using stage name : ${stage}`)
 
 process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_GIT_BRANCH = branch
