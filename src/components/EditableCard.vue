@@ -1,10 +1,10 @@
 <template>
   <div class="card__container">
-    <img class="card__image" :src="card.picture_path" />
-    <input
+    <editable-image class="card__image" :uniqueId="'image-' + uniqueId"/>
+    <!-- <input
       v-model="card.picture_path"
       v-on:keyup="this.onCardEdited"
-      placeholder="image URL">
+      placeholder="image URL"> -->
 
     <h1 class="card__title">
       <input
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import EditableImage from './EditableImage.vue'
+
 export default {
   name: 'EditableCard',
   props: {
@@ -29,7 +31,11 @@ export default {
       title: String,
       picture_path: String,
       description: String
-    }
+    },
+    uniqueId: String
+  },
+  components: {
+    EditableImage
   },
   methods: {
     onCardEdited: function () {

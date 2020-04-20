@@ -20,7 +20,7 @@
       class="card md-elevation-1"
     >
       <editable-card
-        :key="index"
+        :uniqueId="'card-' + index"
         :card="card"
         @onCardEdited="saveDeckLocally"
       />
