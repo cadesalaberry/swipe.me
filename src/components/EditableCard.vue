@@ -1,22 +1,19 @@
 <template>
   <div class="card__container">
-    <editable-image class="card__image" :uniqueId="'image-' + uniqueId"/>
-    <!-- <input
-      v-model="card.picture_path"
-      v-on:keyup="this.onCardEdited"
-      placeholder="image URL"> -->
+
+    <editable-image :id="'image-' + uniqueId"
+                    v-model="card.picture_path"
+                    class="card__image"/>
 
     <h1 class="card__title">
-      <input
-        v-model="card.title"
-        v-on:keyup="this.onCardEdited"
-        placeholder="Title">
+      <input placeholder="Title"
+             v-model="card.title"
+             @keyup="this.onCardEdited">
     </h1>
     <div class="card__description">
-      <textarea
-        v-model="card.description"
-        v-on:keyup="this.onCardEdited"
-        placeholder="Some short description"></textarea>
+      <textarea placeholder="Some short description"
+                v-model="card.description"
+                @keyup="this.onCardEdited"></textarea>
     </div>
   </div>
 </template>
@@ -38,7 +35,7 @@ export default {
     EditableImage
   },
   methods: {
-    onCardEdited: function () {
+    onCardEdited () {
       this.$emit('onCardEdited')
     }
   }

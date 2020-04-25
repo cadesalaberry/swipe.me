@@ -5,11 +5,11 @@
       <input
         class="deck-name"
         v-model="deck.deckHandle"
-        v-on:keyup="saveDeckLocally"
+        @keyup="saveDeckLocally"
         placeholder="Name of the deck">
 
       <button
-        v-on:click="createDeck()"
+        @click="createDeck()"
         class="">Create</button>
     </div>
     <loader v-if="loading"></loader>
@@ -29,7 +29,7 @@
     <md-button href="#/decks/new"
                title="Add a card"
                class="md-fixed md-fab md-primary md-fab-bottom-right"
-               v-on:click="addEmptyCard(deck)">
+               @click="addEmptyCard(deck)">
       <md-icon>add</md-icon>
     </md-button>
   </div>
@@ -132,18 +132,6 @@ export default {
 }
 a {
   color: #42b983;
-}
-
-/* Handle back button show/hide animations */
-.slide-fade-enter-active {
-  transition: all .2s ease-out;
-}
-.slide-fade-leave-active {
-  transition: all .1s ease-in;
-}
-.slide-fade-enter, .slide-fade-leave-to {
-  transform: translateY(40px);
-  opacity: 0;
 }
 
 input {
