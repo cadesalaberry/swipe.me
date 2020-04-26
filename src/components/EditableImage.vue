@@ -16,7 +16,7 @@
       <md-icon class="upload__button md-size-5x">add_a_photo</md-icon>
 
       <md-snackbar md-position="center" :md-duration="Infinity" :md-active="!!uploadError" md-persistent>
-        <span>{{ uploadError }}</span>
+        <span>{{ uploadError && uploadError.message }}</span>
         <md-button class="md-primary" @click="onDismissError">Dismiss</md-button>
       </md-snackbar>
     </div>
@@ -53,7 +53,10 @@ export default {
         .then(_ => uploadFile(file))
         .then(({ url }) => preloadImage(url))
         .then(pictureUrl => this.$emit('input', pictureUrl))
-        .catch(e => { this.uploadError = e.message })
+        .catch(e => {
+          console.error(e)
+          this.uploadError = e
+        })
         .finally(() => {
           this.previewData = null
           this.loading = false

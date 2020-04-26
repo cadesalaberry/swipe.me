@@ -160,7 +160,7 @@ export default new Vuex.Store({
           ...config,
           Auth: {
             ...config.Auth ? config.Auth : {},
-            mandatorySignIn: true,
+            // mandatorySignIn: true,
             userPoolWebClientId,
             identityPoolId,
             userPoolId,

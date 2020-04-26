@@ -32,14 +32,16 @@ app.get('/', function (_req, res) {
 })
 
 app.get('/config.json', function (_req, res) {
-  const config = process.env.AWS_USER_POOL_ID
-    ? {
+  // FIXME: when offline, the needed ids are not interpreted properly
+  const isOffline = process.env.AWS_USER_POOL_ID === '[object Object]'
+  const config = isOffline
+    ? DEFAULT_SERVER_CONFIG
+    : {
       region: process.env.AWS_REGION,
       cognitoUserPoolId: process.env.AWS_USER_POOL_ID,
       cognitoIdentityPoolId: process.env.AWS_IDENTITY_POOL_ID,
       cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
     }
-    : DEFAULT_SERVER_CONFIG
 
   return res.json(config)
 })
