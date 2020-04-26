@@ -79,6 +79,9 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
+    USER_POOL_ID: !Ref CognitoUserPool
+    IDENTITY_POOL_ID: !Ref CognitoIdentityPool
+    USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
     NODE_ENV: ${env:NODE_ENV, 'production'}
 
@@ -87,6 +90,7 @@ functions:
     handler: src/index.handler
     events:
       - http: GET /
+      - http: GET /config.json
       - http: POST /decks
       - http: GET /decks
       - http: GET /decks/{deckHandle}

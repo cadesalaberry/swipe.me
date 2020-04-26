@@ -23,6 +23,15 @@ app.get('/', function (_req, res) {
   res.send('Hello World!')
 })
 
+app.get('/config.json', function (_req, res) {
+  console.log(process.env.USER_POOL_ID)
+  res.json({
+    cognitoUserPool: process.env.USER_POOL_ID,
+    cognitoIdentityPool: process.env.IDENTITY_POOL_ID,
+    cognitoUserPoolClient: process.env.USER_POOL_CLIENT_ID
+  })
+})
+
 app.get('/users/:userId', userModel.getUserById)
 app.post('/users', userModel.createUser)
 app.get('/decks/:deckHandle', (req, res) => {
