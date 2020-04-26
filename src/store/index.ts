@@ -98,6 +98,7 @@ export default new Vuex.Store({
       try {
         const infos = await Auth.signIn(email, password)
         commit('setUserInfos', infos)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
         commit('setAuthError', e)
@@ -110,6 +111,7 @@ export default new Vuex.Store({
         const response = await API.get('main', `decks/${deckHandle}`, {})
 
         commit('setCurrentDeck', response)
+        commit('setLoadingDeckError', null)
       } catch (e) {
         commit('setCurrentDeck', null)
         commit('setLoadingDeckError', e)
@@ -130,6 +132,7 @@ export default new Vuex.Store({
         const createdDeck = await API.post('main', 'decks', { body: deckToCreate })
 
         commit('setNewDeck', createdDeck)
+        commit('setNewDeckError', null)
 
         deckHandle = createdDeck.deckHandle
       } catch (e) {
@@ -171,6 +174,7 @@ export default new Vuex.Store({
         }
         commit('setAmplifyConfig', newConfig)
         dispatch('configureAmplify', newConfig)
+        commit('setGlobalError', null)
       } catch (e) {
         commit('setGlobalError', e.message)
       }
@@ -179,6 +183,7 @@ export default new Vuex.Store({
       try {
         Amplify.configure(config)
         commit('setAmplifyConfig', config)
+        commit('setGlobalError', null)
       } catch (e) {
         commit('setGlobalError', e.message)
       }
@@ -187,6 +192,7 @@ export default new Vuex.Store({
       try {
         const infos = await Auth.currentUserInfo()
         commit('setUserInfos', infos)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
         commit('setAuthError', e)
@@ -196,6 +202,7 @@ export default new Vuex.Store({
       try {
         await Auth.signOut()
         commit('setUserInfos', null)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setAuthError', e)
       }
