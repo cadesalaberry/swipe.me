@@ -1,11 +1,11 @@
-const branchName = require('current-git-branch')()
-const cleanBranch = (branch) => branch.replace(/[\W_]+/g, '-')
+const BranchValidator = require('../tools/branch-validator')
 
-module.exports = {
-  /*
-  * Member must satisfy regular expression pattern: [\w\s+=,.@-]+
-  */
-  getSnakedStage: function () {
-    return cleanBranch(branchName).replace(/[-]+/g, '_')
-  }
+module.exports = (serverless) => {
+  const { stage } = serverless.variables.options
+  const snakedStage = BranchValidator.snakeify(stage)
+  const config = { snakedStage }
+
+  console.log('Injected config file:', config)
+
+  return config
 }

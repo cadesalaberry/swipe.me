@@ -32,7 +32,11 @@ const BranchValidator = {
    *
    */
   getSnakedBranchName: function () {
-    return this.getDashifiedBranch().replace(/[-]+/g, '_')
+    return this.snakeify(this.getDashifiedBranch())
+  },
+
+  snakeify: function (string) {
+    return `${string}`.replace(/[-]+/g, '_')
   },
 
   /**

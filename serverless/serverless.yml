@@ -28,10 +28,11 @@ custom:
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
+  snakedStage: ${file(./config.js).snakedStage}
   cognito:
-    identity-pool: swipeme_io_dev_id_pool
-    user-pool: swipeme.io-dev-user-pool
-    user-pool-client: swipeme.io-dev-user-pool-client
+    identity-pool: swipeme_io_${self:custom.snakedStage}_id_pool
+    user-pool: swipeme.io-${self:custom.stage}-user-pool
+    user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
   s3:
     name: swipeme.io-dev
   tables:
