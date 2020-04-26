@@ -77,11 +77,12 @@ provider:
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    AWS_USER_POOL_ID: !Ref CognitoUserPool
+    AWS_IDENTITY_POOL_ID: !Ref CognitoIdentityPool
+    AWS_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    AWS_REGION: ${self:provider.region}
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
-    USER_POOL_ID: !Ref CognitoUserPool
-    IDENTITY_POOL_ID: !Ref CognitoIdentityPool
-    USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
     NODE_ENV: ${env:NODE_ENV, 'production'}
 

@@ -1,11 +1,15 @@
 <template>
- <div id="app">
+  <div id="app">
     <md-avatar class="profile-bar md-elevation-8"  v-on:click.native="onProfileClick()">
       <img v-if="isAuthenticated" :title="userEmail" src="//lh3.googleusercontent.com/-ArNNO5jacX8/AAAAAAAAAAI/AAAAAAAAAAA/AAKWJJOtkZUGDPPkXTm3mwwBskO3eyYJ6Q.CMID/s64-c/photo.jpg">
       <md-icon v-if="!isAuthenticated">lock</md-icon>
     </md-avatar>
-  <router-view></router-view>
- </div>
+    <router-view></router-view>
+    <md-snackbar md-position="center" :md-duration="Infinity" :md-active="!!globalError" md-persistent>
+      <span>{{ globalError }}</span>
+      <md-button class="md-primary" @click="onDismissError">Dismiss</md-button>
+    </md-snackbar>
+  </div>
 </template>
 
 <script>
@@ -13,22 +17,25 @@ export default {
   name: 'App',
   computed: {
     isAuthenticated () {
-      return this.$store.state.auth.isAuthenticated
+      return this.$store.getters.isAuthenticated
     },
     userEmail () {
       return this.$store.getters.getUserEmail
+    },
+    globalError () {
+      return this.$store.getters.getGlobalError
     }
   },
   methods: {
+    onDismissError () {
+      this.$store.commit('setGlobalError', null)
+    },
     async onProfileClick () {
       if (this.isAuthenticated) {
         return this.$store.dispatch('logoutUser')
       }
       this.$router.push('/login')
     }
-  },
-  async created () {
-    this.$store.dispatch('fetchUserInfos')
   }
 }
 </script>

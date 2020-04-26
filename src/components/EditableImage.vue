@@ -16,7 +16,7 @@
       <md-icon class="upload__button md-size-5x">add_a_photo</md-icon>
 
       <md-snackbar md-position="center" :md-duration="Infinity" :md-active="!!uploadError" md-persistent>
-        <span>{{uploadError}}</span>
+        <span>{{ uploadError }}</span>
         <md-button class="md-primary" @click="onDismissError">Dismiss</md-button>
       </md-snackbar>
     </div>

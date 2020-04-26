@@ -9,6 +9,13 @@ import * as cors from 'cors'
 import userModel from './models/user'
 import deckModel from './models/deck'
 
+const DEFAULT_SERVER_CONFIG = {
+  region: process.env.AWS_REGION,
+  cognitoUserPoolId: 'eu-west-1_maZXR6XzU',
+  cognitoIdentityPoolId: 'eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994',
+  cognitoUserPoolClientId: '4ldbtdjcott19onil1ndjh1ei0'
+}
+
 const app = express()
 
 app.use(bodyParser.json({
@@ -24,12 +31,16 @@ app.get('/', function (_req, res) {
 })
 
 app.get('/config.json', function (_req, res) {
-  console.log(process.env.USER_POOL_ID)
-  res.json({
-    cognitoUserPool: process.env.USER_POOL_ID,
-    cognitoIdentityPool: process.env.IDENTITY_POOL_ID,
-    cognitoUserPoolClient: process.env.USER_POOL_CLIENT_ID
-  })
+  const config = process.env.AWS_USER_POOL_ID
+    ? {
+      region: process.env.AWS_REGION,
+      cognitoUserPoolId: process.env.AWS_USER_POOL_ID,
+      cognitoIdentityPoolId: process.env.AWS_IDENTITY_POOL_ID,
+      cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
+    }
+    : DEFAULT_SERVER_CONFIG
+
+  return res.json(config)
 })
 
 app.get('/users/:userId', userModel.getUserById)
