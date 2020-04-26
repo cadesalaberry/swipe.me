@@ -53,10 +53,10 @@
 
 <script>
 import VueSwing from 'vue-swing'
-import Card from './Card.vue'
-import Loader from './Loader.vue'
+import Card from '@/components/Card.vue'
+import Loader from '@/components/Loader.vue'
 
-import OopsImage from '../assets/oops.png'
+import OopsImage from '@/assets/oops.png'
 
 export default {
   name: 'Deck',

@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import EditableCard from './EditableCard.vue'
-import Loader from './Loader.vue'
+import EditableCard from '@/components/EditableCard.vue'
+import Loader from '@/components/Loader.vue'
 
 export default {
   name: 'EditableDeck',
