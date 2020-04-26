@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
-const getBranchNameFromGit = require('current-git-branch')
+let getBranchNameFromGit = () => { throw new Error('current-git-branch is not installed') }
+try {
+  getBranchNameFromGit = require('current-git-branch')
+} catch (e) {
+  console.warn('current-git-branch is not installed, proceeding without')
+}
 
 const BranchValidator = {
   /**
