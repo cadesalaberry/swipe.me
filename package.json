@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
+    "@types/uuid": "^7.0.3",
     "@types/vue-material": "https://github.com/calebsander/vue-material-types",
     "@types/vuelidate": "^0.7.12",
     "@types/zen-observable": "^0.8.0",

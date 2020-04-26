@@ -3,7 +3,8 @@
 
     <editable-image :id="'image-' + uniqueId"
                     v-model="card.picture_path"
-                    class="card__image"/>
+                    class="card__image"
+                    @input="this.onCardEdited"/>
 
     <h1 class="card__title">
       <input placeholder="Title"

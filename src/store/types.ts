@@ -7,7 +7,7 @@ export interface IUserAttributes {
 }
 
 export interface IUserInformations {
-  attributes: IUserAttributes
+  attributes: IUserAttributes;
 }
 
 export interface ICard {

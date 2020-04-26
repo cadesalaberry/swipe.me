@@ -106,8 +106,6 @@ export default {
       })
 
       this.saveDeckLocally()
-
-      console.log('Adding empty card')
     }
   }
 }
