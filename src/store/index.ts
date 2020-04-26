@@ -143,7 +143,8 @@ export default new Vuex.Store({
     async syncServerConfig ({ commit, dispatch, getters }) {
       try {
         const {
-          region,
+          s3Region,
+          cognitoRegion,
           cognitoUserPoolId: userPoolId,
           cognitoIdentityPoolId: identityPoolId,
           cognitoUserPoolClientId: userPoolWebClientId
@@ -159,13 +160,13 @@ export default new Vuex.Store({
             userPoolWebClientId,
             identityPoolId,
             userPoolId,
-            region
+            region: cognitoRegion
           },
           Storage: {
             ...config.Storage ? config.Storage : {},
             bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
             identityPoolId,
-            region
+            region: s3Region
           }
         }
         commit('setAmplifyConfig', newConfig)

@@ -10,7 +10,8 @@ import userModel from './models/user'
 import deckModel from './models/deck'
 
 const DEFAULT_SERVER_CONFIG = {
-  region: process.env.AWS_REGION,
+  s3Region: process.env.AWS_S3_REGION,
+  cognitoRegion: process.env.AWS_COGNITO_REGION,
   cognitoUserPoolId: 'eu-west-1_maZXR6XzU',
   cognitoIdentityPoolId: 'eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994',
   cognitoUserPoolClientId: '4ldbtdjcott19onil1ndjh1ei0'
