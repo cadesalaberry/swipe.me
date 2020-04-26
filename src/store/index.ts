@@ -63,7 +63,8 @@ export default new Vuex.Store({
     },
     setAuthError (state, error) {
       state.auth.error = error
-      state.auth.isAuthenticated = false
+
+      if (error) state.auth.isAuthenticated = false
     },
     setGlobalError (state, globalError) {
       state.globalError = globalError
