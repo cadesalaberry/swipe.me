@@ -51,10 +51,8 @@ const MINIMAL_AMPLIFY_CONFIG = {
   }
 }
 
-const amplifyConfig = store.getters.getAmplifyConfig || MINIMAL_AMPLIFY_CONFIG
-
 // Soft initialization of the Amplify API module
-store.dispatch('configureAmplify', amplifyConfig)
+store.dispatch('configureAmplify', MINIMAL_AMPLIFY_CONFIG)
 
 // Needed to setup Storage and Auth
 store.dispatch('syncServerConfig')

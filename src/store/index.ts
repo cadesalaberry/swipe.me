@@ -16,7 +16,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [vuexLocal.plugin],
   state: {
-    amplifyConfig: null,
     auth: {
       error: null,
       isAuthenticated: false,
@@ -51,9 +50,6 @@ export default new Vuex.Store({
     },
     getGlobalError (state) {
       return state.globalError
-    },
-    getAmplifyConfig (state) {
-      return state.amplifyConfig
     }
   },
   mutations: {
@@ -68,9 +64,6 @@ export default new Vuex.Store({
     },
     setGlobalError (state, globalError) {
       state.globalError = globalError
-    },
-    setAmplifyConfig (state, amplifyConfig) {
-      state.amplifyConfig = amplifyConfig
     },
     setCurrentDeck (state, currentDeck) {
       state.currentDeck = currentDeck
@@ -144,7 +137,7 @@ export default new Vuex.Store({
 
       return deckHandle
     },
-    async syncServerConfig ({ commit, dispatch, getters }) {
+    async syncServerConfig ({ commit, dispatch }) {
       try {
         const {
           s3Region,
@@ -154,12 +147,8 @@ export default new Vuex.Store({
           cognitoUserPoolClientId: userPoolWebClientId
         } = await API.get('main', 'config.json', {})
 
-        const config = getters.getAmplifyConfig
-
         const newConfig = {
-          ...config,
           Auth: {
-            ...config.Auth ? config.Auth : {},
             // mandatorySignIn: true,
             userPoolWebClientId,
             identityPoolId,
@@ -167,16 +156,13 @@ export default new Vuex.Store({
             region: cognitoRegion
           },
           Storage: {
-            ...config.Storage ? config.Storage : {},
             AWSS3: {
-              ...config.Storage?.AWSS3 ? config.Storage?.AWSS3 : {},
               bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
               identityPoolId,
               region: s3Region
             }
           }
         }
-        commit('setAmplifyConfig', newConfig)
         dispatch('configureAmplify', newConfig)
         commit('setGlobalError', null)
       } catch (e) {
@@ -186,7 +172,6 @@ export default new Vuex.Store({
     configureAmplify ({ commit }, config) {
       try {
         Amplify.configure(config)
-        commit('setAmplifyConfig', config)
         commit('setGlobalError', null)
       } catch (e) {
         commit('setGlobalError', e.message)
