@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import Amplify, * as AmplifyModules from 'aws-amplify'
 import { AmplifyPlugin } from 'aws-amplify-vue'
+import { Vue as VueIntegration } from '@sentry/integrations'
+import * as Sentry from '@sentry/browser'
 import VueMaterial from 'vue-material'
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
@@ -20,6 +22,11 @@ import Home from './components/Home.vue'
 import Login from './components/Login.vue'
 
 let API_BASE_URL = 'https://dev.swipeme.io/dev/'
+
+Sentry.init({
+  dsn: 'https://571d08a49cf4438c9c91b16d056ad3cf@o386323.ingest.sentry.io/5220443',
+  integrations: [new VueIntegration({ Vue, attachProps: true, logErrors: true })]
+})
 
 if (process.env.VUE_APP_API_BASE_URL) {
   API_BASE_URL = process.env.VUE_APP_API_BASE_URL
