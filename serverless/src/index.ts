@@ -26,9 +26,16 @@ app.get('/', function (_req, res) {
 })
 
 app.get('/config.json', function (_req, res) {
-  const config = getConfig()
+  try {
+    const config = getConfig()
 
-  return res.json(config)
+    res.json(config)
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      error: 'Could not config.json',
+      ...error
+    })
+  }
 })
 
 app.get('/users/:userId', userModel.getUserById)

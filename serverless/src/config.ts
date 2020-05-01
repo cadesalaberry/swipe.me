@@ -1,3 +1,6 @@
+import * as httpStatus from 'http-status'
+import BackError from './libs/back.error'
+
 interface ServerConfig {
   s3Region: string;
   s3Bucket: string;
@@ -23,12 +26,12 @@ const getConfig = (): ServerConfig => {
 
   if (isOffline) return DEFAULT_SERVER_CONFIG
 
-  if (!process.env.AWS_S3_REGION) throw new Error('Missing env variable: AWS_S3_REGION')
-  if (!process.env.AWS_S3_BUCKET) throw new Error('Missing env variable: AWS_S3_BUCKET')
-  if (!process.env.AWS_COGNITO_REGION) throw new Error('Missing env variable: AWS_COGNITO_REGION')
-  if (!process.env.AWS_USER_POOL_ID) throw new Error('Missing env variable: AWS_USER_POOL_ID')
-  if (!process.env.AWS_IDENTITY_POOL_ID) throw new Error('Missing env variable: AWS_IDENTITY_POOL_ID')
-  if (!process.env.AWS_USER_POOL_CLIENT_ID) throw new Error('Missing env variable: AWS_USER_POOL_CLIENT_ID')
+  if (!process.env.AWS_S3_REGION) throw new BackError('Missing env variable: AWS_S3_REGION', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_S3_BUCKET) throw new BackError('Missing env variable: AWS_S3_BUCKET', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_COGNITO_REGION) throw new BackError('Missing env variable: AWS_COGNITO_REGION', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_USER_POOL_ID) throw new BackError('Missing env variable: AWS_USER_POOL_ID', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_IDENTITY_POOL_ID) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_ID', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_USER_POOL_CLIENT_ID) throw new BackError('Missing env variable: AWS_USER_POOL_CLIENT_ID', httpStatus.PRECONDITION_FAILED)
 
   return {
     s3Region: process.env.AWS_S3_REGION,
@@ -39,6 +42,9 @@ const getConfig = (): ServerConfig => {
     cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
   }
 }
+
+// Makes sure tu throw an error if a variable is missing
+getConfig()
 
 export {
   getConfig
