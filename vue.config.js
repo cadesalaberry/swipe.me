@@ -1,4 +1,3 @@
-// HACK: Avoids getting -HEAD-detached-at-FETCH-HEAD- on netlify
 const branchValidator = require('./tools/branch-validator')
 
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }

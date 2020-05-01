@@ -6,6 +6,8 @@
     "strict": true,
     // if using webpack 2+ or rollup, to leverage tree shaking:
     "module": "es2015",
+    // Avoids "Could not find a declaration file for module 'graphql/language/ast'"
+    "skipLibCheck": true,
     "moduleResolution": "node",
     // Enables absolute import
     "baseUrl": "src"
