@@ -34,7 +34,7 @@
           :key="card.title"
           :index="index"
           :title="card.title"
-          :imageURL="card.picture_path"
+          :imageURL="card.picturePath"
           :description="card.description"
         />
       </div>

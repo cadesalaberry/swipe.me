@@ -101,7 +101,7 @@ export default {
 
       this.deck.cards.push({
         title: '',
-        picture_path: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
+        picturePath: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
         description: ''
       })
 

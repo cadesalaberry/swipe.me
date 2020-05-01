@@ -14,7 +14,7 @@ export interface ICard {
   title: string;
   description: string;
   // eslint-disable-next-line camelcase
-  picture_path: string;
+  picturePath: string;
 }
 
 export interface IDeck {

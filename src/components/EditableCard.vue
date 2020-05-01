@@ -2,7 +2,7 @@
   <div class="card__container">
 
     <editable-image :id="'image-' + uniqueId"
-                    v-model="card.picture_path"
+                    v-model="card.picturePath"
                     class="card__image"
                     @input="this.onCardEdited"/>
 
@@ -27,7 +27,7 @@ export default {
   props: {
     card: {
       title: String,
-      picture_path: String,
+      picturePath: String,
       description: String
     },
     uniqueId: String
