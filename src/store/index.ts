@@ -168,9 +168,12 @@ export default new Vuex.Store({
           },
           Storage: {
             ...config.Storage ? config.Storage : {},
-            bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
-            identityPoolId,
-            region: s3Region
+            AWSS3: {
+              ...config.Storage.AWSS3 ? config.Storage.AWSS3 : {},
+              bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
+              identityPoolId,
+              region: s3Region
+            }
           }
         }
         commit('setAmplifyConfig', newConfig)
