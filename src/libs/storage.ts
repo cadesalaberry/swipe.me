@@ -70,9 +70,9 @@ export const uploadFile = (file: InputFile, vaultType: Vault = Vault.PRIVATE) =>
       uniqueFilename,
       type: file.type,
       name: file.name,
-      size: file.size,
-      lastModified: file.lastModified,
-      uploadedAt: new Date()
+      size: `${file.size}`, // makes sure we handle strings
+      lastModified: `${file.lastModified}`, // makes sure we handle strings
+      uploadedAt: `${new Date()}`
     }
   }
 
