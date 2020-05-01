@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
 // eslint-disable-next-line no-unused-vars
-import type { IUserInformations, IDeck } from './types'
+import type { UserInformations, Deck } from './types'
 
 import Amplify, { Auth, API } from 'aws-amplify'
 
@@ -40,7 +40,7 @@ export default new Vuex.Store({
       return state.auth.error
     },
     getUserEmail (state) {
-      const infos = state.auth.infos as unknown as IUserInformations
+      const infos = state.auth.infos as unknown as UserInformations
       return infos && infos.attributes.email
     },
     getLoadingDeckError (state) {
@@ -120,7 +120,7 @@ export default new Vuex.Store({
 
       commit('setLoadingDeckStatus', false)
     },
-    async createDeck ({ commit }, deck: IDeck) {
+    async createDeck ({ commit }, deck: Deck) {
       commit('setLoadingDeckStatus', true)
 
       const deckToCreate = {

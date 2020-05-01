@@ -1,53 +1,82 @@
 import { Storage } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid'
 
-interface IInputFile {
+enum Vault {
+  PRIVATE = 'private',
+  PUBLIC = 'public'
+}
+interface InputFile {
   name: string;
   type: string;
   size: number;
   lastModified: number;
 }
 
-export const preloadImage = (imageURL: string) => {
+/**
+ * Handles path such as: s3://private/drgerbvdb.png
+ * @param url a url string
+ */
+export const getAuthenticatedUrl = async (url: string): Promise<string> => {
+  if (typeof url !== 'string') return url
+
+  if (!url.startsWith('s3://')) {
+    return url
+  }
+
+  const protocolLess = url.slice(5) // takes out s3://
+  const [vaultType, ...rest] = protocolLess.split('/') // reads the vault value
+  const key = rest.join('/')
+
+  const vault = vaultType === Vault.PRIVATE
+    ? Storage.vault
+    : Storage
+
+  const authenticatedUrl = await vault.get(key)
+
+  return authenticatedUrl as string
+}
+
+export const preloadImage = async (imageUrl: string) => {
+  const authenticatedUrl = await getAuthenticatedUrl(imageUrl)
   return new Promise((resolve, reject) => {
     const img = new Image()
 
-    img.onload = (e) => resolve(imageURL)
+    img.onload = () => resolve(imageUrl)
     img.onerror = (e) => reject(e)
 
-    img.src = imageURL
+    img.src = authenticatedUrl
   })
 }
 
 export const loadImagePreview = (file: Blob) => {
   return new Promise((resolve, reject) => {
-    var reader = new FileReader()
+    const reader = new FileReader()
 
     reader.onload = (e) => resolve(e.target?.result)
-    reader.onerror = (e) => reject(reader.error)
+    reader.onerror = () => reject(reader.error)
 
     reader.readAsDataURL(file)
   })
 }
 
-export const uploadFile = (file: IInputFile) => {
+export const uploadFile = (file: InputFile, vaultType: Vault = Vault.PRIVATE) => {
   const extension = file.name.split('.').pop()
   const randomIdentifier = uuidv4()
   const uniqueFilename = `${randomIdentifier}.${extension}`
   const metadata = {
     contentType: file.type,
-    // level: 'public',
+    level: vaultType,
     name: file.name,
     size: file.size,
     lastModified: file.lastModified,
     uploadedAt: Date.now()
   }
 
-  return Storage.vault
+  return Storage
     .put(uniqueFilename, file, metadata)
-    .then(async (stored: any) => {
-      const key = stored.key
-      const url = await Storage.vault.get(key)
+    .then(async (stored: unknown) => {
+      const { key } = stored as { key: string }
+      const url = `s3://${vaultType}/${key}`
 
       return {
         url,

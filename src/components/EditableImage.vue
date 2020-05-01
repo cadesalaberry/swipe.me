@@ -48,9 +48,9 @@ export default {
       this.loading = true
 
       return Promise.resolve()
-        .then(_ => loadImagePreview(file))
+        .then(() => loadImagePreview(file))
         .then((previewData) => { this.previewData = previewData })
-        .then(_ => uploadFile(file))
+        .then(() => uploadFile(file))
         .then(({ url }) => preloadImage(url))
         .then(pictureUrl => this.$emit('input', pictureUrl))
         .catch(e => {

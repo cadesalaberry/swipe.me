@@ -139,7 +139,7 @@ export default {
 
       return true
     },
-    onThrowout ({ target, throwDirection }) {
+    onThrowout ({ throwDirection }) {
       this.nextCard(throwDirection)
     }
   }

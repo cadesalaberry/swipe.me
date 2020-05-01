@@ -62,7 +62,7 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/typescript",
+      "@vue/typescript/recommended",
       "@vue/standard"
     ],
     "rules": {},

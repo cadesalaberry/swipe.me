@@ -5,11 +5,11 @@ import BackError from '../libs/back.error'
 // eslint-disable-next-line no-unused-vars
 import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
 // eslint-disable-next-line no-unused-vars
-import type { IDeck, INewDeck } from '../../../src/store/types'
+import type { Deck, NewDeck } from '../../../src/store/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''
 
-const getDeckByHandle = (deckHandle: string): Promise<IDeck> => {
+const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
   const params = {
     TableName: DECKS_TABLE,
     Key: {
@@ -40,7 +40,7 @@ const getDeckByHandle = (deckHandle: string): Promise<IDeck> => {
     })
 }
 
-const createDeck = ({ deckHandle, cards }: INewDeck): Promise<IDeck> => {
+const createDeck = ({ deckHandle, cards }: NewDeck): Promise<Deck> => {
   if (typeof deckHandle !== 'string') {
     throw new BackError('"deckHandle" must be a string', 400)
   }
