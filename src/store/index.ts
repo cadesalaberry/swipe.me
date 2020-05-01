@@ -141,6 +141,7 @@ export default new Vuex.Store({
       try {
         const {
           s3Region,
+          s3Bucket,
           cognitoRegion,
           cognitoUserPoolId: userPoolId,
           cognitoIdentityPoolId: identityPoolId,
@@ -149,17 +150,17 @@ export default new Vuex.Store({
 
         const newConfig = {
           Auth: {
+            region: cognitoRegion,
             // mandatorySignIn: true,
             userPoolWebClientId,
             identityPoolId,
-            userPoolId,
-            region: cognitoRegion
+            userPoolId
           },
           Storage: {
             AWSS3: {
-              bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
-              identityPoolId,
-              region: s3Region
+              region: s3Region,
+              bucket: s3Bucket,
+              identityPoolId
             }
           }
         }

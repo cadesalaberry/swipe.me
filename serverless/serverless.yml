@@ -82,6 +82,7 @@ provider:
     AWS_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     AWS_COGNITO_REGION: ${self:provider.region}
     AWS_S3_REGION: ${self:provider.region}
+    AWS_S3_BUCKET: !Ref AttachmentsBucket
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
