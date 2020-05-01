@@ -9,7 +9,7 @@
             name="image">
 
     <img v-if="previewData" class="image__preview blured" :src="previewData" />
-    <img v-if="!previewData && value" class="image__preview" :src="value" />
+    <protected-image v-if="!previewData && value" class="image__preview" :src="value" />
 
     <md-progress-bar class="progress__bar" md-mode="indeterminate" v-if="loading" />
     <div class="upload__overlay">
@@ -26,12 +26,16 @@
 
 <script>
 import { uploadFile, preloadImage, loadImagePreview } from '@/libs/storage'
+import ProtectedImage from './ProtectedImage'
 
 export default {
   name: 'EditableCard',
   props: {
     value: String, // holds the pictureURL
     id: String
+  },
+  components: {
+    ProtectedImage
   },
 
   data () {
@@ -45,6 +49,9 @@ export default {
   methods: {
     onFileChange (event) {
       const file = event.target.files[0]
+
+      if (!file) return
+
       this.loading = true
 
       return Promise.resolve()
