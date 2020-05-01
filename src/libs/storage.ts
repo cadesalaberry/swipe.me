@@ -66,10 +66,14 @@ export const uploadFile = (file: InputFile, vaultType: Vault = Vault.PRIVATE) =>
   const metadata = {
     contentType: file.type,
     level: vaultType,
-    name: file.name,
-    size: file.size,
-    lastModified: file.lastModified,
-    uploadedAt: Date.now()
+    metadata: {
+      uniqueFilename,
+      type: file.type,
+      name: file.name,
+      size: file.size,
+      lastModified: file.lastModified,
+      uploadedAt: new Date()
+    }
   }
 
   return Storage
