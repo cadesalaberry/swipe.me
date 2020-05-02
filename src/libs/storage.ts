@@ -1,10 +1,21 @@
 import { Storage } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid'
 
-enum Vault {
+export enum SecurityLevel {
+  /**
+   * Readable by all users, but writable only by the creating user
+   */
+  PROTECTED = 'protected',
+  /**
+   * Only accessible for the individual user
+   */
   PRIVATE = 'private',
+  /**
+   * Accessible by all users of your app. Files are stored under the `public/` path in your S3 bucket
+   */
   PUBLIC = 'public'
 }
+
 interface InputFile {
   name: string;
   type: string;
@@ -24,16 +35,21 @@ export const getAuthenticatedUrl = async (url: string): Promise<string> => {
   }
 
   const protocolLess = url.slice(5) // takes out s3://
-  const [vaultType, ...rest] = protocolLess.split('/') // reads the vault value
+  const [securityLevel, ...rest] = protocolLess.split('/') // reads the vault value
   const key = rest.join('/')
 
-  const vault = vaultType === Vault.PRIVATE
-    ? Storage.vault
-    : Storage
+  if (!(Object as any).values(SecurityLevel).includes(securityLevel)) {
+    throw new Error(`Unsupported security level ${securityLevel}`)
+  }
 
-  const authenticatedUrl = await vault.get(key)
+  const urlOrObject = await Storage.get(key, { level: securityLevel })
+  const authenticatedUrl = urlOrObject as string
+  const parsed = new URL(authenticatedUrl)
+  const publicUrl = [parsed.origin, parsed.pathname].join('')
 
-  return authenticatedUrl as string
+  if (securityLevel === SecurityLevel.PRIVATE) return authenticatedUrl
+
+  return publicUrl
 }
 
 export const preloadImage = async (imageUrl: string) => {
@@ -59,7 +75,7 @@ export const loadImagePreview = (file: Blob) => {
   })
 }
 
-export const uploadFile = (file: InputFile, vaultType: Vault = Vault.PRIVATE) => {
+export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE) => {
   const extension = file.name.split('.').pop()
   const randomIdentifier = uuidv4()
   const uniqueFilename = `${randomIdentifier}.${extension}`

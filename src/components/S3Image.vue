@@ -11,7 +11,7 @@
 import { getAuthenticatedUrl, preloadImage } from '@/libs/storage'
 
 export default {
-  name: 'ProtectedImage',
+  name: 'S3Image',
   props: {
     src: String, // holds the pictureURL
     blurred: Boolean

@@ -9,7 +9,7 @@
             name="image">
 
     <img v-if="previewData" class="image__preview blured" :src="previewData" />
-    <protected-image v-if="!previewData && value" class="image__preview" :src="value" />
+    <s3-image v-if="!previewData && value" class="image__preview" :src="value" />
 
     <md-progress-bar class="progress__bar" md-mode="indeterminate" v-if="loading" />
     <div class="upload__overlay">
@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { uploadFile, preloadImage, loadImagePreview } from '@/libs/storage'
-import ProtectedImage from './ProtectedImage'
+import { SecurityLevel, uploadFile, preloadImage, loadImagePreview } from '@/libs/storage'
+import S3Image from './S3Image'
 
 export default {
   name: 'EditableCard',
@@ -35,7 +35,7 @@ export default {
     id: String
   },
   components: {
-    ProtectedImage
+    S3Image
   },
 
   data () {
@@ -57,7 +57,7 @@ export default {
       return Promise.resolve()
         .then(() => loadImagePreview(file))
         .then((previewData) => { this.previewData = previewData })
-        .then(() => uploadFile(file))
+        .then(() => uploadFile(file, SecurityLevel.PROTECTED))
         .then(({ url }) => preloadImage(url))
         .then(pictureUrl => this.$emit('input', pictureUrl))
         .catch(e => {
