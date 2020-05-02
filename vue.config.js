@@ -13,7 +13,6 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_GIT_BRANCH = branch
 process.env.VUE_APP_STAGE = stage
 
-setEnvIfUndefined('VUE_APP_S3_UPLOADS_BUCKET_NAME', 'swipeme.io-dev')
 setEnvIfUndefined('VUE_APP_API_BASE_URL', `https://dev.swipeme.io/${stage}/`)
 
 module.exports = {
