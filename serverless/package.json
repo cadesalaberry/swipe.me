@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
+    "deploy": "sls deploy --stage=local",
     "serve": "NODE_ENV=development sls offline start",
     "seed:remote": "sls dynamodb seed --online --region eu-west-1"
   },

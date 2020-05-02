@@ -11,13 +11,13 @@ interface ServerConfig {
 }
 
 const DEFAULT_SERVER_CONFIG = {
-  stage: 'dev',
+  stage: 'local',
   s3Region: 'eu-west-1',
-  s3Bucket: 'swipeme.io-dev',
+  s3Bucket: 'api-swipe-me-local-s3bucket-1kcvqhmf164zs',
   cognitoRegion: 'eu-west-1',
-  cognitoUserPoolId: 'eu-west-1_maZXR6XzU',
-  cognitoIdentityPoolId: 'eu-west-1:4e22e863-ff0a-436d-8c3c-f9484ce82994',
-  cognitoUserPoolClientId: '4ldbtdjcott19onil1ndjh1ei0'
+  cognitoUserPoolId: 'eu-west-1_s061rv8nC',
+  cognitoIdentityPoolId: 'eu-west-1:5ec84746-5a7e-48a8-be85-1497afe5bdb9',
+  cognitoUserPoolClientId: '2da3fqcdiooakvr5j0ut7uuieo'
 }
 
 const getConfig = (): ServerConfig => {
