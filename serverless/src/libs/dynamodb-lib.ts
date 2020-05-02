@@ -1,6 +1,5 @@
 import { DynamoDB } from 'aws-sdk'
 
-// eslint-disable-next-line no-unused-vars
 import type { PutItemInput, GetItemInput } from 'aws-sdk/clients/dynamodb'
 
 function getInstance () {

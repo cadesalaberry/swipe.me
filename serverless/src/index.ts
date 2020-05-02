@@ -1,6 +1,6 @@
 import * as awsServerlessExpress from 'aws-serverless-express'
 // import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
-// eslint-disable-next-line no-unused-vars
+
 import type { Handler } from 'aws-lambda'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'

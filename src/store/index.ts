@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-// eslint-disable-next-line no-unused-vars
 import type { UserInformations, Deck } from './types'
 
 import Amplify, { Auth, API } from 'aws-amplify'

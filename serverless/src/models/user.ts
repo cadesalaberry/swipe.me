@@ -1,6 +1,5 @@
 import dynamoDb from '../libs/dynamodb-lib'
 
-// eslint-disable-next-line no-unused-vars
 import type { Handler } from 'express'
 
 const USERS_TABLE = process.env.USERS_TABLE || ''

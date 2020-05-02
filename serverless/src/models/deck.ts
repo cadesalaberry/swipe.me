@@ -2,9 +2,7 @@ import * as UUID from 'uuid'
 import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
-// eslint-disable-next-line no-unused-vars
 import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
-// eslint-disable-next-line no-unused-vars
 import type { Deck, NewDeck } from '../../../src/store/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''

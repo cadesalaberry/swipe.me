@@ -2,31 +2,37 @@ Resources:
   # The federated identity for our user pool to auth with
   CognitoIdentityPool:
     Type: AWS::Cognito::IdentityPool
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       # Generate a name based on the stage
       IdentityPoolName: ${self:custom.cognito.identity-pool}
       # Don't allow unathenticated users
-      AllowUnauthenticatedIdentities: false
+      AllowUnauthenticatedIdentities: true
       # Link to our User Pool
       CognitoIdentityProviders:
         - ClientId:
             Ref: CognitoUserPoolClient
           ProviderName:
             Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
-            
+
   # IAM roles
   CognitoIdentityPoolRoles:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       IdentityPoolId:
         Ref: CognitoIdentityPool
       Roles:
         authenticated:
           Fn::GetAtt: [CognitoAuthRole, Arn]
-          
+
   # IAM role used for authenticated users
   CognitoAuthRole:
     Type: AWS::IAM::Role
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       Path: /
       AssumeRolePolicyDocument:
@@ -54,7 +60,7 @@ Resources:
                   - 'cognito-sync:*'
                   - 'cognito-identity:*'
                 Resource: '*'
-              
+
               # Allow users to invoke our API
               - Effect: 'Allow'
                 Action:
@@ -70,21 +76,81 @@ Resources:
                       - ':'
                       - Ref: ApiGatewayRestApi
                       - '/*'
-              
+
               # Allow users to upload attachments to their
-              # folder inside our S3 bucket
+              # folders inside our S3 bucket
               - Effect: 'Allow'
                 Action:
-                  - 's3:*'
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
                 Resource:
                   - Fn::Join:
                     - ''
                     -
-                      - Fn::GetAtt: [AttachmentsBucket, Arn]
+                      - Fn::GetAtt: [S3Bucket, Arn]
                       - '/private/'
                       - '$'
                       - '{cognito-identity.amazonaws.com:sub}/*'
-  
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [S3Bucket, Arn]
+                      - '/protected/'
+                      - '$'
+                      - '{cognito-identity.amazonaws.com:sub}/*'
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [S3Bucket, Arn]
+                      - '/public/*'
+
+              # Allow users to read files in the protected and public folders
+              - Effect: 'Allow'
+                Action:
+                  - s3:GetObject
+                Resource:
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [S3Bucket, Arn]
+                      - '/protected/*'
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [S3Bucket, Arn]
+                      - '/public/*'
+
+              # Allow users to list the content of the buckets
+              - Effect: 'Allow'
+                Action:
+                  - s3:ListBucket
+                Condition:
+                  StringLike:
+                    's3:prefix':
+                      - 'public/'
+                      - 'public/*'
+                      - 'protected/'
+                      - 'protected/*'
+                      - Fn::Join: # private/${cognito-identity.amazonaws.com:sub}/
+                        - ''
+                        -
+                          - 'private/'
+                          - '$'
+                          - '{cognito-identity.amazonaws.com:sub}/'
+                      - Fn::Join: # private/${cognito-identity.amazonaws.com:sub}/*
+                        - ''
+                        -
+                          - 'private/'
+                          - '$'
+                          - '{cognito-identity.amazonaws.com:sub}/*'
+                Resource:
+                  - Fn::Join:
+                    - ''
+                    -
+                      - 'arn:aws:s3:::'
+                      - Fn::GetAtt: [S3Bucket, Arn]
+
 # Print out the Id of the Identity Pool that is created
 Outputs:
   IdentityPoolId:

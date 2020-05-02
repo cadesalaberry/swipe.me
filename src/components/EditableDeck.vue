@@ -27,6 +27,7 @@
     </div>
 
     <md-button href="#/decks/new"
+               v-if="canAddCard"
                title="Add a card"
                class="md-fixed md-fab md-primary md-fab-bottom-right"
                @click="addEmptyCard(deck)">
@@ -38,6 +39,8 @@
 <script>
 import EditableCard from '@/components/EditableCard.vue'
 import Loader from '@/components/Loader.vue'
+
+const MAX_CARD_COUNT = 9
 
 export default {
   name: 'EditableDeck',
@@ -59,6 +62,17 @@ export default {
     },
     deck () {
       return this.$store.state.newDeck
+    },
+    tooManyCards () {
+      return this.deck.cards.length >= MAX_CARD_COUNT
+    },
+    lastCardIsEmpty () {
+      const lastCard = this.deck.cards[this.deck.cards.length - 1]
+
+      return lastCard && !lastCard.title && !lastCard.description
+    },
+    canAddCard () {
+      return !this.tooManyCards && !this.lastCardEmpty
     }
   },
 
@@ -90,13 +104,12 @@ export default {
     },
 
     addEmptyCard () {
-      if (this.deck.cards.length >= 9) {
-        return alert('You cannot add more than 9 cards')
+      if (this.tooManyCards) {
+        return alert(`You cannot add more than ${MAX_CARD_COUNT} cards`)
       }
-      const lastCard = this.deck.cards[this.deck.cards.length - 1]
 
-      if (lastCard && !lastCard.title && !lastCard.description) {
-        return console.warn('The last card is already empty')
+      if (this.lastCardIsEmpty) {
+        return alert('The last card is already empty')
       }
 
       this.deck.cards.push({
