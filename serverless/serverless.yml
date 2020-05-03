@@ -92,11 +92,26 @@ functions:
   app:
     handler: src/index.handler
     events:
-      - http: GET /
-      - http: GET /config.json
-      - http: POST /decks
-      - http: GET /decks
-      - http: GET /decks/{deckHandle}
+      - http:
+          path:  /
+          method: GET
+          cors: true
+      - http:
+          path:  /config.json
+          method: GET
+          cors: true
+      - http:
+          path:  /decks
+          method: POST
+          cors: true
+      - http:
+          path:  /decks
+          method: GET
+          cors: true
+      - http:
+          path:  /decks/{deckHandle}
+          method: GET
+          cors: true
 
 # Create our resources with separate CloudFormation templates
 resources:
