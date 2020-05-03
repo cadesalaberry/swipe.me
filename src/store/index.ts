@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import type { UserInformations, Deck } from './types'
+import type { User, Deck } from './types'
 
 import Amplify, { Auth, API } from 'aws-amplify'
 
@@ -38,8 +38,8 @@ export default new Vuex.Store({
       return state.auth.error
     },
     getUserEmail (state) {
-      const infos = state.auth.infos as unknown as UserInformations
-      return infos && infos.attributes.email
+      const infos = state.auth.infos as unknown as User
+      return infos && infos.email
     },
     getLoadingDeckError (state) {
       return state.loadingDeckError
@@ -90,7 +90,7 @@ export default new Vuex.Store({
     async loginUser ({ commit }, { email, password }) {
       try {
         const infos = await Auth.signIn(email, password)
-        commit('setUserInfos', infos)
+        commit('setUserInfos', infos.attributes)
         commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)

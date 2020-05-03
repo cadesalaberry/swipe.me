@@ -1,13 +1,9 @@
 
-export interface UserAttributes {
+export interface User {
   email: string;
   // eslint-disable-next-line camelcase
   email_verified: string;
   sub: string;
-}
-
-export interface UserInformations {
-  attributes: UserAttributes;
 }
 
 export interface Card {
