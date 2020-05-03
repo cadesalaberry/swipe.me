@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
-import Amplify, * as AmplifyModules from 'aws-amplify'
+import * as AmplifyModules from 'aws-amplify'
 import { AmplifyPlugin } from 'aws-amplify-vue'
 import { Vue as VueIntegration } from '@sentry/integrations'
 import * as Sentry from '@sentry/browser'
@@ -40,19 +40,7 @@ if (!API_BASE_URL) {
   throw new Error('No API_BASE_URL given')
 }
 
-Amplify.configure({
-  Auth: {
-    mandatorySignIn: true,
-    region: process.env.VUE_APP_REGION,
-    userPoolId: process.env.VUE_APP_COGNITO_USER_POOL,
-    identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL,
-    userPoolWebClientId: process.env.VUE_APP_COGNITO_USER_POOL_CLIENT
-  },
-  Storage: {
-    region: process.env.VUE_APP_REGION,
-    bucket: process.env.VUE_APP_S3_UPLOADS_BUCKET_NAME,
-    identityPoolId: process.env.VUE_APP_COGNITO_IDENTITY_POOL
-  },
+const MINIMAL_AMPLIFY_CONFIG = {
   API: {
     endpoints: [
       {
@@ -61,7 +49,14 @@ Amplify.configure({
       }
     ]
   }
-})
+}
+
+// Soft initialization of the Amplify API module
+store.dispatch('configureAmplify', MINIMAL_AMPLIFY_CONFIG)
+
+// Needed to setup Storage and Auth
+store.dispatch('syncServerConfig')
+  .then(() => store.dispatch('fetchUserInfos'))
 
 Vue.use(AmplifyPlugin, AmplifyModules)
 Vue.use(VueMaterial)

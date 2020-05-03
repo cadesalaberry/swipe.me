@@ -2,10 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-// eslint-disable-next-line no-unused-vars
-import type { IUserInformations, IDeck } from './types'
+import type { User, Deck } from './types'
 
-import { Auth, API } from 'aws-amplify'
+import Amplify, { Auth, API } from 'aws-amplify'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -21,6 +20,7 @@ export default new Vuex.Store({
       isAuthenticated: false,
       infos: null
     },
+    globalError: null,
     currentDeck: null,
     isLoadingDeck: false,
     loadingDeckError: null,
@@ -31,18 +31,24 @@ export default new Vuex.Store({
     newDeckError: null
   },
   getters: {
+    isAuthenticated (state) {
+      return state.auth.isAuthenticated
+    },
     getAuthError (state) {
       return state.auth.error
     },
     getUserEmail (state) {
-      const infos = state.auth.infos as unknown as IUserInformations
-      return infos && infos.attributes.email
+      const infos = state.auth.infos as unknown as User
+      return infos && infos.email
     },
     getLoadingDeckError (state) {
       return state.loadingDeckError
     },
     getLoadingDeckStatus (state) {
       return state.isLoadingDeck
+    },
+    getGlobalError (state) {
+      return state.globalError
     }
   },
   mutations: {
@@ -52,7 +58,11 @@ export default new Vuex.Store({
     },
     setAuthError (state, error) {
       state.auth.error = error
-      state.auth.isAuthenticated = false
+
+      if (error) state.auth.isAuthenticated = false
+    },
+    setGlobalError (state, globalError) {
+      state.globalError = globalError
     },
     setCurrentDeck (state, currentDeck) {
       state.currentDeck = currentDeck
@@ -80,7 +90,8 @@ export default new Vuex.Store({
     async loginUser ({ commit }, { email, password }) {
       try {
         const infos = await Auth.signIn(email, password)
-        commit('setUserInfos', infos)
+        commit('setUserInfos', infos.attributes)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
         commit('setAuthError', e)
@@ -93,6 +104,7 @@ export default new Vuex.Store({
         const response = await API.get('main', `decks/${deckHandle}`, {})
 
         commit('setCurrentDeck', response)
+        commit('setLoadingDeckError', null)
       } catch (e) {
         commit('setCurrentDeck', null)
         commit('setLoadingDeckError', e)
@@ -100,7 +112,7 @@ export default new Vuex.Store({
 
       commit('setLoadingDeckStatus', false)
     },
-    async createDeck ({ commit }, deck: IDeck) {
+    async createDeck ({ commit }, deck: Deck) {
       commit('setLoadingDeckStatus', true)
 
       const deckToCreate = {
@@ -113,6 +125,7 @@ export default new Vuex.Store({
         const createdDeck = await API.post('main', 'decks', { body: deckToCreate })
 
         commit('setNewDeck', createdDeck)
+        commit('setNewDeckError', null)
 
         deckHandle = createdDeck.deckHandle
       } catch (e) {
@@ -123,10 +136,52 @@ export default new Vuex.Store({
 
       return deckHandle
     },
+    async syncServerConfig ({ commit, dispatch }) {
+      try {
+        const {
+          s3Region,
+          s3Bucket,
+          cognitoRegion,
+          cognitoUserPoolId: userPoolId,
+          cognitoIdentityPoolId: identityPoolId,
+          cognitoUserPoolClientId: userPoolWebClientId
+        } = await API.get('main', 'config.json', {})
+
+        const newConfig = {
+          Auth: {
+            region: cognitoRegion,
+            // mandatorySignIn: true,
+            userPoolWebClientId,
+            identityPoolId,
+            userPoolId
+          },
+          Storage: {
+            AWSS3: {
+              region: s3Region,
+              bucket: s3Bucket,
+              identityPoolId
+            }
+          }
+        }
+        dispatch('configureAmplify', newConfig)
+        commit('setGlobalError', null)
+      } catch (e) {
+        commit('setGlobalError', e.message)
+      }
+    },
+    configureAmplify ({ commit }, config) {
+      try {
+        Amplify.configure(config)
+        commit('setGlobalError', null)
+      } catch (e) {
+        commit('setGlobalError', e.message)
+      }
+    },
     async fetchUserInfos ({ commit }) {
       try {
         const infos = await Auth.currentUserInfo()
         commit('setUserInfos', infos)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
         commit('setAuthError', e)
@@ -136,6 +191,7 @@ export default new Vuex.Store({
       try {
         await Auth.signOut()
         commit('setUserInfos', null)
+        commit('setAuthError', null)
       } catch (e) {
         commit('setAuthError', e)
       }

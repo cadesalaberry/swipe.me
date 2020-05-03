@@ -5,11 +5,11 @@
       <input
         class="deck-name"
         v-model="deck.deckHandle"
-        v-on:keyup="saveDeckLocally"
+        @keyup="saveDeckLocally"
         placeholder="Name of the deck">
 
       <button
-        v-on:click="createDeck()"
+        @click="createDeck()"
         class="">Create</button>
     </div>
     <loader v-if="loading"></loader>
@@ -20,24 +20,27 @@
       class="card md-elevation-1"
     >
       <editable-card
-        :key="index"
+        :uniqueId="'card-' + index"
         :card="card"
         @onCardEdited="saveDeckLocally"
       />
     </div>
 
     <md-button href="#/decks/new"
+               v-if="canAddCard"
                title="Add a card"
                class="md-fixed md-fab md-primary md-fab-bottom-right"
-               v-on:click="addEmptyCard(deck)">
+               @click="addEmptyCard(deck)">
       <md-icon>add</md-icon>
     </md-button>
   </div>
 </template>
 
 <script>
-import EditableCard from './EditableCard.vue'
-import Loader from './Loader.vue'
+import EditableCard from '@/components/EditableCard.vue'
+import Loader from '@/components/Loader.vue'
+
+const MAX_CARD_COUNT = 9
 
 export default {
   name: 'EditableDeck',
@@ -59,6 +62,17 @@ export default {
     },
     deck () {
       return this.$store.state.newDeck
+    },
+    tooManyCards () {
+      return this.deck.cards.length >= MAX_CARD_COUNT
+    },
+    lastCardIsEmpty () {
+      const lastCard = this.deck.cards[this.deck.cards.length - 1]
+
+      return lastCard && !lastCard.title && !lastCard.description
+    },
+    canAddCard () {
+      return !this.tooManyCards && !this.lastCardEmpty
     }
   },
 
@@ -90,24 +104,21 @@ export default {
     },
 
     addEmptyCard () {
-      if (this.deck.cards.length >= 9) {
-        return alert('You cannot add more than 9 cards')
+      if (this.tooManyCards) {
+        return alert(`You cannot add more than ${MAX_CARD_COUNT} cards`)
       }
-      const lastCard = this.deck.cards[this.deck.cards.length - 1]
 
-      if (lastCard && !lastCard.title && !lastCard.description) {
-        return console.warn('The last card is already empty')
+      if (this.lastCardIsEmpty) {
+        return alert('The last card is already empty')
       }
 
       this.deck.cards.push({
         title: '',
-        picture_path: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
+        picturePath: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
         description: ''
       })
 
       this.saveDeckLocally()
-
-      console.log('Adding empty card')
     }
   }
 }
@@ -132,18 +143,6 @@ export default {
 }
 a {
   color: #42b983;
-}
-
-/* Handle back button show/hide animations */
-.slide-fade-enter-active {
-  transition: all .2s ease-out;
-}
-.slide-fade-leave-active {
-  transition: all .1s ease-in;
-}
-.slide-fade-enter, .slide-fade-leave-to {
-  transform: translateY(40px);
-  opacity: 0;
 }
 
 input {

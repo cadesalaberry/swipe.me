@@ -34,7 +34,7 @@
           :key="card.title"
           :index="index"
           :title="card.title"
-          :imageURL="card.picture_path"
+          :imageURL="card.picturePath"
           :description="card.description"
         />
       </div>
@@ -53,10 +53,10 @@
 
 <script>
 import VueSwing from 'vue-swing'
-import Card from './Card.vue'
-import Loader from './Loader.vue'
+import Card from '@/components/Card.vue'
+import Loader from '@/components/Loader.vue'
 
-import OopsImage from '../assets/oops.png'
+import OopsImage from '@/assets/oops.png'
 
 export default {
   name: 'Deck',
@@ -139,7 +139,7 @@ export default {
 
       return true
     },
-    onThrowout ({ target, throwDirection }) {
+    onThrowout ({ throwDirection }) {
       this.nextCard(throwDirection)
     }
   }

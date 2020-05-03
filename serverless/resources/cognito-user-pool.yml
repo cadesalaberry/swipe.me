@@ -1,6 +1,8 @@
 Resources:
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       # Generate a name based on the stage
       UserPoolName: ${self:custom.cognito.user-pool}
@@ -12,6 +14,8 @@ Resources:
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       # Generate an app client name based on the stage
       ClientName: ${self:custom.cognito.user-pool-client}

@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
-const getBranchNameFromGit = require('current-git-branch')
+let getBranchNameFromGit = () => { throw new Error('current-git-branch is not installed') }
+try {
+  getBranchNameFromGit = require('current-git-branch')
+} catch (e) {
+  console.warn('current-git-branch is not installed, proceeding without')
+}
 
 const BranchValidator = {
   /**
@@ -32,7 +37,11 @@ const BranchValidator = {
    *
    */
   getSnakedBranchName: function () {
-    return this.getDashifiedBranch().replace(/[-]+/g, '_')
+    return this.snakeify(this.getDashifiedBranch())
+  },
+
+  snakeify: function (string) {
+    return `${string}`.replace(/[-]+/g, '_')
   },
 
   /**

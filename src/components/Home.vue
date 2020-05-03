@@ -7,7 +7,7 @@
       <md-button href="#/decks/banana" class="md-primary md-raised">Demo deck</md-button>
     </md-empty-state>
 
-    <md-button href="#/decks/new" class="md-fixed md-fab md-fab-bottom-right">
+    <md-button v-if="isAuthenticated" href="#/decks/new" class="md-fixed md-fab md-fab-bottom-right">
         <md-icon>add</md-icon>
     </md-button>
   </div>
@@ -15,7 +15,12 @@
 
 <script>
 export default {
-  name: 'Home'
+  name: 'Home',
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated
+    }
+  }
 }
 </script>
 

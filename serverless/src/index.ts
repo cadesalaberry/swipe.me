@@ -1,6 +1,6 @@
 import * as awsServerlessExpress from 'aws-serverless-express'
 // import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
-// eslint-disable-next-line no-unused-vars
+
 import type { Handler } from 'aws-lambda'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
@@ -8,6 +8,9 @@ import * as cors from 'cors'
 
 import userModel from './models/user'
 import deckModel from './models/deck'
+
+import { getConfig } from './config'
+import * as httpStatus from 'http-status'
 
 const app = express()
 
@@ -23,6 +26,19 @@ app.get('/', function (_req, res) {
   res.send('Hello World!')
 })
 
+app.get('/config.json', function (_req, res) {
+  try {
+    const config = getConfig()
+
+    res.json(config)
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      error: 'Could not config.json',
+      ...error
+    })
+  }
+})
+
 app.get('/users/:userId', userModel.getUserById)
 app.post('/users', userModel.createUser)
 app.get('/decks/:deckHandle', (req, res) => {
@@ -31,7 +47,7 @@ app.get('/decks/:deckHandle', (req, res) => {
   return deckModel
     .getDeckByHandle(deckHandle)
     .then((deck) => {
-      res.json(deck)
+      res.status(httpStatus.OK).json(deck)
     })
     .catch((error) => {
       res.status(error.statusCode || 500).json({
@@ -49,7 +65,7 @@ app.post('/decks', (req, res) => {
   return deckModel
     .createDeck({ deckHandle, cards })
     .then((deck) => {
-      res.json(deck)
+      res.status(httpStatus.OK).json(deck)
     })
     .catch((error) => {
       res.status(error.statusCode || 500).json({

@@ -1,29 +1,24 @@
 
-export interface IUserAttributes {
+export interface User {
   email: string;
   // eslint-disable-next-line camelcase
   email_verified: string;
   sub: string;
 }
 
-export interface IUserInformations {
-  attributes: IUserAttributes
-}
-
-export interface ICard {
+export interface Card {
   title: string;
   description: string;
-  // eslint-disable-next-line camelcase
-  picture_path: string;
+  picturePath: string;
 }
 
-export interface IDeck {
+export interface Deck {
   deckHandle: string;
   deckId: string;
-  cards: Array<ICard>;
+  cards: Array<Card>;
   createdAt: number;
 }
-export interface INewDeck {
+export interface NewDeck {
   deckHandle: string;
-  cards: Array<ICard>;
+  cards: Array<Card>;
 }

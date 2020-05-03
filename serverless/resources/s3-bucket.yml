@@ -1,5 +1,5 @@
 Resources:
-  AttachmentsBucket:
+  S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       # Set the CORS policy
@@ -17,9 +17,37 @@ Resources:
               - DELETE
               - HEAD
             MaxAge: 3000
+            ExposedHeaders:
+              - x-amz-server-side-encryption
+              - x-amz-request-id
+              - x-amz-id-2
+              - ETag
+
+  S3BucketAllowPublicReadPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "s3:GetObject"
+            Resource:
+              - Fn::Join:
+                  - ''
+                  -
+                    - Fn::GetAtt: [S3Bucket, Arn]
+                    - '/public/*'
+              - Fn::Join:
+                  - ''
+                  -
+                    - Fn::GetAtt: [S3Bucket, Arn]
+                    - '/protected/*'
+            Principal: "*"
 
 # Print out the name of the bucket that is created
 Outputs:
-  AttachmentsBucketName:
+  S3BucketName:
     Value:
-      Ref: AttachmentsBucket
+      Ref: S3Bucket

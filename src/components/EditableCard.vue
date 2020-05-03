@@ -1,38 +1,42 @@
 <template>
   <div class="card__container">
-    <img class="card__image" :src="card.picture_path" />
-    <input
-      v-model="card.picture_path"
-      v-on:keyup="this.onCardEdited"
-      placeholder="image URL">
+
+    <editable-image :id="'image-' + uniqueId"
+                    v-model="card.picturePath"
+                    class="card__image"
+                    @input="this.onCardEdited" />
 
     <h1 class="card__title">
-      <input
-        v-model="card.title"
-        v-on:keyup="this.onCardEdited"
-        placeholder="Title">
+      <input placeholder="Title"
+             v-model="card.title"
+             @keyup="this.onCardEdited">
     </h1>
     <div class="card__description">
-      <textarea
-        v-model="card.description"
-        v-on:keyup="this.onCardEdited"
-        placeholder="Some short description"></textarea>
+      <textarea placeholder="Some short description"
+                v-model="card.description"
+                @keyup="this.onCardEdited"></textarea>
     </div>
   </div>
 </template>
 
 <script>
+import EditableImage from '@/components/EditableImage.vue'
+
 export default {
   name: 'EditableCard',
   props: {
     card: {
       title: String,
-      picture_path: String,
+      picturePath: String,
       description: String
-    }
+    },
+    uniqueId: String
+  },
+  components: {
+    EditableImage
   },
   methods: {
-    onCardEdited: function () {
+    onCardEdited () {
       this.$emit('onCardEdited')
     }
   }
@@ -46,7 +50,7 @@ export default {
   background-color: #fff;
 }
 .card__image {
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
   height: 50%;
 }

@@ -28,10 +28,11 @@ custom:
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
+  computed: ${file(./config.js)}
   cognito:
-    identity-pool: swipeme_io_dev_id_pool
-    user-pool: swipeme.io-dev-user-pool
-    user-pool-client: swipeme.io-dev-user-pool-client
+    identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
+    user-pool: swipeme.io-${self:custom.stage}-user-pool
+    user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
   s3:
     name: swipeme.io-dev
   tables:
@@ -76,6 +77,12 @@ provider:
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    AWS_USER_POOL_ID: !Ref CognitoUserPool
+    AWS_IDENTITY_POOL_ID: !Ref CognitoIdentityPool
+    AWS_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    AWS_COGNITO_REGION: ${self:provider.region}
+    AWS_S3_REGION: ${self:provider.region}
+    AWS_S3_BUCKET: !Ref S3Bucket
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
@@ -85,10 +92,26 @@ functions:
   app:
     handler: src/index.handler
     events:
-      - http: GET /
-      - http: POST /decks
-      - http: GET /decks
-      - http: GET /decks/{deckHandle}
+      - http:
+          path: /
+          method: GET
+          cors: true
+      - http:
+          path: /config.json
+          method: GET
+          cors: true
+      - http:
+          path: /decks
+          method: POST
+          cors: true
+      - http:
+          path: /decks
+          method: GET
+          cors: true
+      - http:
+          path: /decks/{deckHandle}
+          method: GET
+          cors: true
 
 # Create our resources with separate CloudFormation templates
 resources:
