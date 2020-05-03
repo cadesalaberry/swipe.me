@@ -96,7 +96,10 @@ export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE) =
     .put(uniqueFilename, file, metadata)
     .then(async (stored: unknown) => {
       const { key } = stored as { key: string }
-      const url = `s3://${vaultType}/${key}`
+      const privateUrl = `s3://${vaultType}/${key}`
+      const url = vaultType === SecurityLevel.PRIVATE
+        ? privateUrl
+        : getAuthenticatedUrl(privateUrl)
 
       return {
         url,
