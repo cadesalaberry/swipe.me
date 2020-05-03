@@ -93,23 +93,23 @@ functions:
     handler: src/index.handler
     events:
       - http:
-          path:  /
+          path: /
           method: GET
           cors: true
       - http:
-          path:  /config.json
+          path: /config.json
           method: GET
           cors: true
       - http:
-          path:  /decks
+          path: /decks
           method: POST
           cors: true
       - http:
-          path:  /decks
+          path: /decks
           method: GET
           cors: true
       - http:
-          path:  /decks/{deckHandle}
+          path: /decks/{deckHandle}
           method: GET
           cors: true
 

@@ -9,7 +9,6 @@ export interface User {
 export interface Card {
   title: string;
   description: string;
-  // eslint-disable-next-line camelcase
   picturePath: string;
 }
 

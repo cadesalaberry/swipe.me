@@ -10,6 +10,7 @@ import userModel from './models/user'
 import deckModel from './models/deck'
 
 import { getConfig } from './config'
+import * as httpStatus from 'http-status'
 
 const app = express()
 
@@ -46,7 +47,7 @@ app.get('/decks/:deckHandle', (req, res) => {
   return deckModel
     .getDeckByHandle(deckHandle)
     .then((deck) => {
-      res.json(deck)
+      res.status(httpStatus.OK).json(deck)
     })
     .catch((error) => {
       res.status(error.statusCode || 500).json({
@@ -64,7 +65,7 @@ app.post('/decks', (req, res) => {
   return deckModel
     .createDeck({ deckHandle, cards })
     .then((deck) => {
-      res.json(deck)
+      res.status(httpStatus.OK).json(deck)
     })
     .catch((error) => {
       res.status(error.statusCode || 500).json({
