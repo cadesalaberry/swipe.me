@@ -548,12 +548,12 @@
     request "^2.88.0"
     request-promise-native "^1.0.8"
 
-"@types/aws-lambda@*", "@types/aws-lambda@^8.10.19", "@types/aws-lambda@^8.10.51":
+"@types/aws-lambda@*", "@types/aws-lambda@8.10.51", "@types/aws-lambda@^8.10.19":
   version "8.10.51"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.51.tgz#7ad774507a3cf1d2e949ca305380c23b5af635a0"
   integrity sha512-XK7RerpXj4r+IO0r7qIeNqUSU6L4qhPMwNhISxozJJiUX/jdXj9WYzTShRVisEcUQHXgJ4TTBqTArM8f9Mjb8g==
 
-"@types/aws-serverless-express@^3.3.3":
+"@types/aws-serverless-express@3.3.3":
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/@types/aws-serverless-express/-/aws-serverless-express-3.3.3.tgz#8af184bf16e1ba0269de318ac7b7fd638c7df70c"
   integrity sha512-gIPinyiEsda2Z6Dx6GdQs47/GXaBGEGOMkYWtmqFDsVSDHzWtnIKBBBVQKyMdcK/0ZXa31zzlT+CobFnwNbsTQ==
@@ -582,7 +582,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cors@^2.8.6":
+"@types/cors@2.8.6":
   version "2.8.6"
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.6.tgz#cfaab33c49c15b1ded32f235111ce9123009bd02"
   integrity sha512-invOmosX0DqbpA+cE2yoHGUlF/blyf7nB0OGYBBiH27crcVm5NmFaZkLP4Ta1hGaesckCi5lVLlydNJCxkTOSg==
@@ -603,7 +603,7 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@*", "@types/express@^4.17.6":
+"@types/express@*", "@types/express@4.17.6":
   version "4.17.6"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.6.tgz#6bce49e49570507b86ea1b07b806f04697fac45e"
   integrity sha512-n/mr9tZI83kd4azlPG5y997C/M4DNABK9yErhFM6hKdym4kkmd9j0vtsJyjFIwfRBxtrxZtAfGZCNRIBMFLK5w==
@@ -637,7 +637,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node@*", "@types/node@^13.13.5":
+"@types/node@*", "@types/node@13.13.5":
   version "13.13.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.5.tgz#96ec3b0afafd64a4ccea9107b75bf8489f0e5765"
   integrity sha512-3ySmiBYJPqgjiHA7oEaIo2Rzz0HrOZ7yrNO5HWyaE5q0lQ3BppDZ3N53Miz8bw2I7gh1/zir2MGVZBvpb1zq9g==
@@ -665,7 +665,7 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/uuid@^7.0.3":
+"@types/uuid@7.0.3":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-7.0.3.tgz#45cd03e98e758f8581c79c535afbd4fc27ba7ac8"
   integrity sha512-PUdqTZVrNYTNcIhLHkiaYzoOIaUi5LFg/XLerAdgvwQrUCx+oSbtoBze1AMyvYbcwzUSNC+Isl58SM4Sm/6COw==
@@ -2268,7 +2268,7 @@ cuid@^2.1.8:
   resolved "https://registry.yarnpkg.com/cuid/-/cuid-2.1.8.tgz#cbb88f954171e0d5747606c0139fb65c5101eac0"
   integrity sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==
 
-current-git-branch@^1.1.0:
+current-git-branch@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/current-git-branch/-/current-git-branch-1.1.0.tgz#3730e71ee024ed27dab16d740e5b1ea4774fa49f"
   integrity sha512-n5mwGZllLsFzxDPtTmadqGe4IIBPfqPbiIRX4xgFR9VK/Bx47U+94KiVkxSKAKN6/s43TlkztS2GZpgMKzwQ8A==
@@ -3461,7 +3461,7 @@ forever-agent@~0.6.1:
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
 
-fork-ts-checker-webpack-plugin@^4.1.3:
+fork-ts-checker-webpack-plugin@4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-4.1.3.tgz#306f1566fc1c916816830b3de4e53da8d6d6a9e2"
   integrity sha512-ErA8cFsPfAIOx2UFoRlMraGVB1Ye3bXQTdNW6lmeKQDuNnkORqJmA9bcReNxJj5kVHeKkKcNZv3f6PMyeugO+w==
@@ -6646,7 +6646,7 @@ serve-static@1.14.1:
     parseurl "~1.3.3"
     send "0.17.1"
 
-serverless-domain-manager@^4.0.0:
+serverless-domain-manager@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-4.0.0.tgz#f45d86f5d3b9b9e583910026ed67b4c3335a99db"
   integrity sha512-Slrfv7BPTn8Clr6hnMG3clbNk5Evo4R2G10BsSWahJYRHfTDZhjE0tOCZTLf3dBh4Ah8B7W1yoTUSaukAwUeqQ==
@@ -6654,7 +6654,7 @@ serverless-domain-manager@^4.0.0:
     aws-sdk "^2.490.0"
     chalk "^2.4.1"
 
-serverless-dynamodb-local@^0.2.39:
+serverless-dynamodb-local@0.2.39:
   version "0.2.39"
   resolved "https://registry.yarnpkg.com/serverless-dynamodb-local/-/serverless-dynamodb-local-0.2.39.tgz#9022bb8fa5d2271b1959bf8728b03c8680e66ca2"
   integrity sha512-xhP64tfI9dwp15BkRPXvVpjcZxamHdpLXQlq8EFKxrLcCXay2aS5Tupl0dLdSB+e0b1AkjQPltNPFtRTgsnFRg==
@@ -6671,7 +6671,7 @@ serverless-http@^2.3.2:
   optionalDependencies:
     "@types/aws-lambda" "^8.10.19"
 
-serverless-offline@^6.1.5:
+serverless-offline@6.1.5:
   version "6.1.5"
   resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-6.1.5.tgz#50544e96737e0a325ba0d68e96733ed119f28532"
   integrity sha512-Shm2/oEaH0Bg2qztTjiiEX//BoQxYpj+/CPqzmVVBYKbatVrUbYDHx2H3ka4bfzwIeDrcsCK/oUGcWrIAjPM1g==
@@ -6702,7 +6702,7 @@ serverless-offline@^6.1.5:
     velocityjs "^2.0.0"
     ws "^7.2.1"
 
-serverless-webpack@^5.3.2:
+serverless-webpack@5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/serverless-webpack/-/serverless-webpack-5.3.2.tgz#33368c65e8d017e737294f33f382b797c53e6ca9"
   integrity sha512-/p0Ht87AeQb13Vz3lEcT72vE3GOyDX70iX8fTuDZ0xMwfKtRogRkYzuV89HKc2ULIHx++g/NGTRU6nSGpA3snA==
@@ -6716,7 +6716,7 @@ serverless-webpack@^5.3.2:
     semver "^6.2.0"
     ts-node "^8.3.0"
 
-serverless@^1.70.0:
+serverless@1.70.0:
   version "1.70.0"
   resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.70.0.tgz#9f7338ea9a05286cf380dc4796989b520e3dc05b"
   integrity sha512-YK/ue7i7KcJxvAT7U4Y95+KptiRw57Eug9BF2Zw+tpTOytFuZjfFWQEIdLgagnw7kYUh4/W5nfAbWirqFI/crg==
@@ -7540,7 +7540,7 @@ triple-beam@^1.2.0, triple-beam@^1.3.0:
   resolved "https://registry.yarnpkg.com/triple-beam/-/triple-beam-1.3.0.tgz#a595214c7298db8339eeeee083e4d10bd8cb8dd9"
   integrity sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==
 
-ts-loader@^7.0.3:
+ts-loader@7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-7.0.3.tgz#1ba06fd3dae612ecf8b952f89145f9ac7489805f"
   integrity sha512-BXAHfPjm3J//20ibuI30M+xgLpdIng68p2H952QqbbmDk7SW72HV42k9Gop7rMxuHvrXWjazWhKuyr9D9kKe3A==
@@ -7648,7 +7648,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.0.3, typescript@^3.7.5, typescript@^3.8.3:
+typescript@3.8.3, typescript@^3.0.3, typescript@^3.7.5, typescript@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
@@ -7920,7 +7920,7 @@ watchpack@^1.6.1:
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
 
-webpack-node-externals@^1.7.2:
+webpack-node-externals@1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.7.2.tgz#6e1ee79ac67c070402ba700ef033a9b8d52ac4e3"
   integrity sha512-ajerHZ+BJKeCLviLUUmnyd5B4RavLF76uv3cs6KNuO8W+HuQaEs0y0L7o40NQxdPy5w0pcv8Ew7yPUAQG0UdCg==
@@ -7933,7 +7933,7 @@ webpack-sources@^1.4.0, webpack-sources@^1.4.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^4.43.0:
+webpack@4.43.0:
   version "4.43.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.43.0.tgz#c48547b11d563224c561dad1172c8aa0b8a678e6"
   integrity sha512-GW1LjnPipFW2Y78OOab8NJlCflB7EFskMih2AHdvjbpKMeDJqEgSx24cXXXiPS65+WSwVyxtDsJH6jGX2czy+g==
