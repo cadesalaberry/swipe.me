@@ -40,6 +40,7 @@
         </md-card-actions>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
       </md-card>
+      <md-button v-if="isLocal" class="md-raised md-primary" @click="loginWithGoogle">Login with Google</md-button>
     </form>
   </div>
 </template>
@@ -67,6 +68,9 @@ export default {
     errorMessage () {
       const error = this.$store.getters.getAuthError
       return error && error.message
+    },
+    isLocal () {
+      return this.$store.getters.isLocal
     }
   },
   methods: {
@@ -79,7 +83,14 @@ export default {
         'md-invalid': field.$invalid && field.$dirty
       }
     },
-    async saveUser () {
+    async loginWithGoogle () {
+      this.sending = true
+
+      await this.$store.dispatch('loginWithGoogle')
+
+      this.sending = false
+    },
+    async loginUser () {
       this.sending = true
 
       await this.$store.dispatch('loginUser', {
@@ -97,7 +108,7 @@ export default {
 
       if (this.$v.$invalid) return
 
-      this.saveUser()
+      this.loginUser()
     }
   }
 }

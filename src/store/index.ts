@@ -4,7 +4,8 @@ import VuexPersistence from 'vuex-persist'
 
 import type { User, Deck } from './types'
 
-import Amplify, { Auth, API } from 'aws-amplify'
+import Amplify, { API } from 'aws-amplify'
+import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -34,12 +35,28 @@ export default new Vuex.Store({
     isAuthenticated (state) {
       return state.auth.isAuthenticated
     },
+    isLocal () {
+      const hostname = window.location.hostname
+      return hostname === 'localhost'
+    },
     getAuthError (state) {
       return state.auth.error
     },
     getUserEmail (state) {
       const infos = state.auth.infos as unknown as User
       return infos && infos.email
+    },
+    getProfilePicture (state) {
+      const infos = state.auth.infos as unknown as User
+      return infos && infos.picture
+    },
+    getFirstName (state) {
+      const infos = state.auth.infos as unknown as User
+      return infos && infos.given_name
+    },
+    getLastName (state) {
+      const infos = state.auth.infos as unknown as User
+      return infos && infos.family_name
     },
     getLoadingDeckError (state) {
       return state.loadingDeckError
@@ -91,6 +108,65 @@ export default new Vuex.Store({
       try {
         const infos = await Auth.signIn(email, password)
         commit('setUserInfos', infos.attributes)
+        commit('setAuthError', null)
+      } catch (e) {
+        commit('setUserInfos', null)
+        commit('setAuthError', e)
+      }
+    },
+    async updateUserInformations ({ commit }, attributes) {
+      const { firstName, lastName, pictureUrl } = attributes
+      const cognitoAttributes = {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        ...firstName ? { given_name: attributes.firstName } : {},
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        ...lastName ? { family_name: attributes.lastName } : {},
+        ...pictureUrl ? { picture: attributes.pictureUrl } : {}
+      }
+      try {
+        const user = await Auth.currentAuthenticatedUser()
+        const status = await Auth.updateUserAttributes(user, cognitoAttributes)
+
+        if (status !== 'SUCCESS') throw new Error('Could not update the user attributes')
+
+        const updatedUser = await Auth.currentAuthenticatedUser()
+        const updatedAttributes = updatedUser.attributes
+
+        console.log(updatedAttributes)
+        commit('setUserInfos', updatedAttributes)
+        commit('setAuthError', null)
+      } catch (e) {
+        commit('setUserInfos', null)
+        commit('setAuthError', e)
+      }
+    },
+    async loginWithGoogle ({ commit, dispatch }) {
+      try {
+        const provider = CognitoHostedUIIdentityProvider.Google
+        const socialResult = await Auth.federatedSignIn({
+          provider: provider
+        })
+        console.log('google Result:', socialResult)
+
+        dispatch('fetchUserInfos')
+
+        // commit('setUserInfos', infos.attributes)
+        // commit('setAuthError', null)
+      } catch (e) {
+        console.log(e)
+        commit('setUserInfos', null)
+        commit('setAuthError', e)
+      }
+    },
+    async createUser ({ commit }, { email, password }) {
+      try {
+        const signupResult = await Auth.signUp({
+          username: email,
+          password
+        })
+        const attributes = await Auth.userAttributes(signupResult.user)
+
+        commit('setUserInfos', attributes)
         commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
@@ -153,7 +229,14 @@ export default new Vuex.Store({
             // mandatorySignIn: true,
             userPoolWebClientId,
             identityPoolId,
-            userPoolId
+            userPoolId,
+            oauth: {
+              domain: 'swipeme-io-local.auth.eu-west-1.amazoncognito.com',
+              scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
+              redirectSignIn: 'http://localhost:8080/',
+              redirectSignOut: 'http://localhost:8080/',
+              responseType: 'code'
+            }
           },
           Storage: {
             AWSS3: {
@@ -180,7 +263,11 @@ export default new Vuex.Store({
     async fetchUserInfos ({ commit }) {
       try {
         const infos = await Auth.currentUserInfo()
-        commit('setUserInfos', infos)
+
+        // if the user is not logged in we don't have any info
+        if (!infos) return
+
+        commit('setUserInfos', infos.attributes)
         commit('setAuthError', null)
       } catch (e) {
         commit('setUserInfos', null)
