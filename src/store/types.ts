@@ -4,6 +4,11 @@ export interface User {
   // eslint-disable-next-line camelcase
   email_verified: string;
   sub: string;
+  picture: string;
+  // eslint-disable-next-line camelcase
+  given_name: string;
+  // eslint-disable-next-line camelcase
+  family_name: string;
 }
 
 export interface Card {
