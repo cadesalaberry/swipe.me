@@ -14,6 +14,8 @@ Resources:
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - CognitoUserPoolIdentityProvider
     # Makes sure to delete the resource when the stack is deleted
     DeletionPolicy: Delete
     Properties:
@@ -22,8 +24,51 @@ Resources:
       UserPoolId:
         Ref: CognitoUserPool
       ExplicitAuthFlows:
-        - ADMIN_NO_SRP_AUTH
+        - ALLOW_ADMIN_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
       GenerateSecret: false
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+        - aws.cognito.signin.user.admin
+      CallbackURLs:
+        - http://localhost:8080/
+      LogoutURLs:
+        - http://localhost:8080/
+      DefaultRedirectURI: http://localhost:8080/
+      SupportedIdentityProviders:
+        - COGNITO
+        - Google
+
+  CognitoUserPoolIdentityProvider:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      ProviderName: Google
+      AttributeMapping:
+        family_name: family_name
+        given_name: given_name
+        username: sub
+        picture: picture
+        email: email
+      ProviderDetails:
+        client_id: ${self:custom.cognito.google-client-id}
+        client_secret: ${self:custom.cognito.google-client-secret}
+        authorize_scopes: profile email openid
+      ProviderType: Google
+      UserPoolId:
+        Ref: CognitoUserPool
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId:
+        Ref: CognitoUserPool
+      Domain: ${self:custom.cognito.user-pool-domain}
 
 # Print out the Id of the User Pool that is created
 Outputs:
