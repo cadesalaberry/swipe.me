@@ -9,6 +9,7 @@ package:
   individually: true
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
   - serverless-finch # should be before dynamodb and offline
@@ -36,6 +37,9 @@ custom:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
     user-pool: swipeme.io-${self:custom.stage}-user-pool
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
+    user-pool-domain: swipeme-io-${self:custom.stage}
+    google-client-id: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_ID}
+    google-client-secret: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_SECRET}
   s3:
     name: swipeme.io-dev
   tables:

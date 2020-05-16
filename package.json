@@ -54,6 +54,7 @@
     "postinstall-postinstall": "^2.1.0",
     "serverless": "1.82.0",
     "serverless-domain-manager": "4.2.0",
+    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.6.0",
     "serverless-offline": "6.7.0",
