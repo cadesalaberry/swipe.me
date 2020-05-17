@@ -1,0 +1,8 @@
+{
+  "name": "@swipeme.io/tools",
+  "version": "0.0.0",
+  "main": "branch-validator.js",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {}
+}

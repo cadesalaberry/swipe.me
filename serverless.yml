@@ -31,7 +31,7 @@ custom:
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
-  computed: ${file(./config.js)}
+  computed: ${file(./packages/api/config.js)}
   cognito:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
     user-pool: swipeme.io-${self:custom.stage}-user-pool
@@ -53,9 +53,9 @@ custom:
       development:
         sources:
           - table: ${self:custom.tables.users}
-            sources: [./seeds/users.json]
+            sources: [./packages/api/seeds/users.json]
           - table: ${self:custom.tables.decks}
-            sources: [./seeds/decks.json]
+            sources: [./packages/api/seeds/decks.json]
 
 provider:
   name: aws
@@ -93,7 +93,7 @@ provider:
 
 functions:
   app:
-    handler: src/index.handler
+    handler: packages/api/src/index.handler
     events:
       - http:
           path: /
