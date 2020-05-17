@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import type { User, Deck } from './types'
+import type { User, Deck } from 'store/types'
 
 import Amplify, { API } from 'aws-amplify'
 import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
+import { EnvHelper } from '../helpers/environment'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -214,39 +215,10 @@ export default new Vuex.Store({
     },
     async syncServerConfig ({ commit, dispatch }) {
       try {
-        const {
-          s3Region,
-          s3Bucket,
-          cognitoRegion,
-          cognitoUserPoolId: userPoolId,
-          cognitoIdentityPoolId: identityPoolId,
-          cognitoUserPoolClientId: userPoolWebClientId
-        } = await API.get('main', 'config.json', {})
+        const serverConfig = await API.get('main', 'config.json', {})
+        const amplifyConfig = EnvHelper.getAmplifyConfigFromServerConfig(serverConfig)
 
-        const newConfig = {
-          Auth: {
-            region: cognitoRegion,
-            // mandatorySignIn: true,
-            userPoolWebClientId,
-            identityPoolId,
-            userPoolId,
-            oauth: {
-              domain: 'swipeme-io-local.auth.eu-west-1.amazoncognito.com',
-              scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-              redirectSignIn: 'http://localhost:8080/',
-              redirectSignOut: 'http://localhost:8080/',
-              responseType: 'code'
-            }
-          },
-          Storage: {
-            AWSS3: {
-              region: s3Region,
-              bucket: s3Bucket,
-              identityPoolId
-            }
-          }
-        }
-        dispatch('configureAmplify', newConfig)
+        dispatch('configureAmplify', amplifyConfig)
         commit('setGlobalError', null)
       } catch (e) {
         commit('setGlobalError', e.message)

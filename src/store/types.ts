@@ -1,3 +1,11 @@
+export interface ServerConfig {
+  s3Region: string;
+  s3Bucket: string;
+  cognitoRegion: string;
+  cognitoUserPoolId: string;
+  cognitoIdentityPoolId: string;
+  cognitoUserPoolClientId: string;
+}
 
 export interface User {
   email: string;
