@@ -3,6 +3,8 @@ export interface ServerConfig {
   s3Bucket: string;
   cognitoRegion: string;
   cognitoUserPoolId: string;
+  cognitoUserPoolDomain: string;
+  cognitoUserPoolRedirectUrl: string;
   cognitoIdentityPoolId: string;
   cognitoUserPoolClientId: string;
 }

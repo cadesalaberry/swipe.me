@@ -39,7 +39,8 @@ custom:
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
     # https://swipeme-io-local.auth.eu-west-1.amazoncognito.com/
     user-pool-domain: swipeme-io-${self:custom.stage}
-    user-pool-redirect-url: ${self:custom.computed.appDomainUrl, 'http://localhost:8080/'}
+    # Defaults to 'http://localhost:8080/'
+    user-pool-redirect-url: ${self:custom.computed.appDomainUrl}
     google-client-id: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_ID}
     google-client-secret: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_SECRET}
   tables:
