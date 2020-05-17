@@ -23,9 +23,11 @@ Resources:
       ClientName: ${self:custom.cognito.user-pool-client}
       UserPoolId:
         Ref: CognitoUserPool
-      ExplicitAuthFlows:
-        - ALLOW_ADMIN_USER_PASSWORD_AUTH
-        - ALLOW_REFRESH_TOKEN_AUTH
+      # ExplicitAuthFlows:
+      #   - ALLOW_ADMIN_USER_PASSWORD_AUTH
+      #   - ALLOW_CUSTOM_AUTH
+      #   - ALLOW_USER_SRP_AUTH
+      #   - ALLOW_REFRESH_TOKEN_AUTH
       GenerateSecret: false
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthFlows:
@@ -37,10 +39,10 @@ Resources:
         - profile
         - aws.cognito.signin.user.admin
       CallbackURLs:
-        - http://localhost:8080/
+        - ${self:custom.cognito.user-pool-redirect-url}
       LogoutURLs:
-        - http://localhost:8080/
-      DefaultRedirectURI: http://localhost:8080/
+        - ${self:custom.cognito.user-pool-redirect-url}
+      DefaultRedirectURI: ${self:custom.cognito.user-pool-redirect-url}
       SupportedIdentityProviders:
         - COGNITO
         - Google

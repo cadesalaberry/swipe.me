@@ -1,23 +1,15 @@
 import * as httpStatus from 'http-status'
 import BackError from './libs/back.error'
-
-interface ServerConfig {
-  s3Region: string;
-  s3Bucket: string;
-  cognitoRegion: string;
-  cognitoUserPoolId: string;
-  cognitoIdentityPoolId: string;
-  cognitoUserPoolClientId: string;
-}
+import { ServerConfig } from '../../src/store/types'
 
 const DEFAULT_SERVER_CONFIG = {
   stage: 'local',
   s3Region: 'eu-west-1',
-  s3Bucket: 'api-swipe-me-local-s3bucket-1kcvqhmf164zs',
+  s3Bucket: 'api-swipe-me-local-s3bucket-10msbonbjs00j',
   cognitoRegion: 'eu-west-1',
-  cognitoUserPoolId: 'eu-west-1_s061rv8nC',
-  cognitoIdentityPoolId: 'eu-west-1:5ec84746-5a7e-48a8-be85-1497afe5bdb9',
-  cognitoUserPoolClientId: '2da3fqcdiooakvr5j0ut7uuieo'
+  cognitoUserPoolId: 'eu-west-1_MMGaX0OJg',
+  cognitoIdentityPoolId: 'eu-west-1:de5e4dbe-e701-4608-b06e-e2b167c0ef21',
+  cognitoUserPoolClientId: '7156p31521qurvrtqfd079ite8'
 }
 
 const getConfig = (): ServerConfig => {
