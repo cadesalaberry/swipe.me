@@ -7,6 +7,8 @@ const DEFAULT_SERVER_CONFIG = {
   s3Region: 'eu-west-1',
   s3Bucket: 'api-swipe-me-local-s3bucket-10msbonbjs00j',
   cognitoRegion: 'eu-west-1',
+  cognitoUserPoolDomain: 'swipeme-io-local',
+  cognitoUserPoolRedirectUrl: 'http://localhost:8080/',
   cognitoUserPoolId: 'eu-west-1_MMGaX0OJg',
   cognitoIdentityPoolId: 'eu-west-1:de5e4dbe-e701-4608-b06e-e2b167c0ef21',
   cognitoUserPoolClientId: '7156p31521qurvrtqfd079ite8'
@@ -23,6 +25,8 @@ const getConfig = (): ServerConfig => {
   if (!process.env.AWS_COGNITO_REGION) throw new BackError('Missing env variable: AWS_COGNITO_REGION', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_USER_POOL_ID) throw new BackError('Missing env variable: AWS_USER_POOL_ID', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_IDENTITY_POOL_ID) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_ID', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_IDENTITY_POOL_DOMAIN) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_DOMAIN', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_IDENTITY_POOL_REDIRECT_URL) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_REDIRECT_URL', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_USER_POOL_CLIENT_ID) throw new BackError('Missing env variable: AWS_USER_POOL_CLIENT_ID', httpStatus.PRECONDITION_FAILED)
 
   return {
@@ -31,6 +35,8 @@ const getConfig = (): ServerConfig => {
     cognitoRegion: process.env.AWS_COGNITO_REGION,
     cognitoUserPoolId: process.env.AWS_USER_POOL_ID,
     cognitoIdentityPoolId: process.env.AWS_IDENTITY_POOL_ID,
+    cognitoIdentityPoolDomain: process.env.AWS_IDENTITY_POOL_DOMAIN,
+    cognitoIdentityPoolRedirectUrl: process.env.AWS_IDENTITY_POOL_REDIRECT_URL,
     cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
   }
 }
