@@ -34,9 +34,9 @@ const getConfig = (): ServerConfig => {
     s3Bucket: process.env.AWS_S3_BUCKET,
     cognitoRegion: process.env.AWS_COGNITO_REGION,
     cognitoUserPoolId: process.env.AWS_USER_POOL_ID,
+    cognitoUserPoolDomain: process.env.AWS_IDENTITY_POOL_DOMAIN,
+    cognitoUserPoolRedirectUrl: process.env.AWS_IDENTITY_POOL_REDIRECT_URL,
     cognitoIdentityPoolId: process.env.AWS_IDENTITY_POOL_ID,
-    cognitoIdentityPoolDomain: process.env.AWS_IDENTITY_POOL_DOMAIN,
-    cognitoIdentityPoolRedirectUrl: process.env.AWS_IDENTITY_POOL_REDIRECT_URL,
     cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
   }
 }

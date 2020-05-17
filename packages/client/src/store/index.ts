@@ -6,7 +6,7 @@ import type { User, Deck } from '@swipeme.io/common/types'
 
 import Amplify, { API } from 'aws-amplify'
 import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
-import { EnvHelper } from '../helpers/environment'
+import { EnvHelper } from 'helpers/environment'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
