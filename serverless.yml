@@ -11,11 +11,14 @@ package:
 plugins:
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
+  - serverless-finch # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
   - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
+  client:
+    bucketName: ${self:custom.stage}.swipeme.io
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
