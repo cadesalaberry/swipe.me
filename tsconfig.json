@@ -12,6 +12,13 @@
     "module": "es2015",
     "moduleResolution": "node"
   },
-  "include": ["packages/api/**/*"],
-  "exclude": ["node_modules", ".webpack", ".serverless"]
+  "include": [
+    "packages/api/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "packages/api/config.js",
+    ".webpack",
+    ".serverless"
+  ]
 }

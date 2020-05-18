@@ -1,4 +1,4 @@
-const BranchValidator = require('../tools/branch-validator')
+const BranchValidator = require('@swipeme.io/tools/branch-validator')
 
 module.exports = (serverless) => {
   const { stage } = serverless.variables.options

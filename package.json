@@ -12,7 +12,14 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "2.33.0",
+    "@typescript-eslint/parser": "2.33.0",
     "concurrently": "^5.2.0",
+    "eslint": "7.0.0",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
     "fork-ts-checker-webpack-plugin": "4.1.4",
     "lint-staged": "10.2.2",
     "serverless": "1.71.1",
@@ -25,6 +32,23 @@
     "typescript": "3.9.2",
     "webpack": "4.43.0",
     "webpack-node-externals": "^1.7.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/typescript/recommended",
+      "@vue/standard"
+    ],
+    "rules": {
+      "@typescript-eslint/no-var-requires": 0
+    },
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    }
   },
   "gitHooks": {
     "pre-commit": "./packages/tools/branch-validator.js"
