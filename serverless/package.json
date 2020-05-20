@@ -27,7 +27,7 @@
     "@types/uuid": "7.0.3",
     "current-git-branch": "1.1.0",
     "fork-ts-checker-webpack-plugin": "4.1.4",
-    "serverless": "1.71.1",
+    "serverless": "1.71.3",
     "serverless-domain-manager": "4.0.1",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-offline": "6.1.5",
