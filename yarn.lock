@@ -10856,10 +10856,10 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-gh-pages@1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/vue-gh-pages/-/vue-gh-pages-1.19.0.tgz#8239b875ef73810aeb5b1d38e94a60de3131bb92"
-  integrity sha512-UPZuRuXDwkhkUBf/XgpvAPRXIqHlPQjjKTz86fnlv1KUNYvubsOcH5YkNNERJOGplet3gN7vkaL8HeBTknSbTQ==
+vue-gh-pages@1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/vue-gh-pages/-/vue-gh-pages-1.19.1.tgz#db3377619b0a2b40568f2b336a883a5f7f0ea42f"
+  integrity sha512-gYv2lw9xVPQy9FoRmn8dJ6RVLPDvZ0dTbQcgUYuqA5FL+cfiokmurDbiIPlgOiNVBFUGCIPzVAaOJMK6tQNlVw==
   dependencies:
     gh-pages "^1.2.0"
     ncp "^2.0.0"
