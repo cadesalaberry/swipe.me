@@ -13,7 +13,7 @@
     "moduleResolution": "node"
   },
   "include": [
-    "packages/api/**/*"
+    "packages/api/**/*", "webpack.config.js"
   ],
   "exclude": [
     "node_modules",
