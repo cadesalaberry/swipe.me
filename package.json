@@ -51,7 +51,7 @@
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "lint-staged": "10.2.2",
-    "typescript": "3.9.2",
+    "typescript": "3.9.5",
     "vue-gh-pages": "1.19.0",
     "vue-template-compiler": "2.6.11"
   },
