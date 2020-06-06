@@ -65,6 +65,14 @@ provider:
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
+  iamRoleStatementsName:
+    Fn::Join:
+      - '-'
+      - - ${self:service}
+        - ${self:custom.computed.shortStageName}
+        - ${self:provider.region}
+        - 'lambdaRole'
+
   iamRoleStatements:
     - Effect: Allow
       Action:

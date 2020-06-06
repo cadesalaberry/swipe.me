@@ -44,7 +44,7 @@
     "eslint-plugin-standard": "4.0.1",
     "fork-ts-checker-webpack-plugin": "4.1.4",
     "lint-staged": "10.2.2",
-    "serverless": "1.71.1",
+    "serverless": "https://github.com/cadesalaberry/serverless#feature/allow-custom-iam-role-name",
     "serverless-domain-manager": "4.0.1",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.5.2",
@@ -75,7 +75,6 @@
   "gitHooks": {
     "pre-commit": "./packages/tools/branch-validator.js"
   },
-  "lint-staged": {
-  },
+  "lint-staged": {},
   "homepage": "git@github.com:cadesalaberry/swipe.me"
 }

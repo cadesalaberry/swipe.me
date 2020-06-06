@@ -13,11 +13,13 @@
     "moduleResolution": "node"
   },
   "include": [
-    "packages/api/**/*", "webpack.config.js"
+    "packages/api/**/*",
   ],
   "exclude": [
     "node_modules",
+    "packages/api/package.js",
     "packages/api/config.js",
+    "webpack.config.js",
     ".webpack",
     ".serverless"
   ]
