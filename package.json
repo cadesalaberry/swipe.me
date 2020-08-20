@@ -7,10 +7,11 @@
     "packages/*"
   ],
   "scripts": {
-    "client": "yarn workspace @swipeme.io/client serve",
-    "deploy": "sls deploy --stage=debug",
     "api": "NODE_ENV=development sls offline start",
     "api:seed:remote": "sls dynamodb seed --online --region eu-west-1",
+    "client": "yarn workspace @swipeme.io/client serve",
+    "deploy": "sls deploy --stage=debug",
+    "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
   },
   "dependencies": {
@@ -44,7 +45,9 @@
     "eslint-plugin-standard": "4.0.1",
     "fork-ts-checker-webpack-plugin": "5.1.0",
     "lint-staged": "10.2.11",
-    "serverless": "https://github.com/cadesalaberry/serverless#feature/allow-custom-iam-role-name",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
+    "serverless": "1.79.0",
     "serverless-domain-manager": "4.2.0",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.6.0",
