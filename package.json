@@ -8,9 +8,12 @@
   ],
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
+    "api:lint": "eslint packages/api/**/*.{js,ts}",
     "api:seed:remote": "sls dynamodb seed --online --region eu-west-1",
     "client": "yarn workspace @swipeme.io/client serve",
+    "client:lint": "yarn workspace @swipeme.io/client lint",
     "deploy": "sls deploy --stage=debug",
+    "lint": "yarn api:lint && yarn client:lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
   },
@@ -78,6 +81,9 @@
   "gitHooks": {
     "pre-commit": "./packages/tools/branch-validator.js"
   },
-  "lint-staged": {},
+  "lint-staged": {
+    "packages/client/**/*.{js,ts,vue}": "yarn client:lint",
+    "packages/api/**/*.{js,ts}": "yarn api:lint"
+  },
   "homepage": "git@github.com:cadesalaberry/swipe.me"
 }

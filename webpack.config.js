@@ -45,7 +45,7 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       eslint: {
-        files: './packages/**/*.{ts,js}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+        files: './packages/api/**/*.{ts,js}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
         cache: true
       }
     })
