@@ -14,7 +14,7 @@ const hashString = (str) => {
   return `${hash >>> 0}`
 }
 
-const shortenStringToXCharacters = (string, maxSize) => {
+const shortenStringToXCharacters = (string = '', maxSize) => {
   if (string.length <= maxSize) { return string }
   const hash = hashString(string)
   const nbAvailableSlots = maxSize - hash.length

@@ -117,9 +117,7 @@ export default new Vuex.Store({
     async updateUserInformations ({ commit }, attributes) {
       const { firstName, lastName, pictureUrl } = attributes
       const cognitoAttributes = {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         ...firstName ? { given_name: attributes.firstName } : {},
-        // eslint-disable-next-line @typescript-eslint/camelcase
         ...lastName ? { family_name: attributes.lastName } : {},
         ...pictureUrl ? { picture: attributes.pictureUrl } : {}
       }
