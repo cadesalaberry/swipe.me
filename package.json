@@ -1,5 +1,5 @@
 {
-  "name": "swipe.me",
+  "name": "swipeme.io",
   "version": "0.1.0",
   "main": "packages/api/src/index.ts",
   "private": true,
