@@ -8,9 +8,9 @@
   ],
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
-    "api:deploy": "sls deploy --stage=debug",
+    "api:deploy": "export STAGE=\"$(brancher dashify)\" && sls deploy --stage=$STAGE",
     "api:lint": "eslint packages/api/**/*.{js,ts}",
-    "api:seed:remote": "sls dynamodb seed --online --region eu-west-1",
+    "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
     "client": "yarn workspace @swipeme.io/client serve",
     "client:build": "yarn workspace @swipeme.io/client build",
     "client:deploy": "yarn workspace @swipeme.io/client deploy",
@@ -32,6 +32,7 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "@swipeme.io/tools": "1.0.0",
     "@types/aws-lambda": "8.10.61",
     "@types/aws-serverless-express": "3.3.3",
     "@types/cors": "2.8.7",
@@ -80,7 +81,7 @@
     }
   },
   "gitHooks": {
-    "pre-commit": "lint-staged && ./packages/tools/branch-validator.js"
+    "pre-commit": "lint-staged && brancher validate"
   },
   "lint-staged": {
     "packages/client/**/*.{js,ts,vue}": "yarn client:lint",

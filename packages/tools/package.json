@@ -1,8 +1,16 @@
 {
   "name": "@swipeme.io/tools",
-  "version": "0.0.0",
-  "main": "branch-validator.js",
+  "version": "1.0.0",
+  "bin": {
+    "brancher": "brancher.js"
+  },
   "private": true,
-  "dependencies": {},
+  "scripts": {
+    "get-stage-name": "node -e \"console.log(require('./brancher').getDashifiedBranch())\""
+  },
+  "dependencies": {
+    "current-git-branch": "1.1.0",
+    "neodoc": "2.0.2"
+  },
   "devDependencies": {}
 }

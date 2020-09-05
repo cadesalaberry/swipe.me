@@ -1,4 +1,4 @@
-const BranchValidator = require('@swipeme.io/tools/branch-validator')
+const Brancher = require('@swipeme.io/tools/brancher')
 
 const hashString = (str) => {
   let hash = 5381
@@ -25,7 +25,7 @@ const shortenStringToXCharacters = (string = '', maxSize) => {
 
 module.exports = (serverless) => {
   const { stage } = serverless.variables.options
-  const snakedStage = BranchValidator.snakeify(stage)
+  const snakedStage = Brancher.snakeify(stage)
   const shortStageName = shortenStringToXCharacters(stage, 29)
   const roleName = `api-swipe-me-${shortStageName}-eu-west-1-lambdaRole`
 

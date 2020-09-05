@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 
+'use strict'
+const neodoc = require('neodoc')
+
+const syntax = `
+Usage:
+  brancher.js
+  brancher.js validate
+  brancher.js snakeify
+  brancher.js dashify
+`
+
 let getBranchNameFromGit = () => { throw new Error('current-git-branch is not installed') }
 try {
   getBranchNameFromGit = require('current-git-branch')
@@ -7,7 +18,7 @@ try {
   console.warn('current-git-branch is not installed, proceeding without')
 }
 
-const BranchValidator = {
+const Brancher = {
   /**
    * Gets the name of the branch. Supports the folowing env:
    *   * netlify
@@ -66,9 +77,26 @@ const BranchValidator = {
 }
 
 module.exports = {
-  ...BranchValidator
+  ...Brancher
 }
 
-if (require.main === module) {
-  BranchValidator.validateCurrentBranchName()
+if (require.main !== module) return
+
+const options = neodoc.run(syntax)
+
+if (options.snakeify) {
+  console.log(Brancher.getSnakedBranchName())
+}
+
+if (options.dashify) {
+  console.log(Brancher.getDashifiedBranch())
+}
+
+if (options.validate) {
+  Brancher.validateCurrentBranchName()
+  console.log('✔ Branch name is valid')
+}
+
+if (!Object.keys(options).length) {
+  console.log(Brancher.getBranchName())
 }
