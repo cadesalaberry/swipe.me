@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "preserveConstEnums": true,
-    "strictNullChecks": true,
-    "sourceMap": true,
-    "allowJs": true,
     // this aligns with Vue's browser support
     "target": "es5",
     // this enables stricter inference for data properties on `this`
     "strict": true,
     // if using webpack 2+ or rollup, to leverage tree shaking:
     "module": "es2015",
-    "moduleResolution": "node"
+    // Avoids "Could not find a declaration file for module 'graphql/language/ast'"
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    // Enables absolute import
+    "baseUrl": "src"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

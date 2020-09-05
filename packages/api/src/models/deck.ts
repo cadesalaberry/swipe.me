@@ -3,7 +3,7 @@ import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
 import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
-import type { Deck, NewDeck } from '../../../src/store/types'
+import type { Deck, NewDeck } from '@swipeme.io/common/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''
 

@@ -1,5 +1,5 @@
 Resources:
-  S3Bucket:
+  S3Bucket: # Bucket user for user uploaded files
     Type: AWS::S3::Bucket
     Properties:
       # Set the CORS policy
@@ -46,8 +46,42 @@ Resources:
                     - '/protected/*'
             Principal: "*"
 
+  S3StaticSite: # Bucket used for static
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: ${self:custom.client.bucketName}
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  S3StaticSiteS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: S3StaticSite
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action:
+            - s3:GetObject
+            Resource:
+              Fn::Join: [
+                "", [
+                  "arn:aws:s3:::",
+                  {
+                    "Ref": "S3StaticSite"
+                  },
+                  "/*"
+                ]
+              ]
+
 # Print out the name of the bucket that is created
 Outputs:
   S3BucketName:
     Value:
       Ref: S3Bucket
+  S3StaticSiteName:
+    Value:
+      Ref: S3StaticSite

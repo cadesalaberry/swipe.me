@@ -28,7 +28,7 @@ module.exports = {
         loader: 'ts-loader',
         exclude: [
           [
-            path.resolve(__dirname, 'node_modules'),
+            path.resolve(__dirname, '../../node_modules'),
             path.resolve(__dirname, '.serverless'),
             path.resolve(__dirname, '.webpack')
           ]
@@ -42,8 +42,8 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      eslint: true,
-      eslintOptions: {
+      eslint: {
+        files: './packages/api/**/*.{ts,js}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
         cache: true
       }
     })

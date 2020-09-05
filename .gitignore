@@ -1,8 +1,9 @@
 .DS_Store
 node_modules
-/dist
+dist
 
 # local env files
+.env
 .env.local
 .env.*.local
 
@@ -19,3 +20,18 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# typescript directories
+.build
+
+# Serverless directories
+.serverless
+serverless_sdk/*
+s_app.js
+.eslintcache
+
+# DynamoDB directories
+.dynamodb
+
+# Webpack directories
+.webpack

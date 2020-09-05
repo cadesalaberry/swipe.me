@@ -11,11 +11,14 @@ package:
 plugins:
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
+  - serverless-finch # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
   - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
+  client:
+    bucketName: ${self:custom.stage}.swipeme.io
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -28,7 +31,7 @@ custom:
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'dev'}
-  computed: ${file(./config.js)}
+  computed: ${file(./packages/api/config.js)}
   cognito:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
     user-pool: swipeme.io-${self:custom.stage}-user-pool
@@ -50,9 +53,9 @@ custom:
       development:
         sources:
           - table: ${self:custom.tables.users}
-            sources: [./seeds/users.json]
+            sources: [./packages/api/seeds/users.json]
           - table: ${self:custom.tables.decks}
-            sources: [./seeds/decks.json]
+            sources: [./packages/api/seeds/decks.json]
 
 provider:
   name: aws
@@ -61,6 +64,14 @@ provider:
   region: eu-west-1
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+
+  iamRoleStatementsName:
+    Fn::Join:
+      - '-'
+      - - ${self:service}
+        - ${self:custom.computed.shortStageName}
+        - ${self:provider.region}
+        - 'lambdaRole'
 
   iamRoleStatements:
     - Effect: Allow
@@ -90,7 +101,7 @@ provider:
 
 functions:
   app:
-    handler: src/index.handler
+    handler: packages/api/src/index.handler
     events:
       - http:
           path: /

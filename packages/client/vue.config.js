@@ -1,9 +1,9 @@
-const branchValidator = require('./tools/branch-validator')
+const brancher = require('@swipeme.io/tools/brancher')
 
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }
 
-const stageName = branchValidator.getDashifiedBranch()
-const branch = branchValidator.getBranchName()
+const stageName = brancher.getDashifiedBranch()
+const branch = brancher.getBranchName()
 const stage = stageName === 'master' ? 'dev' : stageName
 
 console.log(`Using branch name: ${branch}`)

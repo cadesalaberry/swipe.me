@@ -1,0 +1,16 @@
+{
+  "name": "@swipeme.io/tools",
+  "version": "1.0.0",
+  "bin": {
+    "brancher": "brancher.js"
+  },
+  "private": true,
+  "scripts": {
+    "get-stage-name": "node -e \"console.log(require('./brancher').getDashifiedBranch())\""
+  },
+  "dependencies": {
+    "current-git-branch": "1.1.0",
+    "neodoc": "2.0.2"
+  },
+  "devDependencies": {}
+}

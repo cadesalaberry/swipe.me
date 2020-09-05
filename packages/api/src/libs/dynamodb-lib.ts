@@ -1,4 +1,5 @@
-import { DynamoDB } from 'aws-sdk'
+import { AWSError, DynamoDB } from 'aws-sdk'
+import { PromiseResult } from 'aws-sdk/lib/request'
 
 import type { PutItemInput, GetItemInput } from 'aws-sdk/clients/dynamodb'
 
@@ -8,13 +9,13 @@ function getInstance () {
   })
 }
 
-function get (params: GetItemInput) {
+function get (params: GetItemInput): Promise<PromiseResult<DynamoDB.DocumentClient.GetItemOutput, AWSError>> {
   const dynamoDb = getInstance()
 
   return dynamoDb.get(params).promise()
 }
 
-function put (params: PutItemInput) {
+function put (params: PutItemInput): Promise<PromiseResult<DynamoDB.DocumentClient.PutItemOutput, AWSError>> {
   const dynamoDb = getInstance()
 
   return dynamoDb.put(params).promise()

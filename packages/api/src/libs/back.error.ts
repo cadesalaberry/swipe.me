@@ -3,6 +3,12 @@
  */
 import * as httpStatus from 'http-status'
 
+interface PrintableError {
+  name?: string;
+  message: string;
+  statusCode: number;
+}
+
 export class ExtendableError extends Error {
   public name: string;
   public statusCode: number;
@@ -22,7 +28,7 @@ export default class BackError extends ExtendableError {
     super(message, statusCode)
   }
 
-  toJSON () {
+  toJSON (): PrintableError {
     return {
       message: this.message,
       statusCode: this.statusCode,
