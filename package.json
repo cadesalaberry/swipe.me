@@ -80,7 +80,7 @@
     }
   },
   "gitHooks": {
-    "pre-commit": "./packages/tools/branch-validator.js"
+    "pre-commit": "lint-staged && ./packages/tools/branch-validator.js"
   },
   "lint-staged": {
     "packages/client/**/*.{js,ts,vue}": "yarn client:lint",
