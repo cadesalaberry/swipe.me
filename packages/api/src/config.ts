@@ -1,8 +1,8 @@
+import { ServerConfig } from '@swipeme.io/common/types'
 import * as httpStatus from 'http-status'
 import BackError from './libs/back.error'
-import { ServerConfig } from '../../src/store/types'
 
-const DEFAULT_SERVER_CONFIG = {
+const DEFAULT_SERVER_CONFIG: ServerConfig = {
   stage: 'local',
   s3Region: 'eu-west-1',
   s3Bucket: 'api-swipe-me-local-s3bucket-10msbonbjs00j',
@@ -20,6 +20,7 @@ const getConfig = (): ServerConfig => {
 
   if (isOffline) return DEFAULT_SERVER_CONFIG
 
+  if (!process.env.STAGE) throw new BackError('Missing env variable: STAGE', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_S3_REGION) throw new BackError('Missing env variable: AWS_S3_REGION', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_S3_BUCKET) throw new BackError('Missing env variable: AWS_S3_BUCKET', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_COGNITO_REGION) throw new BackError('Missing env variable: AWS_COGNITO_REGION', httpStatus.PRECONDITION_FAILED)
@@ -30,6 +31,7 @@ const getConfig = (): ServerConfig => {
   if (!process.env.AWS_USER_POOL_CLIENT_ID) throw new BackError('Missing env variable: AWS_USER_POOL_CLIENT_ID', httpStatus.PRECONDITION_FAILED)
 
   return {
+    stage: process.env.STAGE,
     s3Region: process.env.AWS_S3_REGION,
     s3Bucket: process.env.AWS_S3_BUCKET,
     cognitoRegion: process.env.AWS_COGNITO_REGION,

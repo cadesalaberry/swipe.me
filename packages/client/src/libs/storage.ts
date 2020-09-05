@@ -23,6 +23,11 @@ interface InputFile {
   lastModified: number;
 }
 
+interface UploadedFile {
+  url: string;
+  key: string;
+}
+
 /**
  * Handles path such as: s3://private/drgerbvdb.png
  * @param url a url string
@@ -37,8 +42,9 @@ export const getAuthenticatedUrl = async (url: string): Promise<string> => {
   const protocolLess = url.slice(5) // takes out s3://
   const [securityLevel, ...rest] = protocolLess.split('/') // reads the vault value
   const key = rest.join('/')
+  const allowedValues = Object.keys(SecurityLevel).map(s => s)
 
-  if (!(Object as any).values(SecurityLevel).includes(securityLevel)) {
+  if (!allowedValues.includes(securityLevel)) {
     throw new Error(`Unsupported security level ${securityLevel}`)
   }
 
@@ -52,7 +58,7 @@ export const getAuthenticatedUrl = async (url: string): Promise<string> => {
   return publicUrl
 }
 
-export const preloadImage = async (imageUrl: string) => {
+export const preloadImage = async (imageUrl: string): Promise<string> => {
   const authenticatedUrl = await getAuthenticatedUrl(imageUrl)
   return new Promise((resolve, reject) => {
     const img = new Image()
@@ -64,7 +70,7 @@ export const preloadImage = async (imageUrl: string) => {
   })
 }
 
-export const loadImagePreview = (file: Blob) => {
+export const loadImagePreview = (file: Blob): unknown => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
@@ -75,7 +81,7 @@ export const loadImagePreview = (file: Blob) => {
   })
 }
 
-export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE) => {
+export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE): Promise<UploadedFile> => {
   const extension = file.name.split('.').pop()
   const randomIdentifier = uuidv4()
   const uniqueFilename = `${randomIdentifier}.${extension}`
@@ -99,7 +105,7 @@ export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE) =
       const privateUrl = `s3://${vaultType}/${key}`
       const url = vaultType === SecurityLevel.PRIVATE
         ? privateUrl
-        : getAuthenticatedUrl(privateUrl)
+        : await getAuthenticatedUrl(privateUrl)
 
       return {
         url,

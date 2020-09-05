@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+import { AmplifyConfig, EnvHelper } from '@swipeme.io/common/environment'
 import type { User, Deck } from '@swipeme.io/common/types'
 
 import Amplify, { API } from 'aws-amplify'
 import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
-import { EnvHelper } from 'helpers/environment'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -222,7 +222,7 @@ export default new Vuex.Store({
         commit('setGlobalError', e.message)
       }
     },
-    configureAmplify ({ commit }, config) {
+    configureAmplify ({ commit }, config: AmplifyConfig) {
       try {
         Amplify.configure(config)
         commit('setGlobalError', null)

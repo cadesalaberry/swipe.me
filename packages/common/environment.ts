@@ -1,7 +1,30 @@
-import { ServerConfig } from 'store/types'
+import { ServerConfig } from '@swipeme.io/common/types'
+
+export interface AmplifyConfig {
+  Auth: {
+      region: string;
+      userPoolWebClientId: string;
+      identityPoolId: string;
+      userPoolId: string;
+      oauth: {
+          domain: string;
+          scope: string[];
+          redirectSignIn: string;
+          redirectSignOut: string;
+          responseType: string;
+      };
+  };
+  Storage: {
+    AWSS3: {
+      region: string;
+      bucket: string;
+      identityPoolId: string;
+    }
+  }
+}
 
 export class EnvHelper {
-  static getAmplifyConfigFromServerConfig (serverConfig: ServerConfig) {
+  static getAmplifyConfigFromServerConfig (serverConfig: ServerConfig): AmplifyConfig {
     const {
       s3Region,
       s3Bucket,
@@ -61,7 +84,7 @@ export class EnvHelper {
    *   username: ""
    * }
    */
-  static getOriginUrl () {
+  static getOriginUrl (): string {
     return `${window.location.origin}/`
   }
 }

@@ -1,4 +1,5 @@
 export interface ServerConfig {
+  stage: string;
   s3Region: string;
   s3Bucket: string;
   cognitoRegion: string;
