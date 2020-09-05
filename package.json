@@ -8,12 +8,13 @@
   ],
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
+    "api:deploy": "sls deploy --stage=debug",
     "api:lint": "eslint packages/api/**/*.{js,ts}",
     "api:seed:remote": "sls dynamodb seed --online --region eu-west-1",
     "client": "yarn workspace @swipeme.io/client serve",
+    "client:build": "yarn workspace @swipeme.io/client build",
+    "client:deploy": "yarn workspace @swipeme.io/client deploy",
     "client:lint": "yarn workspace @swipeme.io/client lint",
-    "deploy": "sls deploy --stage=debug",
-    "lint": "yarn api:lint && yarn client:lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
   },

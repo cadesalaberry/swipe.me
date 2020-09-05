@@ -18,11 +18,12 @@ jobs:
           key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-      - run: yarn lint
-      - run: yarn build
+      - run: yarn client:lint
+      - run: yarn api:lint
+      - run: yarn client:build
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
-            yarn deploy
+            yarn client:deploy
           fi
 
 # Orchestrate or schedule a set of jobs
