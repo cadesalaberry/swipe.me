@@ -19,7 +19,7 @@ plugins:
 
 custom:
   client:
-    bucketName: ${self:custom.stage}.swipeme.io
+    bucketName: ${self:custom.computed.shortStageName}.swipeme.io
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
