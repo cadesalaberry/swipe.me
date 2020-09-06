@@ -26,8 +26,8 @@ const getConfig = (): ServerConfig => {
   if (!process.env.AWS_COGNITO_REGION) throw new BackError('Missing env variable: AWS_COGNITO_REGION', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_USER_POOL_ID) throw new BackError('Missing env variable: AWS_USER_POOL_ID', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_IDENTITY_POOL_ID) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_ID', httpStatus.PRECONDITION_FAILED)
-  if (!process.env.AWS_IDENTITY_POOL_DOMAIN) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_DOMAIN', httpStatus.PRECONDITION_FAILED)
-  if (!process.env.AWS_IDENTITY_POOL_REDIRECT_URL) throw new BackError('Missing env variable: AWS_IDENTITY_POOL_REDIRECT_URL', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_USER_POOL_DOMAIN) throw new BackError('Missing env variable: AWS_USER_POOL_DOMAIN', httpStatus.PRECONDITION_FAILED)
+  if (!process.env.AWS_USER_POOL_REDIRECT_URL) throw new BackError('Missing env variable: AWS_USER_POOL_REDIRECT_URL', httpStatus.PRECONDITION_FAILED)
   if (!process.env.AWS_USER_POOL_CLIENT_ID) throw new BackError('Missing env variable: AWS_USER_POOL_CLIENT_ID', httpStatus.PRECONDITION_FAILED)
 
   return {
@@ -36,8 +36,8 @@ const getConfig = (): ServerConfig => {
     s3Bucket: process.env.AWS_S3_BUCKET,
     cognitoRegion: process.env.AWS_COGNITO_REGION,
     cognitoUserPoolId: process.env.AWS_USER_POOL_ID,
-    cognitoUserPoolDomain: process.env.AWS_IDENTITY_POOL_DOMAIN,
-    cognitoUserPoolRedirectUrl: process.env.AWS_IDENTITY_POOL_REDIRECT_URL,
+    cognitoUserPoolDomain: process.env.AWS_USER_POOL_DOMAIN,
+    cognitoUserPoolRedirectUrl: process.env.AWS_USER_POOL_REDIRECT_URL,
     cognitoIdentityPoolId: process.env.AWS_IDENTITY_POOL_ID,
     cognitoUserPoolClientId: process.env.AWS_USER_POOL_CLIENT_ID
   }
