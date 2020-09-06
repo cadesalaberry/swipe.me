@@ -46,10 +46,11 @@ jobs:
 
 # Orchestrate or schedule a set of jobs
 workflows:
-  deploy:
+  frontend:
     jobs:
       - deploy_frontend:
           context: dev.swipeme.io
+  backend:
+    jobs:
       - deploy_backend:
           context: dev.swipeme.io
-         
