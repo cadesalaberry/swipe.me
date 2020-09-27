@@ -10,7 +10,7 @@
     "pwd": "pwd"
   },
   "dependencies": {
-    "@sentry/browser": "5.21.1",
+    "@sentry/browser": "5.24.2",
     "@sentry/integrations": "5.24.2",
     "@swipeme.io/common": "*",
     "aws-amplify": "3.1.1",
