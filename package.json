@@ -14,7 +14,7 @@
     "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
     "client": "yarn workspace @swipeme.io/client serve",
     "client:build": "yarn workspace @swipeme.io/client build",
-    "client:deploy": "yarn workspace @swipeme.io/client deploy",
+    "client:deploy": "export STAGE=\"$(brancher dashify --shorten=29)\" && sls client deploy --stage=$STAGE",
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""

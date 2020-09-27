@@ -25,6 +25,7 @@ custom:
        - !Ref S3Bucket
   client:
     bucketName: ${self:custom.computed.shortStageName}.swipeme.io
+    distributionFolder: packages/client/dist
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
