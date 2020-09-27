@@ -9,6 +9,7 @@
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
     "api:deploy": "export STAGE=\"$(brancher dashify)\" && sls deploy --stage=$STAGE",
+    "api:remove": "export STAGE=\"$(brancher dashify)\" && sls remove --stage=$STAGE",
     "api:lint": "eslint packages/api/**/*.{js,ts}",
     "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
     "client": "yarn workspace @swipeme.io/client serve",
