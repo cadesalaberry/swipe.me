@@ -36,10 +36,6 @@ export default new Vuex.Store({
     isAuthenticated (state) {
       return state.auth.isAuthenticated
     },
-    isLocal () {
-      const hostname = window.location.hostname
-      return hostname === 'localhost'
-    },
     getAuthError (state) {
       return state.auth.error
     },
