@@ -10,6 +10,7 @@ package:
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-s3-remover
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
   - serverless-finch # should be before dynamodb and offline
@@ -18,6 +19,10 @@ plugins:
   - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
+  remover:
+     buckets:
+       - ${self:custom.client.bucketName}
+       - !Ref S3Bucket
   client:
     bucketName: ${self:custom.computed.shortStageName}.swipeme.io
   webpack:
