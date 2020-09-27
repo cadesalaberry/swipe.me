@@ -67,15 +67,12 @@ Resources:
             Action:
             - s3:GetObject
             Resource:
-              Fn::Join: [
-                "", [
-                  "arn:aws:s3:::",
-                  {
-                    "Ref": "S3StaticSite"
-                  },
-                  "/*"
-                ]
-              ]
+              - Fn::Join:
+                  - ''
+                  -
+                    - 'arn:aws:s3:::'
+                    - !Ref S3StaticSite
+                    - '/*'
 
 # Print out the name of the bucket that is created
 Outputs:
