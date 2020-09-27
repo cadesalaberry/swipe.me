@@ -7,7 +7,7 @@ const DEFAULT_SERVER_CONFIG: ServerConfig = {
   s3Region: 'eu-west-1',
   s3Bucket: 'api-swipe-me-local-s3bucket-10msbonbjs00j',
   cognitoRegion: 'eu-west-1',
-  cognitoUserPoolDomain: 'swipeme-io-local',
+  cognitoUserPoolDomain: 'swipeme-io-local.auth.eu-west-1.amazoncognito.com',
   cognitoUserPoolRedirectUrl: 'http://localhost:8080/',
   cognitoUserPoolId: 'eu-west-1_MMGaX0OJg',
   cognitoIdentityPoolId: 'eu-west-1:de5e4dbe-e701-4608-b06e-e2b167c0ef21',
