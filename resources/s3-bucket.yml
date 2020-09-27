@@ -1,6 +1,8 @@
 Resources:
   S3Bucket: # Bucket user for user uploaded files
     Type: AWS::S3::Bucket
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       # Set the CORS policy
       CorsConfiguration:
@@ -48,6 +50,8 @@ Resources:
 
   S3StaticSite: # Bucket used for static
     Type: AWS::S3::Bucket
+    # Makes sure to delete the resource when the stack is deleted
+    DeletionPolicy: Delete
     Properties:
       AccessControl: PublicRead
       BucketName: ${self:custom.client.bucketName}
