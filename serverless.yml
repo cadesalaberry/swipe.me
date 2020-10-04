@@ -30,10 +30,10 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
   customDomain:
-    domainName: dev.swipeme.io
+    domainName: api.swipeme.io
     stage: ${self:custom.stage}
     basePath: ${self:custom.stage}
-    certificateName: dev.swipeme.io
+    certificateName: api.swipeme.io
     createRoute53Record: true
     endpointType: 'regional'
     securityPolicy: tls_1_2
@@ -44,7 +44,8 @@ custom:
     user-pool: swipeme.io-${self:custom.stage}-user-pool
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
     # https://swipeme-io-local.auth.eu-west-1.amazoncognito.com/
-    user-pool-domain: swipeme-io-${self:custom.stage}
+    user-pool-subdomain: swipeme-io-${self:custom.stage}
+    user-pool-domain: ${self:custom.cognito.user-pool-subdomain}.auth.${self:provider.region}.amazoncognito.com
     # Defaults to 'http://localhost:8080/'
     user-pool-redirect-url: ${self:custom.computed.appDomainUrl}
     google-client-id: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_ID}
