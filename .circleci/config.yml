@@ -42,7 +42,7 @@ jobs:
           paths:
             - node_modules
       - run: yarn api:lint
-      - run: yarn api:deploy
+      - run: SLS_DEBUG=* yarn api:deploy
 
 # Orchestrate or schedule a set of jobs
 workflows:
