@@ -6,7 +6,8 @@ Resources:
       DistributionConfig:
         Origins:
           ## We need to match http://feature-google-sso-rebased.swipeme.io.s3-website-eu-west-1.amazonaws.com
-          - DomainName: ${self:custom.client.bucketName}.s3-website-${self:provider.region}.amazonaws.com
+          # - DomainName: ${self:custom.client.bucketName}.s3-website-${self:provider.region}.amazonaws.com
+          - DomainName: ${self:custom.client.bucketName}.s3.amazonaws.com
             ## An identifier for the origin which must be unique within the distribution
             Id: WebApp
             CustomOriginConfig:
@@ -16,10 +17,10 @@ Resources:
             ## In case you want to restrict the bucket access use S3OriginConfig and remove CustomOriginConfig
             # S3OriginConfig:
             #   OriginAccessIdentity: origin-access-identity/cloudfront/E127EXAMPLE51Z
-        Enabled: 'true'
+        Enabled: true
         ## Uncomment the following section in case you are using a custom domain
-        # Aliases:
-        # - mysite.example.com
+        Aliases:
+          - ${self:custom.client.bucketName}
         DefaultRootObject: index.html
         ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
         ## The only exception are files that actually exist e.h. app.js, reset.css
@@ -28,6 +29,8 @@ Resources:
             ResponseCode: 200
             ResponsePagePath: /index.html
         DefaultCacheBehavior:
+          ## The origin id defined above
+          TargetOriginId: WebApp
           AllowedMethods:
             - DELETE
             - GET
@@ -36,18 +39,25 @@ Resources:
             - PATCH
             - POST
             - PUT
-          ## The origin id defined above
-          TargetOriginId: WebApp
+          Compress: false
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+          MinTTL: 86400
+          IPV6Enabled: false
           ## Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
           ForwardedValues:
-            QueryString: 'false'
+            QueryString: false
             Cookies:
               Forward: none
+            Headers:
+              - 'Origin'
           ## The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
           ViewerProtocolPolicy: redirect-to-https
         ## The certificate to use when viewers use HTTPS to request objects.
         ViewerCertificate:
-          CloudFrontDefaultCertificate: 'true'
+          # The domain specified here should be in the us-east-1 region (https://docs.aws.amazon.com/acm/latest/userguide/acm-regions.html)
+          AcmCertificateArn: arn:aws:acm:us-east-1:995588345567:certificate/a19db38c-c9d0-467f-bcf4-d02b406d7c9f
+          SslSupportMethod: sni-only
         ## Uncomment the following section in case you want to enable logging for CloudFront requests
         # Logging:
         #   IncludeCookies: 'false'
