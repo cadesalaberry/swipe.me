@@ -24,6 +24,7 @@ Resources:
         DefaultRootObject: index.html
         ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
         ## The only exception are files that actually exist e.h. app.js, reset.css
+        IPV6Enabled: false
         CustomErrorResponses:
           - ErrorCode: 404
             ResponseCode: 200
@@ -43,7 +44,6 @@ Resources:
           DefaultTTL: 86400
           MaxTTL: 31536000
           MinTTL: 86400
-          IPV6Enabled: false
           ## Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
           ForwardedValues:
             QueryString: false
