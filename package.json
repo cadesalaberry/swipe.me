@@ -28,7 +28,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-status": "^1.4.2",
-    "serverless-http": "^2.5.0",
+    "serverless-http": "^2.6.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
