@@ -45,6 +45,8 @@ Resources:
             #   OriginAccessIdentity: origin-access-identity/cloudfront/E127EXAMPLE51Z
         Enabled: true
         IPV6Enabled: false
+        HttpVersion: http2
+        PriceClass: PriceClass_100
         ## Uncomment the following section in case you are using a custom domain
         Aliases:
           - ${self:custom.client.bucketName}
