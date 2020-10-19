@@ -1,13 +1,39 @@
 Resources:
+
+  DnsRecordA:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt WebAppCloudFrontDistribution.DomainName
+        ## If redirecting to S3, use the s3 hosted zone ids:
+        ## https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_website_region_endpoints
+        HostedZoneId: Z2FDTNDATAQYW2 # This is the hosted zone for us-east-1 (all cloudfront are in this region)
+      HostedZoneName: swipeme.io.
+      Name: !Ref S3StaticSite
+      Type: 'A'
+
+  DnsRecordAAAA:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt WebAppCloudFrontDistribution.DomainName
+        ## If redirecting to S3, use the s3 hosted zone ids:
+        ## https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_website_region_endpoints
+        HostedZoneId: Z2FDTNDATAQYW2 # This is the hosted zone for us-east-1 (all cloudfront are in this region)
+      HostedZoneName: swipeme.io.
+      Name: !Ref S3StaticSite
+      Type: 'AAAA'
+
   ## Specifying the CloudFront Distribution to server your Web Application
   WebAppCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Origins:
-          ## We need to match http://feature-google-sso-rebased.swipeme.io.s3-website-eu-west-1.amazonaws.com
-          # - DomainName: ${self:custom.client.bucketName}.s3-website-${self:provider.region}.amazonaws.com
-          - DomainName: ${self:custom.client.bucketName}.s3.amazonaws.com
+          ## We need to match the endpoint created in s3 to handle auto-redirect to index.html. it looks like:
+          ## http://feature-google-sso-rebased.swipeme.io.s3-website-eu-west-1.amazonaws.com
+          ## you should not use the default ${self:custom.client.bucketName}.s3.amazonaws.com
+          - DomainName: ${self:custom.client.bucketName}.s3-website-${self:provider.region}.amazonaws.com
             ## An identifier for the origin which must be unique within the distribution
             Id: WebApp
             CustomOriginConfig:
@@ -18,13 +44,13 @@ Resources:
             # S3OriginConfig:
             #   OriginAccessIdentity: origin-access-identity/cloudfront/E127EXAMPLE51Z
         Enabled: true
+        IPV6Enabled: false
         ## Uncomment the following section in case you are using a custom domain
         Aliases:
           - ${self:custom.client.bucketName}
         DefaultRootObject: index.html
         ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
         ## The only exception are files that actually exist e.h. app.js, reset.css
-        IPV6Enabled: false
         CustomErrorResponses:
           - ErrorCode: 404
             ResponseCode: 200
