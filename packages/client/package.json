@@ -28,7 +28,7 @@
     "vue-swing": "0.0.10",
     "vuelidate": "0.7.5",
     "vuex": "3.5.1",
-    "vuex-persist": "2.2.0"
+    "vuex-persist": "3.1.3"
   },
   "devDependencies": {
     "@swipeme.io/tools": "1.0.0",
