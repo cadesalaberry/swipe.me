@@ -1,20 +1,20 @@
 import { Storage } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid'
 
-export enum SecurityLevel {
+export const SecurityLevel = Object.freeze({
   /**
    * Readable by all users, but writable only by the creating user
    */
-  PROTECTED = 'protected',
+  PROTECTED: 'protected',
   /**
    * Only accessible for the individual user
    */
-  PRIVATE = 'private',
+  PRIVATE: 'private',
   /**
    * Accessible by all users of your app. Files are stored under the `public/` path in your S3 bucket
    */
-  PUBLIC = 'public'
-}
+  PUBLIC: 'public'
+})
 
 interface InputFile {
   name: string;
