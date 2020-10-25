@@ -22,7 +22,7 @@ import Home from './components/Home.vue'
 import Login from './components/Login.vue'
 import Profile from './components/Profile.vue'
 
-let API_BASE_URL = 'https://dev.swipeme.io/dev/'
+let API_BASE_URL = 'https://api.swipeme.io/dev/'
 
 Sentry.init({
   dsn: 'https://571d08a49cf4438c9c91b16d056ad3cf@o386323.ingest.sentry.io/5220443',

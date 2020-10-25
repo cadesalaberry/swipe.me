@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+import { AmplifyConfig, EnvHelper } from '@swipeme.io/common/environment'
 import type { User, Deck } from '@swipeme.io/common/types'
 
 import Amplify, { API } from 'aws-amplify'
@@ -34,10 +35,6 @@ export default new Vuex.Store({
   getters: {
     isAuthenticated (state) {
       return state.auth.isAuthenticated
-    },
-    isLocal () {
-      const hostname = window.location.hostname
-      return hostname === 'localhost'
     },
     getAuthError (state) {
       return state.auth.error
@@ -212,45 +209,16 @@ export default new Vuex.Store({
     },
     async syncServerConfig ({ commit, dispatch }) {
       try {
-        const {
-          s3Region,
-          s3Bucket,
-          cognitoRegion,
-          cognitoUserPoolId: userPoolId,
-          cognitoIdentityPoolId: identityPoolId,
-          cognitoUserPoolClientId: userPoolWebClientId
-        } = await API.get('main', 'config.json', {})
+        const serverConfig = await API.get('main', 'config.json', {})
+        const amplifyConfig = EnvHelper.getAmplifyConfigFromServerConfig(serverConfig)
 
-        const newConfig = {
-          Auth: {
-            region: cognitoRegion,
-            // mandatorySignIn: true,
-            userPoolWebClientId,
-            identityPoolId,
-            userPoolId,
-            oauth: {
-              domain: 'swipeme-io-local.auth.eu-west-1.amazoncognito.com',
-              scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-              redirectSignIn: 'http://localhost:8080/',
-              redirectSignOut: 'http://localhost:8080/',
-              responseType: 'code'
-            }
-          },
-          Storage: {
-            AWSS3: {
-              region: s3Region,
-              bucket: s3Bucket,
-              identityPoolId
-            }
-          }
-        }
-        dispatch('configureAmplify', newConfig)
+        dispatch('configureAmplify', amplifyConfig)
         commit('setGlobalError', null)
       } catch (e) {
         commit('setGlobalError', e.message)
       }
     },
-    configureAmplify ({ commit }, config) {
+    configureAmplify ({ commit }, config: AmplifyConfig) {
       try {
         Amplify.configure(config)
         commit('setGlobalError', null)

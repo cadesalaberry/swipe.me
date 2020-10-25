@@ -10,6 +10,7 @@ jspm_packages
 serverless_sdk/*
 s_app.js
 .eslintcache
+.env
 
 # DynamoDB directories
 .dynamodb

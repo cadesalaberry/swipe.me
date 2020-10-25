@@ -19,15 +19,38 @@ jobs:
           paths:
             - node_modules
       - run: yarn client:lint
-      - run: yarn api:lint
       - run: yarn client:build
       - run: |
           if [ "$CIRCLE_BRANCH" = "master" ]; then
             yarn client:deploy
           fi
 
+  deploy_backend:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+      - run: yarn
+      - save_cache:
+          key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run: yarn api:lint
+      - run: SLS_DEBUG=* yarn api:deploy
+
 # Orchestrate or schedule a set of jobs
 workflows:
-  deploy:
+  frontend:
     jobs:
-      - deploy_frontend
+      - deploy_frontend:
+          context: dev.swipeme.io
+  backend:
+    jobs:
+      - deploy_backend:
+          context: dev.swipeme.io

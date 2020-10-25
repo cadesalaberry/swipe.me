@@ -9,11 +9,12 @@
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
     "api:deploy": "export STAGE=\"$(brancher dashify)\" && sls deploy --stage=$STAGE",
+    "api:remove": "export STAGE=\"$(brancher dashify)\" && sls remove --stage=$STAGE",
     "api:lint": "eslint packages/api/**/*.{js,ts}",
     "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
     "client": "yarn workspace @swipeme.io/client serve",
     "client:build": "yarn workspace @swipeme.io/client build",
-    "client:deploy": "yarn workspace @swipeme.io/client deploy",
+    "client:deploy": "export STAGE=\"$(brancher dashify --shorten=29)\" && sls client deploy --stage=$STAGE",
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
@@ -28,7 +29,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-status": "^1.4.2",
-    "serverless-http": "^2.6.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
@@ -52,11 +52,14 @@
     "lint-staged": "10.3.0",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
-    "serverless": "1.82.0",
+    "serverless": "2.3.0",
     "serverless-domain-manager": "4.2.0",
+    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.6.0",
+    "serverless-http": "^2.6.0",
     "serverless-offline": "6.7.0",
+    "serverless-s3-remover": "^0.6.0",
     "serverless-webpack": "5.3.5",
     "ts-loader": "8.0.3",
     "typescript": "4.0.2",

@@ -1,3 +1,14 @@
+export interface ServerConfig {
+  stage: string;
+  s3Region: string;
+  s3Bucket: string;
+  cognitoRegion: string;
+  cognitoUserPoolId: string;
+  cognitoUserPoolDomain: string;
+  cognitoUserPoolRedirectUrl: string;
+  cognitoIdentityPoolId: string;
+  cognitoUserPoolClientId: string;
+}
 
 export interface User {
   email: string;

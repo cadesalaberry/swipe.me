@@ -9,6 +9,8 @@ package:
   individually: true
 
 plugins:
+  - serverless-dotenv-plugin
+  - serverless-s3-remover
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
   - serverless-finch # should be before dynamodb and offline
@@ -17,16 +19,21 @@ plugins:
   - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
+  remover:
+     buckets:
+       - ${self:custom.client.bucketName}
+       - !Ref S3Bucket
   client:
-    bucketName: ${self:custom.stage}.swipeme.io
+    bucketName: ${self:custom.computed.shortStageName}.swipeme.io
+    distributionFolder: packages/client/dist
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
   customDomain:
-    domainName: dev.swipeme.io
+    domainName: api.swipeme.io
     stage: ${self:custom.stage}
     basePath: ${self:custom.stage}
-    certificateName: dev.swipeme.io
+    certificateName: api.swipeme.io
     createRoute53Record: true
     endpointType: 'regional'
     securityPolicy: tls_1_2
@@ -36,8 +43,13 @@ custom:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
     user-pool: swipeme.io-${self:custom.stage}-user-pool
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
-  s3:
-    name: swipeme.io-dev
+    # https://swipeme-io-local.auth.eu-west-1.amazoncognito.com/
+    user-pool-subdomain: swipeme-io-${self:custom.stage}
+    user-pool-domain: ${self:custom.cognito.user-pool-subdomain}.auth.${self:provider.region}.amazoncognito.com
+    # Defaults to 'http://localhost:8080/'
+    user-pool-redirect-url: ${self:custom.computed.appDomainUrl}
+    google-client-id: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_ID}
+    google-client-secret: ${env:SWIPE_ME_SSO_GOOGLE_CLIENT_SECRET}
   tables:
     users: users-table-${self:custom.stage}
     decks: decks-table-${self:custom.stage}
@@ -91,9 +103,12 @@ provider:
     AWS_USER_POOL_ID: !Ref CognitoUserPool
     AWS_IDENTITY_POOL_ID: !Ref CognitoIdentityPool
     AWS_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    AWS_USER_POOL_DOMAIN: ${self:custom.cognito.user-pool-domain}
+    AWS_USER_POOL_REDIRECT_URL: ${self:custom.cognito.user-pool-redirect-url}
     AWS_COGNITO_REGION: ${self:provider.region}
     AWS_S3_REGION: ${self:provider.region}
     AWS_S3_BUCKET: !Ref S3Bucket
+    STAGE: ${self:custom.stage}
     USERS_TABLE: ${self:custom.tables.users}
     DECKS_TABLE: ${self:custom.tables.decks}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
@@ -135,3 +150,4 @@ resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
+  - ${file(resources/cloudfront.yml)}
