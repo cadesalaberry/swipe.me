@@ -37,7 +37,7 @@ custom:
     createRoute53Record: true
     endpointType: 'regional'
     securityPolicy: tls_1_2
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'local'}
   computed: ${file(./packages/api/config.js)}
   cognito:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
