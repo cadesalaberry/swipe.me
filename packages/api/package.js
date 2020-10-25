@@ -1,7 +1,6 @@
 return {
   name: '@swipeme.io/api',
   version: '1.0.0',
-  license: 'MIT',
   scripts: {
   },
   dependencies: {
