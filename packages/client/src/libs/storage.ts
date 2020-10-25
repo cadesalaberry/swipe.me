@@ -42,7 +42,7 @@ export const getAuthenticatedUrl = async (url: string): Promise<string> => {
   const protocolLess = url.slice(5) // takes out s3://
   const [securityLevel, ...rest] = protocolLess.split('/') // reads the vault value
   const key = rest.join('/')
-  const allowedValues = Object.keys(SecurityLevel).map(s => s)
+  const allowedValues = Object.values(SecurityLevel).map(s => s)
 
   if (!allowedValues.includes(securityLevel)) {
     throw new Error(`Unsupported security level ${securityLevel}`)
