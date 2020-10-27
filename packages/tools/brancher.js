@@ -75,7 +75,7 @@ const Brancher = {
     const nbAvailableSlots = maxSize - hash.length
     const breakpoint = string.length - nbAvailableSlots // start from the end of the string
 
-    return `${string.substring(breakpoint)}_${hash}`
+    return `${string.substring(breakpoint)}-${hash}`
   },
 
   /**
