@@ -31,7 +31,7 @@ export default {
 }
 .card__title {
   padding: 0 15px;
-  margin-block-start: 0;
+  margin-block-start: 18px;
 }
 .card__description {
   padding: 0 15px;
