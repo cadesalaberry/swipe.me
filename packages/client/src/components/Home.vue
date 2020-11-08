@@ -19,7 +19,7 @@
       <md-button href="#/decks/new" class="md-primary md-raised">Create my first deck</md-button>
     </md-empty-state>
 
-    <ul v-if="decks.length">
+    <ul v-if="isAuthenticated && decks.length">
       <li v-for="deck in decks" :key="deck.deckHandle">
       <router-link :to="'decks/' + deck.deckHandle">
         <deck-summary
