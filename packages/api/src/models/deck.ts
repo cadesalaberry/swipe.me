@@ -2,7 +2,7 @@ import * as UUID from 'uuid'
 import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
-import type { GetItemInput, PutItemInput } from 'aws-sdk/clients/dynamodb'
+import type { GetItemInput, PutItemInput, ScanInput } from 'aws-sdk/clients/dynamodb'
 import type { Deck, NewDeck } from '@swipeme.io/common/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''
@@ -24,6 +24,7 @@ const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
 
       const {
         deckId,
+        ownerHandle,
         deckHandle,
         createdAt,
         cards
@@ -31,6 +32,7 @@ const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
 
       return {
         deckId,
+        ownerHandle,
         deckHandle,
         createdAt,
         cards
@@ -38,7 +40,44 @@ const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
     })
 }
 
-const createDeck = ({ deckHandle, cards }: NewDeck): Promise<Deck> => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getDecksByUserHandle = (ownerHandle: string): Promise<Deck[]> => {
+  const params = {
+    TableName: DECKS_TABLE,
+    Select: 'ALL_ATTRIBUTES'
+    // KeyConditionExpression: 'ownerHandle = :ownerHandle',
+    // ExpressionAttributeValues: {
+    //   ':ownerHandle': userHandle
+    // }
+  }
+
+  return dynamoDb
+    .scan(params as ScanInput)
+    .then((result) => {
+      if (!result.Items) {
+        throw new BackError('decks were not found', 404)
+      }
+
+      return result.Items.map((item) => {
+        const {
+          deckId,
+          deckHandle,
+          createdAt,
+          cards
+        } = item
+
+        return {
+          deckId,
+          ownerHandle,
+          deckHandle,
+          createdAt,
+          cards
+        }
+      })
+    })
+}
+
+const createDeck = ({ deckHandle, cards, ownerHandle }: NewDeck): Promise<Deck> => {
   if (typeof deckHandle !== 'string') {
     throw new BackError('"deckHandle" must be a string', 400)
   }
@@ -51,12 +90,14 @@ const createDeck = ({ deckHandle, cards }: NewDeck): Promise<Deck> => {
   if (cards.filter(c => c.title).length !== cards.length) {
     throw new BackError('a "title" must be provided for all cards', 400)
   }
+
   const deckId = UUID.v1()
   const createdAt = Date.now()
   const params = {
     TableName: DECKS_TABLE,
     Item: {
       deckId,
+      ownerHandle,
       deckHandle,
       cards,
       createdAt
@@ -69,6 +110,7 @@ const createDeck = ({ deckHandle, cards }: NewDeck): Promise<Deck> => {
     .then(() => {
       return {
         deckId,
+        ownerHandle,
         deckHandle,
         createdAt,
         cards
@@ -77,6 +119,7 @@ const createDeck = ({ deckHandle, cards }: NewDeck): Promise<Deck> => {
 }
 
 export default {
+  getDecksByUserHandle,
   getDeckByHandle,
   createDeck
 }

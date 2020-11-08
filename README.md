@@ -1,30 +1,27 @@
 # swipe.me
 
-Trigger the serverless build process
+why change?
+why now?
+why my industry?
+why my company/product?
+why spend the money?
 
-## Project setup
+### Run server and client in development
 ```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
+yarn api
+yarn client
 ```
 
-### Run your tests
-```
-yarn run test
+### Deploy in production
 ```
 
-### Lints and fixes files
-```
-yarn run lint
+yarn api:deploy
+> https://api.swipeme.io/master
+
+yarn client:build
+yarn client:deploy
+> https://master.swipeme.io/
+
 ```
 
 ### Create user in Cognito
