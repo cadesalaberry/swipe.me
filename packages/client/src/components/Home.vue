@@ -12,7 +12,7 @@
     <loader v-if="loading"></loader>
 
     <md-empty-state
-      v-else-if="!decks.length"
+      v-else-if="isAuthenticated && !decks.length"
       md-icon="accessibility_new"
       md-label="Time to get creative"
       md-description="You should go ahead and create your first deck">
