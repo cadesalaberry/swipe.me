@@ -25,7 +25,9 @@ export default new Vuex.Store({
     globalError: null,
     currentDeck: null,
     isLoadingDeck: false,
+    isLoadingDecks: false,
     loadingDeckError: null,
+    deckList: [],
     newDeck: {
       deckHandle: '',
       cards: []
@@ -61,8 +63,14 @@ export default new Vuex.Store({
     getLoadingDeckStatus (state) {
       return state.isLoadingDeck
     },
+    getLoadingDecksStatus (state) {
+      return state.isLoadingDecks
+    },
     getGlobalError (state) {
       return state.globalError
+    },
+    getDeckList (state) {
+      return state.deckList
     }
   },
   mutations: {
@@ -81,8 +89,14 @@ export default new Vuex.Store({
     setCurrentDeck (state, currentDeck) {
       state.currentDeck = currentDeck
     },
+    setDeckList (state, deckList) {
+      state.deckList = deckList
+    },
     setLoadingDeckStatus (state, status: boolean) {
       state.isLoadingDeck = status
+    },
+    setLoadingDecksStatus (state, status: boolean) {
+      state.isLoadingDecks = status
     },
     setLoadingDeckError (state, error) {
       state.loadingDeckError = error
@@ -182,6 +196,23 @@ export default new Vuex.Store({
       }
 
       commit('setLoadingDeckStatus', false)
+    },
+    async fetchAllDecksByOwnerHandle ({ commit }, ownerHandle: string) {
+      commit('setLoadingDecksStatus', true)
+
+      try {
+        const response = await API.get('main', 'decks', {
+          query: { ownerHandle }
+        })
+
+        commit('setDeckList', response)
+        commit('setLoadingDeckError', null)
+      } catch (e) {
+        commit('setDeckList', [])
+        commit('setLoadingDeckError', e)
+      }
+
+      commit('setLoadingDecksStatus', false)
     },
     async createDeck ({ commit }, deck: Deck) {
       commit('setLoadingDeckStatus', true)

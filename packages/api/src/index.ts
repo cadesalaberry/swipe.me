@@ -62,14 +62,31 @@ app.post('/decks', (req, res) => {
     cards
   } = req.body
 
+  const ownerHandle = ''
+
   return deckModel
-    .createDeck({ deckHandle, cards })
+    .createDeck({ ownerHandle, deckHandle, cards })
     .then((deck) => {
       res.status(httpStatus.OK).json(deck)
     })
     .catch((error) => {
       res.status(error.statusCode || 500).json({
         error: 'Could not create deck',
+        ...error
+      })
+    })
+})
+app.get('/decks', (req, res) => {
+  const ownerHandle = ''
+
+  return deckModel
+    .getDecksByUserHandle(ownerHandle)
+    .then((decks) => {
+      res.status(httpStatus.OK).json(decks)
+    })
+    .catch((error) => {
+      res.status(error.statusCode || 500).json({
+        error: 'Could not get decks',
         ...error
       })
     })

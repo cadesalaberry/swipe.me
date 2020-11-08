@@ -29,12 +29,14 @@ export interface Card {
 }
 
 export interface Deck {
+  ownerHandle: string;
   deckHandle: string;
   deckId: string;
   cards: Array<Card>;
   createdAt: number;
 }
 export interface NewDeck {
+  ownerHandle: string;
   deckHandle: string;
   cards: Array<Card>;
 }

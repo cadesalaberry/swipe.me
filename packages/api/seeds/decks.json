@@ -2,6 +2,7 @@
   {
     "deckId": "banana",
     "deckHandle": "banana",
+    "ownerHandle": "",
     "cards": [
       {
         "title" : "Degree",
