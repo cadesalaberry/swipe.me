@@ -74,8 +74,9 @@ const Brancher = {
     const hash = Brancher.hashString(string)
     const nbAvailableSlots = maxSize - hash.length
     const breakpoint = string.length - nbAvailableSlots // start from the end of the string
+    const firstLetter = string[0] // the shortened string should always start with a letter
 
-    return `${string.substring(breakpoint)}-${hash}`
+    return `${firstLetter}${string.substring(breakpoint + 1)}-${hash}`
   },
 
   /**
