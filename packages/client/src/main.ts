@@ -34,7 +34,7 @@ if (process.env.VUE_APP_API_BASE_URL) {
 }
 
 if (['localhost', '127.0.0.1', ''].includes(window.location.hostname)) {
-  API_BASE_URL = 'http://localhost:3000/dev/'
+  API_BASE_URL = 'http://localhost:3000/local/'
 }
 
 if (!API_BASE_URL) {

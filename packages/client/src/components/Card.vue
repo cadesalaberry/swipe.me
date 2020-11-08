@@ -1,6 +1,6 @@
 <template>
   <div class="card__container">
-    <img class="card__image" :src="patchURL(imageURL)" />
+    <img class="card__image" :src="imageURL" />
 
     <h1 class="card__title">{{ title }}</h1>
     <div class="card__description" v-html="description"></div>
@@ -14,16 +14,6 @@ export default {
     title: String,
     imageURL: String,
     description: String
-  },
-  methods: {
-    patchURL: (imageURL) => {
-      // HACK: Keep compatibility with old website
-      if (imageURL.startsWith('./assets/images/')) {
-        return '//cadesalaberry.github.io/lucky-you/' + imageURL
-      }
-
-      return imageURL
-    }
   }
 }
 </script>
