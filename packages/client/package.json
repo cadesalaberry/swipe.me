@@ -11,7 +11,7 @@
     "@sentry/browser": "5.26.0",
     "@sentry/integrations": "5.24.2",
     "@swipeme.io/common": "*",
-    "aws-amplify": "3.3.4",
+    "aws-amplify": "3.3.8",
     "aws-amplify-vue": "2.1.2",
     "axios": "0.20.0",
     "core-js": "3.6.5",
