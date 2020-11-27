@@ -52,7 +52,7 @@
     "lint-staged": "10.5.1",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
-    "serverless": "2.11.0",
+    "serverless": "2.13.0",
     "serverless-domain-manager": "4.2.0",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "0.2.39",
