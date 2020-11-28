@@ -4,6 +4,7 @@ module.exports = (serverless) => {
   const { stage } = serverless.variables.options
   const snakedStage = Brancher.snakeify(stage)
   const shortStageName = Brancher.shortenStringToXCharacters(stage, 29)
+  const s3Name = Brancher.shortenStringToXCharacters(stage, 52)
   const roleName = `api-swipe-me-${shortStageName}-eu-west-1-lambdaRole`
   const appDomainUrl = {
     ...{ [stage]: `https://${stage}.swipeme.io/` },
@@ -17,7 +18,8 @@ module.exports = (serverless) => {
   const config = {
     snakedStage,
     shortStageName,
-    appDomainUrl
+    appDomainUrl,
+    s3Name
   }
 
   console.log('Injected config file:', config)

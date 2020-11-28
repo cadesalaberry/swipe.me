@@ -25,8 +25,9 @@ custom:
      buckets:
        - ${self:custom.client.bucketName}
   client:
-    bucketName: ${self:custom.computed.shortStageName}.swipeme.io
+    bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
+    manageResources: false # make sure we use the s3 created by cloudfront and not a new one
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -45,7 +46,7 @@ custom:
     user-pool: swipeme.io-${self:custom.stage}-user-pool
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
     # https://swipeme-io-local.auth.eu-west-1.amazoncognito.com/
-    user-pool-subdomain: swipeme-io-${self:custom.computed.shortStageName}
+    user-pool-subdomain: swipeme-io-${self:custom.computed.s3Name}
     user-pool-domain: ${self:custom.cognito.user-pool-subdomain}.auth.${self:provider.region}.amazoncognito.com
     # Defaults to 'http://localhost:8080/'
     user-pool-redirect-url: ${self:custom.computed.appDomainUrl}

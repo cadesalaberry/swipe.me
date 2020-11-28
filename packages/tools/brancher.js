@@ -66,7 +66,10 @@ const Brancher = {
     /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
      * integers. Since we want the results to be always positive, convert the
      * signed int to an unsigned by doing an unsigned bitshift. */
-    return `${hash >>> 0}`
+    const unsigned = hash >>> 0
+
+    // No need to be too complex, 4 digits should be enough
+    return `${unsigned % 9999}`
   },
 
   shortenStringToXCharacters: function (string = '', maxSize) {
