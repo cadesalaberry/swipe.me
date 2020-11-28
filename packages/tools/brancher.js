@@ -75,11 +75,11 @@ const Brancher = {
   shortenStringToXCharacters: function (string = '', maxSize) {
     if (string.length <= maxSize) { return string }
     const hash = Brancher.hashString(string)
-    const nbAvailableSlots = maxSize - hash.length
+    const nbAvailableSlots = maxSize - hash.length - 1 - 1 // count the dash & first letter
     const breakpoint = string.length - nbAvailableSlots // start from the end of the string
     const firstLetter = string[0] // the shortened string should always start with a letter
 
-    return `${firstLetter}${string.substring(breakpoint + 1)}-${hash}`
+    return `${firstLetter}${string.substring(breakpoint)}-${hash}`
   },
 
   /**
