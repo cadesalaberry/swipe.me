@@ -5,15 +5,11 @@ module.exports = (serverless) => {
   const snakedStage = Brancher.snakeify(stage)
   const shortStageName = Brancher.shortenStringToXCharacters(stage, 29)
   const s3Name = Brancher.shortenStringToXCharacters(stage, 52)
-  const roleName = `api-swipe-me-${shortStageName}-eu-west-1-lambdaRole`
   const appDomainUrl = {
-    ...{ [stage]: `https://${stage}.swipeme.io/` },
+    ...{ [stage]: `https://${s3Name}.swipeme.io/` },
     dev: 'https://www.swipeme.io/',
     undefined: 'http://localhost:8080/'
   }[stage]
-
-  // the resulting stage name should be smaller than 64 characters
-  if (roleName.length > 64) throw new Error(`iamRoleStatementsName too long ${roleName.length}/64`)
 
   const config = {
     snakedStage,
