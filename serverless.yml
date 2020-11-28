@@ -2,6 +2,9 @@
 org: cadesalaberry
 app: api-swipe-me
 
+frameworkVersion: ^2.13.0
+useDotenv: true
+
 service: api-swipe-me
 
 # Create an optimized package for our functions
@@ -9,7 +12,6 @@ package:
   individually: true
 
 plugins:
-  - serverless-dotenv-plugin
   - serverless-s3-remover
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
