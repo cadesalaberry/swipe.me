@@ -2,6 +2,9 @@
 org: cadesalaberry
 app: api-swipe-me
 
+frameworkVersion: ^2.13.0
+useDotenv: true
+
 service: api-swipe-me
 
 # Create an optimized package for our functions
@@ -9,7 +12,6 @@ package:
   individually: true
 
 plugins:
-  - serverless-dotenv-plugin
   - serverless-s3-remover
   - serverless-domain-manager
   - serverless-webpack # should be before dynamodb and offline
@@ -23,8 +25,9 @@ custom:
      buckets:
        - ${self:custom.client.bucketName}
   client:
-    bucketName: ${self:custom.computed.shortStageName}.swipeme.io
+    bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
+    manageResources: false # make sure we use the s3 created by cloudfront and not a new one
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -43,7 +46,7 @@ custom:
     user-pool: swipeme.io-${self:custom.stage}-user-pool
     user-pool-client: swipeme.io-${self:custom.stage}-user-pool-client
     # https://swipeme-io-local.auth.eu-west-1.amazoncognito.com/
-    user-pool-subdomain: swipeme-io-${self:custom.stage}
+    user-pool-subdomain: swipeme-io-${self:custom.computed.s3Name}
     user-pool-domain: ${self:custom.cognito.user-pool-subdomain}.auth.${self:provider.region}.amazoncognito.com
     # Defaults to 'http://localhost:8080/'
     user-pool-redirect-url: ${self:custom.computed.appDomainUrl}
@@ -74,6 +77,7 @@ provider:
   stage: ${self:custom.stage}
   region: eu-west-1
   apiGateway:
+    shouldStartNameWithService: true # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
   iamRoleStatementsName:

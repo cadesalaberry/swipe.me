@@ -14,7 +14,7 @@
     "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
     "client": "yarn workspace @swipeme.io/client serve",
     "client:build": "yarn workspace @swipeme.io/client build",
-    "client:deploy": "export STAGE=\"$(brancher dashify --shorten=29)\" && sls client deploy --stage=$STAGE --no-confirm",
+    "client:deploy": "export STAGE=\"$(brancher dashify)\" && sls client deploy --stage=$STAGE --no-confirm",
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
@@ -54,7 +54,6 @@
     "postinstall-postinstall": "^2.1.0",
     "serverless": "2.13.0",
     "serverless-domain-manager": "4.2.0",
-    "serverless-dotenv-plugin": "^3.0.0",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.6.0",
     "serverless-http": "^2.6.0",
@@ -84,7 +83,7 @@
     }
   },
   "gitHooks": {
-    "pre-commit": "lint-staged && brancher validate"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "packages/client/**/*.{js,ts,vue}": "yarn client:lint",
