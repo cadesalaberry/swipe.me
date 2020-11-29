@@ -4,7 +4,10 @@ module.exports = (serverless) => {
   const { stage } = serverless.variables.options
   const snakedStage = Brancher.snakeify(stage)
   const shortStageName = Brancher.shortenStringToXCharacters(stage, 29)
+  // cognito.domain(63): swipeme-io-${stage}
   const s3Name = Brancher.shortenStringToXCharacters(stage, 52)
+  // provider.functions.app.name(64): api-swipe-me-${stage}-app
+  const functionName = Brancher.shortenStringToXCharacters(stage, 47)
   const appDomainUrl = {
     ...{ [stage]: `https://${s3Name}.swipeme.io/` },
     dev: 'https://www.swipeme.io/',
@@ -15,7 +18,8 @@ module.exports = (serverless) => {
     snakedStage,
     shortStageName,
     appDomainUrl,
-    s3Name
+    s3Name,
+    functionName
   }
 
   console.log('Injected config file:', config)

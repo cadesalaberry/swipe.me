@@ -119,6 +119,7 @@ provider:
 
 functions:
   app:
+    name: api-swipe-me-${self:custom.computed.functionName}-app
     handler: packages/api/src/index.handler
     events:
       - http:
