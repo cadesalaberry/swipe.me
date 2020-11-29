@@ -57,7 +57,7 @@ Resources:
         family_name: family_name
         given_name: given_name
         username: sub
-        username: preferred_username
+        preferred_username: sub
         picture: picture
         email: email
       ProviderDetails:
