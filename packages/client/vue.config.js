@@ -13,7 +13,6 @@ process.env.VUE_APP_GIT_BRANCH = branch
 process.env.VUE_APP_STAGE = stage
 
 setEnvIfUndefined('VUE_APP_API_BASE_URL', `https://api.swipeme.io/${stage}/`)
-setEnvIfUndefined('VUE_APP_WEBPAGE_BASE_URL', `https://${stage}.swipeme.io/`)
 
 module.exports = {
 }
