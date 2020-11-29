@@ -6,7 +6,7 @@
       md-icon="accessible_forward"
       md-label="Work in progress..."
       md-description="You probably want to checkout the demo deck meanwhile.">
-      <md-button href="#/decks/banana" class="md-primary md-raised">Demo deck</md-button>
+      <md-button href="#/cadesalaberry/banana" class="md-primary md-raised">Demo deck</md-button>
     </md-empty-state>
 
     <loader v-if="loading"></loader>
@@ -22,7 +22,7 @@
     <ul v-if="isAuthenticated && decks.length" class="main-content">
       <div class="intro-text">Have a look at the decks already on the platform</div>
       <li v-for="deck in decks" :key="deck.deckHandle">
-      <router-link :to="'decks/' + deck.deckHandle">
+      <router-link :to="deck.ownerHandle + '/' + deck.deckHandle">
         <deck-summary
           :imageURL="deck.cards[0].picturePath"
           :description="deck.cards[0].description"
@@ -60,8 +60,8 @@ export default {
     }
   },
   mounted () {
-    // const deckId = this.$route.params.deckId
-    this.$store.dispatch('fetchAllDecksByOwnerHandle', '')
+    const { userHandle } = this.$route.params
+    this.$store.dispatch('fetchAllDecksByOwnerHandle', userHandle)
   }
 }
 </script>

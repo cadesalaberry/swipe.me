@@ -31,3 +31,25 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       TableName: ${self:custom.tables.decks}
+  DecksV2DynamoDBTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Delete
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: PK
+          AttributeType: S
+        -
+          AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: PK
+          KeyType: HASH
+        -
+          AttributeName: SK
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: ${self:custom.tables.decks-v2}

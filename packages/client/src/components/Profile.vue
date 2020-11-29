@@ -29,6 +29,8 @@
                       @input="onLastNameInput" />
           </md-field>
 
+          <md-button class="md-primary md-raised" @click="shouldShowChangeUsernameDialog = true">Change Username</md-button>
+
         </md-card-content>
 
         <md-card-actions>
@@ -51,6 +53,11 @@
       </md-card>
     </div>
 
+    <md-dialog :md-active.sync="shouldShowChangeUsernameDialog">
+      <change-username @done="shouldShowChangeUsernameDialog = false">
+      </change-username>
+    </md-dialog>
+
     <md-dialog-confirm
       :md-active.sync="shouldShowAccountDeletionDialog"
       md-title="Oh no"
@@ -69,13 +76,16 @@
 <script>
 import EditableImage from '@/components/EditableImage.vue'
 import { required } from 'vuelidate/lib/validators'
+import ChangeUsername from '@/components/ChangeUsername.vue'
 
 export default {
   name: 'Profile',
   components: {
+    ChangeUsername,
     EditableImage
   },
   data: () => ({
+    shouldShowChangeUsernameDialog: false,
     shouldShowAccountDeletionDialog: false,
     pictureUrl: '',
     firstName: '',

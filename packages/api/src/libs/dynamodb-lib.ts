@@ -33,9 +33,33 @@ function scan (params: ScanInput): Promise<PromiseResult<DynamoDB.DocumentClient
   return dynamoDb.scan(params).promise()
 }
 
+function getUserHandleFromPK (PK: string): string {
+  if (!PK.startsWith('USER#')) throw new Error(`${PK} is not a valid Primary Key`)
+
+  return PK.replace('USER#', '')
+}
+
+function getPKFromUserHandle (userHandle: string): string {
+  return `USER#${userHandle}`
+}
+
+function getDeckHandleFromSK (SK: string): string {
+  if (!SK.startsWith('DECK#')) throw new Error(`${SK} is not a valid Sort Key`)
+
+  return SK.replace('DECK#', '')
+}
+
+function getSKFromDeckHandle (deckHandle: string): string {
+  return `DECK#${deckHandle}`
+}
+
 export default {
   get,
   put,
   query,
-  scan
+  scan,
+  getUserHandleFromPK,
+  getDeckHandleFromSK,
+  getPKFromUserHandle,
+  getSKFromDeckHandle
 }
