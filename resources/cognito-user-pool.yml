@@ -9,6 +9,8 @@ Resources:
       # Set email as an alias
       UsernameAttributes:
         - email
+      AliasAttributes:
+        - preferred_username
       AutoVerifiedAttributes:
         - email
 
@@ -55,6 +57,7 @@ Resources:
         family_name: family_name
         given_name: given_name
         username: sub
+        username: preferred_username
         picture: picture
         email: email
       ProviderDetails:

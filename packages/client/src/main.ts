@@ -74,7 +74,8 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/profile', component: Profile },
   { path: '/decks/new', component: EditableDeck },
-  { path: '/decks/:deckId', component: Deck }
+  { path: '/:userHandle', component: Home },
+  { path: '/:userId/:deckId', component: Deck }
 ]
 
 const router = new VueRouter({

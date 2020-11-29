@@ -109,8 +109,10 @@ export default {
     }
   },
   mounted: function () {
-    const deckId = this.$route.params.deckId
-    this.$store.dispatch('fetchDeckByHandle', deckId)
+    const { deckId, userId } = this.$route.params
+
+    console.log(this.$route.params)
+    this.$store.dispatch('fetchDeckByHandle', { userId, deckId })
   },
 
   methods: {

@@ -182,11 +182,11 @@ export default new Vuex.Store({
         commit('setAuthError', e)
       }
     },
-    async fetchDeckByHandle ({ commit }, deckHandle: string) {
+    async fetchDeckByHandle ({ commit }, { userId, deckId }) {
       commit('setLoadingDeckStatus', true)
 
       try {
-        const response = await API.get('main', `decks/${deckHandle}`, {})
+        const response = await API.get('main', `decks/${userId}/${deckId}`, {})
 
         commit('setCurrentDeck', response)
         commit('setLoadingDeckError', null)
@@ -202,7 +202,7 @@ export default new Vuex.Store({
 
       try {
         const response = await API.get('main', 'decks', {
-          query: { ownerHandle }
+          queryStringParameters: { ownerHandle }
         })
 
         commit('setDeckList', response)

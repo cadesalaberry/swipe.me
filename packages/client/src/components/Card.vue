@@ -28,6 +28,7 @@ export default {
   object-fit: cover;
   width: 100%;
   height: 50%;
+  pointer-events: none;
 }
 .card__title {
   padding: 0 15px;

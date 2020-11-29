@@ -55,6 +55,7 @@ custom:
   tables:
     users: users-table-${self:custom.stage}
     decks: decks-table-${self:custom.stage}
+    decks-v2: decks-v2-table-${self:custom.stage}
   endpoints:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
@@ -70,6 +71,8 @@ custom:
             sources: [./packages/api/seeds/users.json]
           - table: ${self:custom.tables.decks}
             sources: [./packages/api/seeds/decks.json]
+          - table: ${self:custom.tables.decks-v2}
+            sources: [./packages/api/seeds/decks-v2.json]
 
 provider:
   name: aws
@@ -113,7 +116,7 @@ provider:
     AWS_S3_BUCKET: !Ref S3Bucket
     STAGE: ${self:custom.stage}
     USERS_TABLE: ${self:custom.tables.users}
-    DECKS_TABLE: ${self:custom.tables.decks}
+    DECKS_TABLE: ${self:custom.tables.decks-v2}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}
     NODE_ENV: ${env:NODE_ENV, 'production'}
 
@@ -131,6 +134,10 @@ functions:
           method: GET
           cors: true
       - http:
+          path: /users/username
+          method: POST
+          cors: true
+      - http:
           path: /decks
           method: POST
           cors: true
@@ -139,7 +146,7 @@ functions:
           method: GET
           cors: true
       - http:
-          path: /decks/{deckHandle}
+          path: /decks/{userHandle}/{deckHandle}
           method: GET
           cors: true
 

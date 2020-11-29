@@ -1,3 +1,6 @@
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
+
+import { getConfig } from '../config'
 import dynamoDb from '../libs/dynamodb-lib'
 
 import type { Handler } from 'express'
@@ -78,7 +81,46 @@ const createUser: Handler = (req, res) => {
     })
 }
 
+const changeUsername: Handler = async (req, res) => {
+  const { cognitoRegion, cognitoUserPoolId } = getConfig()
+  const cognitoIdServiceProvider = new CognitoIdentityServiceProvider({
+    region: cognitoRegion
+  })
+
+  const {
+    oldUsername,
+    newUsername
+  } = req.body
+
+  const params = {
+    UserAttributes: [
+      {
+        Name: 'preferred_username',
+        Value: newUsername
+      }
+    ],
+    UserPoolId: cognitoUserPoolId,
+    Username: oldUsername
+  }
+
+  return new Promise((resolve, reject) => {
+    cognitoIdServiceProvider
+      .adminUpdateUserAttributes(params, (err, data) => {
+        if (err) return reject(err)
+        return resolve(data)
+      })
+  })
+    .then(() => res.json({ oldUsername, newUsername }))
+    .catch((error) => {
+      res.status(400).json({
+        message: 'Could not change username',
+        error
+      })
+    })
+}
+
 export default {
+  changeUsername,
   getUserById,
   createUser
 }

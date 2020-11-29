@@ -40,12 +40,13 @@ app.get('/config.json', function (_req, res) {
 })
 
 app.get('/users/:userId', userModel.getUserById)
+app.post('/users/username', userModel.changeUsername)
 app.post('/users', userModel.createUser)
-app.get('/decks/:deckHandle', (req, res) => {
-  const deckHandle = req.params.deckHandle
+app.get('/decks/:userHandle/:deckHandle', (req, res) => {
+  const { deckHandle, userHandle } = req.params
 
   return deckModel
-    .getDeckByHandle(deckHandle)
+    .getDeckByHandle(userHandle, deckHandle)
     .then((deck) => {
       res.status(httpStatus.OK).json(deck)
     })
@@ -58,11 +59,10 @@ app.get('/decks/:deckHandle', (req, res) => {
 })
 app.post('/decks', (req, res) => {
   const {
+    ownerHandle,
     deckHandle,
     cards
   } = req.body
-
-  const ownerHandle = ''
 
   return deckModel
     .createDeck({ ownerHandle, deckHandle, cards })
@@ -77,7 +77,13 @@ app.post('/decks', (req, res) => {
     })
 })
 app.get('/decks', (req, res) => {
-  const ownerHandle = ''
+  const { ownerHandle } = req.query
+
+  if (typeof ownerHandle !== 'string') {
+    return res.status(400).json({
+      error: 'ownerHandle is a mandatory string'
+    })
+  }
 
   return deckModel
     .getDecksByUserHandle(ownerHandle)

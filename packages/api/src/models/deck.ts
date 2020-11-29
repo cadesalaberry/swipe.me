@@ -2,16 +2,35 @@ import * as UUID from 'uuid'
 import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
-import type { GetItemInput, PutItemInput, ScanInput } from 'aws-sdk/clients/dynamodb'
+import type { DocumentClient, GetItemInput, PutItemInput, QueryInput } from 'aws-sdk/clients/dynamodb'
 import type { Deck, NewDeck } from '@swipeme.io/common/types'
 
 const DECKS_TABLE = process.env.DECKS_TABLE || ''
 
-const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
+const getDeckFromDynamoItem = (item: DocumentClient.AttributeMap): Deck => {
+  const {
+    deckId,
+    PK,
+    SK,
+    createdAt,
+    cards
+  } = item
+
+  return {
+    deckId,
+    ownerHandle: dynamoDb.getUserHandleFromPK(PK),
+    deckHandle: dynamoDb.getDeckHandleFromSK(SK),
+    createdAt,
+    cards
+  }
+}
+
+const getDeckByHandle = (userHandle: string, deckHandle: string): Promise<Deck> => {
   const params = {
     TableName: DECKS_TABLE,
     Key: {
-      deckHandle
+      PK: dynamoDb.getPKFromUserHandle(userHandle),
+      SK: dynamoDb.getSKFromDeckHandle(deckHandle)
     }
   }
 
@@ -22,21 +41,7 @@ const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
         throw new BackError('deck not found', 404)
       }
 
-      const {
-        deckId,
-        ownerHandle,
-        deckHandle,
-        createdAt,
-        cards
-      } = result.Item
-
-      return {
-        deckId,
-        ownerHandle,
-        deckHandle,
-        createdAt,
-        cards
-      }
+      return getDeckFromDynamoItem(result.Item)
     })
 }
 
@@ -44,36 +49,22 @@ const getDeckByHandle = (deckHandle: string): Promise<Deck> => {
 const getDecksByUserHandle = (ownerHandle: string): Promise<Deck[]> => {
   const params = {
     TableName: DECKS_TABLE,
-    Select: 'ALL_ATTRIBUTES'
-    // KeyConditionExpression: 'ownerHandle = :ownerHandle',
-    // ExpressionAttributeValues: {
-    //   ':ownerHandle': userHandle
-    // }
+    KeyConditionExpression: 'PK = :ownerHandle AND begins_with ( SK, :sortKey )',
+    Select: 'ALL_ATTRIBUTES',
+    ExpressionAttributeValues: {
+      ':ownerHandle': dynamoDb.getPKFromUserHandle(ownerHandle),
+      ':sortKey': 'DECK#'
+    }
   }
 
   return dynamoDb
-    .scan(params as ScanInput)
+    .query(params as QueryInput)
     .then((result) => {
       if (!result.Items) {
         throw new BackError('decks were not found', 404)
       }
 
-      return result.Items.map((item) => {
-        const {
-          deckId,
-          deckHandle,
-          createdAt,
-          cards
-        } = item
-
-        return {
-          deckId,
-          ownerHandle,
-          deckHandle,
-          createdAt,
-          cards
-        }
-      })
+      return result.Items.map(getDeckFromDynamoItem)
     })
 }
 
@@ -96,8 +87,8 @@ const createDeck = ({ deckHandle, cards, ownerHandle }: NewDeck): Promise<Deck> 
   const params = {
     TableName: DECKS_TABLE,
     Item: {
-      deckId,
-      ownerHandle,
+      SK: dynamoDb.getSKFromDeckHandle(deckId),
+      PK: dynamoDb.getPKFromUserHandle(ownerHandle),
       deckHandle,
       cards,
       createdAt
@@ -108,13 +99,7 @@ const createDeck = ({ deckHandle, cards, ownerHandle }: NewDeck): Promise<Deck> 
   return dynamoDb
     .put(params as PutItemInput)
     .then(() => {
-      return {
-        deckId,
-        ownerHandle,
-        deckHandle,
-        createdAt,
-        cards
-      }
+      return getDeckByHandle(ownerHandle, deckHandle)
     })
 }
 
