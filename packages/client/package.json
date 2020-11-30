@@ -43,7 +43,7 @@
     "@vue/eslint-config-standard": "5.1.2",
     "@vue/eslint-config-typescript": "5.1.0",
     "babel-eslint": "10.1.0",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.2.2",
     "vue-template-compiler": "2.6.12"
   },
   "postcss": {
