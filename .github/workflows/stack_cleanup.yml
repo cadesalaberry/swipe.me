@@ -9,12 +9,7 @@ jobs:
     steps:
     
     - uses: actions/checkout@v2
-    
-    # - run: |
-    #     git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-    #     git config user.email "cschleiden@github.com"
-    #     git config user.name "GitHub Actions"
-    
+ 
     - uses: actions/setup-node@v1
       with:
         node-version: '14'
@@ -35,7 +30,5 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-
-    - run: yarn brancher dashify
 
     - run: yarn api:remove
