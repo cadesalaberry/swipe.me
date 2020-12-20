@@ -1,0 +1,43 @@
+name: Cleanup deployed stacks once the branch is deleted
+
+on:
+  delete
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: actions/checkout@v2
+    
+    # - run: |
+    #     git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    #     git config user.email "cschleiden@github.com"
+    #     git config user.name "GitHub Actions"
+    
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+
+      # https://github.com/actions/cache/blob/main/examples.md#node---yarn
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - run: |
+        echo "${GITHUB_REF##*/}"
+        ./node_modules/.bin/brancher
+        ./node_modules/.bin/brancher dashify
+        yarn api:remove
