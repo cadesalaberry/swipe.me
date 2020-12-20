@@ -1,7 +1,7 @@
 name: Cleanup deployed stacks once the branch is deleted
 
 on:
-  delete
+  push
 
 jobs:
   sync:
