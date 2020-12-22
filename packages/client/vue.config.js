@@ -2,8 +2,8 @@ const brancher = require('@swipeme.io/tools/brancher')
 
 const setEnvIfUndefined = (name, value) => { process.env[name] = process.env[name] || value }
 
-const stage = brancher.getDashifiedBranch()
 const branch = brancher.getBranchName()
+const stage = brancher.dashify(branch)
 
 console.log(`Using branch name: ${branch}`)
 console.log(`Using stage name : ${stage}`)
