@@ -57,7 +57,7 @@
     "not ie <= 8"
   ],
   "gitHooks": {
-    "pre-commit": "lint-staged && brancher validate"
+    "pre-commit": "lint-staged"
   },
   "homepage": "git@github.com:cadesalaberry/swipe.me"
 }

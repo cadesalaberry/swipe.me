@@ -37,9 +37,9 @@ jobs:
         echo $GITHUB_HEAD_REF
         echo $GITHUB_BASE_REF
         echo $GITHUB_EVENT_PATH
+        yarn brancher
         cat $GITHUB_EVENT_PATH
 
-
-    # - run: yarn api:remove
-    #   env:
-    #     SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+    - run: yarn api:remove
+      env:
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}

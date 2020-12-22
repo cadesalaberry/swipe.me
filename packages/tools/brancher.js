@@ -6,9 +6,8 @@ const neodoc = require('neodoc')
 const syntax = `
 Usage:
   brancher.js
-  brancher.js validate
-  brancher.js snakeify [--shorten=<max-length>]
-  brancher.js dashify [--shorten=<max-length>]
+  brancher.js snakeify [--shorten=<max-length>] [<branch-name>]
+  brancher.js dashify [--shorten=<max-length>] [<branch-name>]
 `
 
 let getBranchNameFromGit = () => { throw new Error('current-git-branch is not installed') }
@@ -26,8 +25,19 @@ const Brancher = {
    *   * git
    */
   getBranchName: function () {
-    if (process.env.CIRCLECI_BRANCH) return process.env.CIRCLECI_BRANCH
-    if (process.env.NETLIFY) return process.env.HEAD
+    const {
+      GITHUB_EVENT_NAME,
+      GITHUB_EVENT_PATH,
+      CIRCLECI_BRANCH,
+      NETLIFY,
+      HEAD
+    } = process.env
+
+    // Get the name of the deleted branch if the job is executed on a delete branch event
+    if (GITHUB_EVENT_PATH && GITHUB_EVENT_NAME === 'delete') return require(`${GITHUB_EVENT_PATH}`).ref
+    if (CIRCLECI_BRANCH) return CIRCLECI_BRANCH
+    if (NETLIFY) return HEAD
+
     return getBranchNameFromGit()
   },
 
@@ -35,8 +45,8 @@ const Brancher = {
    * Returns the branch name with all invalid characters
    * replaced by dashes (-).
    */
-  getDashifiedBranch: function () {
-    return this.getBranchName().replace(/[\W_]+/g, '-')
+  dashify: function (string = '') {
+    return `${string}`.replace(/[\W_]+/g, '-')
   },
 
   /*
@@ -47,12 +57,8 @@ const Brancher = {
    *    Member must satisfy regular expression pattern: [\w\s+=,.@-]+
    *
    */
-  getSnakedBranchName: function () {
-    return this.snakeify(this.getDashifiedBranch())
-  },
-
   snakeify: function (string = '') {
-    return `${string}`.replace(/[-]+/g, '_')
+    return `${string}`.replace(/[\W-]+/g, '_')
   },
 
   hashString: function (str) {
@@ -80,26 +86,6 @@ const Brancher = {
     const firstLetter = string[0] // the shortened string should always start with a letter
 
     return `${firstLetter}${string.substring(breakpoint)}-${hash}`
-  },
-
-  /**
-   * Gets the name of the IAM Role that will be created for this stage.
-   * It is based on the name of the branch.
-   */
-  getIamRoleName: function () {
-    const name = this.getDashifiedBranch()
-
-    return `api-swipe-me-${name}-eu-west-1-lambdaRole`
-  },
-
-  validateCurrentBranchName: function () {
-    const name = this.getIamRoleName()
-    const size = name.length
-
-    // The branch name is valid, nothing to do
-    if (size <= 64) return
-
-    throw new Error(`The name of the branch is too long (${size}/64)`)
   }
 }
 
@@ -110,14 +96,14 @@ module.exports = {
 if (require.main !== module) return
 
 const options = neodoc.run(syntax)
-let branchName = Brancher.getBranchName()
+let branchName = options['<branch-name>'] || Brancher.getBranchName()
 
 if (options.snakeify) {
-  branchName = Brancher.getSnakedBranchName()
+  branchName = Brancher.snakeify(branchName)
 }
 
 if (options.dashify) {
-  branchName = Brancher.getDashifiedBranch()
+  branchName = Brancher.dashify(branchName)
 }
 
 if (options['--shorten']) {
@@ -125,8 +111,3 @@ if (options['--shorten']) {
 }
 
 console.log(branchName)
-
-if (options.validate) {
-  Brancher.validateCurrentBranchName()
-  console.log('✔ Branch name is valid')
-}
