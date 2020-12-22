@@ -1,6 +1,6 @@
 name: Cleanup stack once the branch is deleted
 
-on: push
+on: delete
 
 jobs:
   sync:
