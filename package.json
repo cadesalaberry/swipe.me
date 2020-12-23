@@ -22,7 +22,7 @@
   "dependencies": {
     "@swipeme.io/client": "*",
     "@swipeme.io/common": "*",
-    "aws-sdk": "^2.778.0",
+    "aws-sdk": "^2.816.0",
     "aws-serverless-express": "^3.3.8",
     "babel-runtime": "^6.26.0",
     "body-parser": "^1.19.0",
