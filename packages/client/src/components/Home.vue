@@ -19,7 +19,8 @@
       <md-button href="#/decks/new" class="md-primary md-raised">Create my first deck</md-button>
     </md-empty-state>
 
-    <ul v-if="isAuthenticated && decks.length">
+    <ul v-if="isAuthenticated && decks.length" class="main-content">
+      <div class="intro-text">Have a look at the decks already on the platform</div>
       <li v-for="deck in decks" :key="deck.deckHandle">
       <router-link :to="'decks/' + deck.deckHandle">
         <deck-summary
@@ -72,6 +73,16 @@ export default {
   position: relative;
   overflow-y: scroll;
 }
+.intro-text {
+  font-size: 3rem;
+  line-height: 4rem;
+  margin-bottom: 30px;
+  padding: 6px;
+}
+.main-content {
+  max-width: 512px;
+  padding: 6px;
+}
 .center-title {
   display: flex;
   text-align: center;
@@ -102,11 +113,26 @@ ul {
   margin-right: auto;
 }
 li {
-  width: 90vw;
+  width: 308px;
   margin-bottom: 12px;
-  height: calc(90vw*0.618); /* keep the golden ration for the card */
+  margin-left: auto;
+  margin-right: auto;
+  height: calc(308px*0.618); /* keep the golden ration for the card */
 }
 li a:hover {
   text-decoration: none;
+}
+
+@media all and (min-width: 424px) {
+  li {
+    width: 412px;
+    height: calc(412px*0.618); /* keep the golden ration for the card */
+  }
+}
+@media all and (min-width: 524px) {
+  li {
+    width: 512px;
+    height: calc(512px*0.618); /* keep the golden ration for the card */
+  }
 }
 </style>
