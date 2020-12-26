@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import * as Sentry from '@sentry/browser'
 import { SecurityLevel, uploadFile, preloadImage, loadImagePreview } from '@/libs/storage'
 import S3Image from './S3Image'
 
@@ -62,6 +63,7 @@ export default {
         .then(pictureUrl => this.$emit('input', pictureUrl))
         .catch(e => {
           console.error(e)
+          Sentry.captureException(e)
           this.uploadError = e
         })
         .finally(() => {
