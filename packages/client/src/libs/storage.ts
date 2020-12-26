@@ -94,7 +94,7 @@ export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE): 
       name: file.name,
       size: `${file.size}`, // makes sure we handle strings
       lastModified: `${file.lastModified}`, // makes sure we handle strings
-      uploadedAt: `${new Date()}`
+      uploadedAt: `${new Date().toISOString()}`
     }
   }
 
