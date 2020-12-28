@@ -11,16 +11,25 @@
       <span>{{ globalError }}</span>
       <md-button class="md-primary" @click="onDismissError">Dismiss</md-button>
     </md-snackbar>
+    <md-dialog :md-active.sync="shouldShowPickUsernameDialog">
+      <change-username @done="shouldShowPickUsernameDialog = false">
+      </change-username>
+    </md-dialog>
   </div>
 </template>
 
 <script>
+import ChangeUsername from '@/components/ChangeUsername.vue'
 import { Hub } from 'aws-amplify'
 
 export default {
   name: 'App',
+  components: {
+    ChangeUsername
+  },
   data () {
     return {
+      shouldShowPickUsernameDialog: false,
       shouldShowAvatar: true
     }
   },
@@ -45,6 +54,7 @@ export default {
   },
   mounted () {
     this.shouldShowAvatar = this.$route.path !== '/profile'
+    this.shouldShowPickUsernameDialog = !this.$store.getters.getUsername
 
     Hub.listen('auth', (reply) => {
       const event = reply.payload.event
@@ -53,6 +63,7 @@ export default {
         case 'signIn':
           console.log('now the user is signed in', data)
           this.$store.dispatch('fetchUserInfos')
+          this.$store.commit('setCognitoUsername', data.username)
 
           break
         case 'signIn_failure':
@@ -60,6 +71,12 @@ export default {
           console.log('the error is', data)
 
           this.$store.commit('setGlobalError', data)
+          break
+        case 'oAuthSignOut':
+          console.log('Signing out user', data.username)
+          console.log('the payload is', data)
+
+          this.$store.commit('resetState')
           break
         default:
           console.warn('an auth event was received but not used', reply)

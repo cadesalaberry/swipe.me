@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as Sentry from '@sentry/browser'
 import VuexPersistence from 'vuex-persist'
 
 import { AmplifyConfig, EnvHelper } from '@swipeme.io/common/environment'
@@ -14,26 +15,29 @@ const vuexLocal = new VuexPersistence({
 
 Vue.use(Vuex)
 
+const getDefaultState = () => ({
+  auth: {
+    error: null,
+    isAuthenticated: false,
+    cognitoUsername: null,
+    infos: null
+  },
+  globalError: null,
+  currentDeck: null,
+  isLoadingDeck: false,
+  isLoadingDecks: false,
+  loadingDeckError: null,
+  deckList: [],
+  newDeck: {
+    deckHandle: '',
+    cards: []
+  },
+  newDeckError: null
+})
+
 export default new Vuex.Store({
   plugins: [vuexLocal.plugin],
-  state: {
-    auth: {
-      error: null,
-      isAuthenticated: false,
-      infos: null
-    },
-    globalError: null,
-    currentDeck: null,
-    isLoadingDeck: false,
-    isLoadingDecks: false,
-    loadingDeckError: null,
-    deckList: [],
-    newDeck: {
-      deckHandle: '',
-      cards: []
-    },
-    newDeckError: null
-  },
+  state: getDefaultState(),
   getters: {
     isAuthenticated (state) {
       return state.auth.isAuthenticated
@@ -43,19 +47,26 @@ export default new Vuex.Store({
     },
     getUserEmail (state) {
       const infos = state.auth.infos as unknown as User
-      return infos && infos.email
+      return infos?.email
     },
     getProfilePicture (state) {
       const infos = state.auth.infos as unknown as User
-      return infos && infos.picture
+      return infos?.picture
     },
     getFirstName (state) {
       const infos = state.auth.infos as unknown as User
-      return infos && infos.given_name
+      return infos?.given_name
     },
     getLastName (state) {
       const infos = state.auth.infos as unknown as User
-      return infos && infos.family_name
+      return infos?.family_name
+    },
+    getUsername (state) {
+      const infos = state.auth.infos as unknown as User
+      return infos?.preferred_username
+    },
+    getCognitoUsername (state) {
+      return state.auth.cognitoUsername
     },
     getLoadingDeckError (state) {
       return state.loadingDeckError
@@ -74,6 +85,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setCognitoUsername (state, username) {
+      state.auth.cognitoUsername = username
+    },
     setUserInfos (state, infos) {
       state.auth.infos = infos
       state.auth.isAuthenticated = !!infos
@@ -112,15 +126,23 @@ export default new Vuex.Store({
     },
     setNewDeckError (state, error) {
       state.newDeckError = error
+    },
+    resetState (state) {
+      // Merge rather than replace so we don't lose observers
+      // https://github.com/vuejs/vuex/issues/1118
+      Object.assign(state, getDefaultState())
     }
   },
   actions: {
     async loginUser ({ commit }, { email, password }) {
       try {
         const infos = await Auth.signIn(email, password)
+        console.log('infos', infos)
         commit('setUserInfos', infos.attributes)
+        commit('setCognitoUsername', infos.username)
         commit('setAuthError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
@@ -140,11 +162,14 @@ export default new Vuex.Store({
 
         const updatedUser = await Auth.currentAuthenticatedUser()
         const updatedAttributes = updatedUser.attributes
+        const username = updatedUser.username
 
-        console.log(updatedAttributes)
+        console.log(updatedUser)
         commit('setUserInfos', updatedAttributes)
+        commit('setCognitoUsername', username)
         commit('setAuthError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
@@ -162,7 +187,7 @@ export default new Vuex.Store({
         // commit('setUserInfos', infos.attributes)
         // commit('setAuthError', null)
       } catch (e) {
-        console.log(e)
+        Sentry.captureException(e)
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
@@ -178,6 +203,7 @@ export default new Vuex.Store({
         commit('setUserInfos', attributes)
         commit('setAuthError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
@@ -191,6 +217,7 @@ export default new Vuex.Store({
         commit('setCurrentDeck', response)
         commit('setLoadingDeckError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setCurrentDeck', null)
         commit('setLoadingDeckError', e)
       }
@@ -208,6 +235,7 @@ export default new Vuex.Store({
         commit('setDeckList', response)
         commit('setLoadingDeckError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setDeckList', [])
         commit('setLoadingDeckError', e)
       }
@@ -231,12 +259,17 @@ export default new Vuex.Store({
 
         deckHandle = createdDeck.deckHandle
       } catch (e) {
+        Sentry.captureException(e)
         commit('setNewDeckError', e)
       }
 
       commit('setLoadingDeckStatus', false)
 
       return deckHandle
+    },
+    async changePreferredUsername (_, { username, newPreferredUsername }) {
+      console.log('changePreferredUsername')
+      return API.post('main', 'users/username', { body: { username, newPreferredUsername } })
     },
     async syncServerConfig ({ commit, dispatch }) {
       try {
@@ -246,6 +279,7 @@ export default new Vuex.Store({
         dispatch('configureAmplify', amplifyConfig)
         commit('setGlobalError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setGlobalError', e.message)
       }
     },
@@ -254,6 +288,7 @@ export default new Vuex.Store({
         Amplify.configure(config)
         commit('setGlobalError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setGlobalError', e.message)
       }
     },
@@ -267,6 +302,7 @@ export default new Vuex.Store({
         commit('setUserInfos', infos.attributes)
         commit('setAuthError', null)
       } catch (e) {
+        Sentry.captureException(e)
         commit('setUserInfos', null)
         commit('setAuthError', e)
       }
@@ -274,9 +310,9 @@ export default new Vuex.Store({
     async logoutUser ({ commit }) {
       try {
         await Auth.signOut()
-        commit('setUserInfos', null)
-        commit('setAuthError', null)
+        commit('resetState')
       } catch (e) {
+        Sentry.captureException(e)
         commit('setAuthError', e)
       }
     }

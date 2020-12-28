@@ -29,7 +29,17 @@
                       @input="onLastNameInput" />
           </md-field>
 
-          <md-button class="md-primary md-raised" @click="shouldShowChangeUsernameDialog = true">Change Username</md-button>
+          <md-field>
+            <label for="username">Username</label>
+            <md-input type="username" name="username" id="username"
+                      autocomplete="username"
+                      placeholder="Username not set"
+                      :value="username"
+                      disabled />
+            <md-button class="md-icon-button" @click="shouldShowChangeUsernameDialog = true">
+              <md-icon>edit</md-icon>
+            </md-button>
+          </md-field>
 
         </md-card-content>
 
@@ -54,7 +64,7 @@
     </div>
 
     <md-dialog :md-active.sync="shouldShowChangeUsernameDialog">
-      <change-username @done="shouldShowChangeUsernameDialog = false">
+      <change-username :username="username" @done="onChangedUsername">
       </change-username>
     </md-dialog>
 
@@ -112,6 +122,9 @@ export default {
     },
     email () {
       return this.$store.getters.getUserEmail
+    },
+    username () {
+      return this.$store.getters.getUsername
     }
   },
   methods: {
@@ -138,6 +151,10 @@ export default {
       })
 
       this.sending = false
+    },
+    onChangedUsername () {
+      this.shouldShowChangeUsernameDialog = false
+      this.username = this.$store.getters.getUsername
     },
     onDeleteAccount () {
       this.shouldShowAccountDeletionDialog = true
