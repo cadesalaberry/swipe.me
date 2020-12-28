@@ -88,19 +88,19 @@ const changeUsername: Handler = async (req, res) => {
   })
 
   const {
-    oldUsername,
-    newUsername
+    username,
+    newPreferredUsername
   } = req.body
 
   const params = {
     UserAttributes: [
       {
         Name: 'preferred_username',
-        Value: newUsername
+        Value: newPreferredUsername
       }
     ],
     UserPoolId: cognitoUserPoolId,
-    Username: oldUsername
+    Username: username
   }
 
   return new Promise((resolve, reject) => {
@@ -110,7 +110,7 @@ const changeUsername: Handler = async (req, res) => {
         return resolve(data)
       })
   })
-    .then(() => res.json({ oldUsername, newUsername }))
+    .then(() => res.json({ username, newPreferredUsername }))
     .catch((error) => {
       res.status(400).json({
         message: 'Could not change username',

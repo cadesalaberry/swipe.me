@@ -20,6 +20,8 @@ export interface User {
   given_name: string;
   // eslint-disable-next-line camelcase
   family_name: string;
+  // eslint-disable-next-line camelcase
+  preferred_username: string;
 }
 
 export interface Card {
