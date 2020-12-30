@@ -108,11 +108,11 @@ export default {
       return deck ? deck.cards : []
     }
   },
-  mounted: function () {
-    const { deckId, userId } = this.$route.params
+  mounted () {
+    const { deckHandle, userHandle } = this.$route.params
 
     console.log(this.$route.params)
-    this.$store.dispatch('fetchDeckByHandle', { userId, deckId })
+    this.$store.dispatch('fetchDeckByHandle', { userHandle, deckHandle })
   },
 
   methods: {
