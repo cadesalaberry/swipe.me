@@ -61,11 +61,12 @@ app.post('/decks', (req, res) => {
   const {
     ownerHandle,
     deckHandle,
+    title,
     cards
   } = req.body
 
   return deckModel
-    .createDeck({ ownerHandle, deckHandle, cards })
+    .createDeck({ title, ownerHandle, deckHandle, cards })
     .then((deck) => {
       res.status(httpStatus.OK).json(deck)
     })

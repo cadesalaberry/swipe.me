@@ -1,6 +1,11 @@
 return {
   name: '@swipeme.io/api',
   version: '1.0.0',
+  main: 'dist/index',
+  types: 'dist/index',
+  files: [
+    'dist'
+  ],
   scripts: {
   },
   dependencies: {

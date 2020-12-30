@@ -4,7 +4,7 @@
     <div class="top-bar">
       <input
         class="deck-name"
-        v-model="deck.deckHandle"
+        v-model="deck.title"
         @keyup="saveDeckLocally"
         placeholder="Name of the deck">
 
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import Namer from '@swipeme.io/common/namer'
 import EditableCard from '@/components/EditableCard.vue'
 import Loader from '@/components/Loader.vue'
 
@@ -86,7 +87,12 @@ export default {
 
   methods: {
     createDeck () {
-      const deckToCreate = this.deck
+      const { deck } = this
+      const deckHandle = deck.deckHandle || Namer.sanitize(deck)
+      const deckToCreate = {
+        ...deck,
+        deckHandle
+      }
 
       this.$store
         .dispatch('createDeck', deckToCreate)

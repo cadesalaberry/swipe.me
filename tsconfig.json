@@ -10,10 +10,19 @@
     "strict": true,
     // if using webpack 2+ or rollup, to leverage tree shaking:
     "module": "es2015",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "./packages",
+    "paths": {
+      "@swipeme.io/*": ["*/src"]
+    }
   },
+  "references": [
+    { "path": "packages/common", "prepend": true },
+    { "path": "packages/client", "prepend": true },
+    { "path": "packages/api", "prepend": true }
+  ],
   "include": [
-    "packages/api/**/*",
+    "packages/api/**/*"
   ],
   "exclude": [
     "node_modules",

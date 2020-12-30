@@ -75,7 +75,7 @@ const routes = [
   { path: '/profile', component: Profile },
   { path: '/decks/new', component: EditableDeck },
   { path: '/:userHandle', component: Home },
-  { path: '/:userId/:deckId', component: Deck }
+  { path: '/:userHandle/:deckHandle', component: Deck }
 ]
 
 const router = new VueRouter({

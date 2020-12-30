@@ -29,6 +29,7 @@ const getDefaultState = () => ({
   loadingDeckError: null,
   deckList: [],
   newDeck: {
+    title: '',
     deckHandle: '',
     cards: []
   },
@@ -120,6 +121,7 @@ export default new Vuex.Store({
     },
     resetNewDeck (state) {
       state.newDeck = {
+        title: '',
         deckHandle: '',
         cards: []
       }
@@ -208,11 +210,11 @@ export default new Vuex.Store({
         commit('setAuthError', e)
       }
     },
-    async fetchDeckByHandle ({ commit }, { userId, deckId }) {
+    async fetchDeckByHandle ({ commit }, { userHandle, deckHandle }) {
       commit('setLoadingDeckStatus', true)
 
       try {
-        const response = await API.get('main', `decks/${userId}/${deckId}`, {})
+        const response = await API.get('main', `decks/${userHandle}/${deckHandle}`, {})
 
         commit('setCurrentDeck', response)
         commit('setLoadingDeckError', null)
