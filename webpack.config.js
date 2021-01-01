@@ -1,7 +1,7 @@
 const path = require('path')
 const slsw = require('serverless-webpack')
 const nodeExternals = require('webpack-node-externals')
-// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
@@ -42,18 +42,24 @@ module.exports = {
         ],
         options: {
           projectReferences: true,
-          transpileOnly: false,
+          transpileOnly: true,
           experimentalWatchApi: true
         }
       }
     ]
   },
   plugins: [
-    // new ForkTsCheckerWebpackPlugin({
-    //   eslint: {
-    //     files: './packages/api/**/*.{ts,js}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
-    //     cache: true
-    //   }
-    // })
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        build: true,
+        extensions: {
+          vue: true
+        }
+      },
+      eslint: {
+        files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+        cache: true
+      }
+    })
   ]
 }
