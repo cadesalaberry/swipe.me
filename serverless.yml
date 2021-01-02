@@ -29,8 +29,19 @@ custom:
     distributionFolder: packages/client/dist
     manageResources: false # make sure we use the s3 created by cloudfront and not a new one
   webpack:
+    packager: yarn
     webpackConfig: ./webpack.config.js
-    includeModules: true
+    includeModules:
+        forceInclude:
+          # - @swipeme.io/client
+          # - @swipeme.io/common
+          - aws-sdk
+          - aws-serverless-express
+          - body-parser
+          - cors
+          - express
+          - http-status
+          - uuid
   customDomain:
     domainName: api.swipeme.io
     stage: ${self:custom.stage}
