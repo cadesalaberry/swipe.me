@@ -61,6 +61,9 @@ export default {
   },
   mounted () {
     const { userHandle } = this.$route.params
+
+    if (!this.isAuthenticated) return
+
     this.$store.dispatch('fetchAllDecksByOwnerHandle', userHandle)
   }
 }
