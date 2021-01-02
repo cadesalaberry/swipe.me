@@ -2,6 +2,7 @@
   {
     "PK": "USER#cadesalaberry",
     "SK": "DECK#banana",
+    "title":"Skills in a Nutshell",
     "cards": [
       {
         "title" : "Degree",
