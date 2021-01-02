@@ -54,7 +54,7 @@ export default {
   },
   mounted () {
     this.shouldShowAvatar = this.$route.path !== '/profile'
-    this.shouldShowPickUsernameDialog = !this.$store.getters.getUsername
+    this.shouldShowPickUsernameDialog = this.isAuthenticated && !this.$store.getters.getUsername
 
     Hub.listen('auth', (reply) => {
       const event = reply.payload.event
