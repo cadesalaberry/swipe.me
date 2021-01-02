@@ -114,6 +114,7 @@ provider:
       Resource:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn"] }
         - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
+        - { "Fn::GetAtt": ["DecksV2DynamoDBTable", "Arn"] }
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
