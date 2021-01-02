@@ -7,8 +7,6 @@ Resources:
       # Generate a name based on the stage
       UserPoolName: ${self:custom.cognito.user-pool}
       # Set email as an alias
-      UsernameAttributes:
-        - email
       AliasAttributes:
         - preferred_username
       AutoVerifiedAttributes:

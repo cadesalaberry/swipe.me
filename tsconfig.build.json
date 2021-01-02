@@ -3,7 +3,8 @@
     "module": "es2015",
     "target": "es5",
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": "./packages"
   },
 
   "exclude": [
