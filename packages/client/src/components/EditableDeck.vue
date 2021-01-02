@@ -74,6 +74,9 @@ export default {
     },
     canAddCard () {
       return !this.tooManyCards && !this.lastCardEmpty
+    },
+    currentUserHandle () {
+      return this.$store.getters.getCurrentUserHandle
     }
   },
 
@@ -87,10 +90,12 @@ export default {
 
   methods: {
     createDeck () {
-      const { deck } = this
-      const deckHandle = deck.deckHandle || Namer.sanitize(deck)
+      const { deck, currentUserHandle } = this
+
+      const deckHandle = deck.deckHandle || Namer.sanitizeHandle(deck.title)
       const deckToCreate = {
         ...deck,
+        ownerHandle: currentUserHandle,
         deckHandle
       }
 
@@ -100,7 +105,7 @@ export default {
           // An error must have occured
           if (!newDeckHandle) return
 
-          this.$router.push(`/decks/${newDeckHandle}`)
+          this.$router.push(`/${currentUserHandle}/${newDeckHandle}`)
           this.$store.commit('resetNewDeck')
         })
     },

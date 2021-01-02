@@ -12,7 +12,7 @@
       <md-button class="md-primary" @click="onDismissError">Dismiss</md-button>
     </md-snackbar>
     <md-dialog :md-active.sync="shouldShowPickUsernameDialog">
-      <change-username @done="shouldShowPickUsernameDialog = false">
+      <change-username @done="showPickUsernameDialog = false">
       </change-username>
     </md-dialog>
   </div>
@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      shouldShowPickUsernameDialog: false,
+      showPickUsernameDialog: true,
       shouldShowAvatar: true
     }
   },
@@ -41,6 +41,9 @@ export default {
   computed: {
     isAuthenticated () {
       return this.$store.getters.isAuthenticated
+    },
+    shouldShowPickUsernameDialog () {
+      return this.showPickUsernameDialog && this.$store.getters.isAuthenticated && !this.$store.getters.getCurrentUserHandle
     },
     userPicture () {
       return this.$store.getters.getProfilePicture
@@ -54,7 +57,6 @@ export default {
   },
   mounted () {
     this.shouldShowAvatar = this.$route.path !== '/profile'
-    this.shouldShowPickUsernameDialog = this.isAuthenticated && !this.$store.getters.getUsername
 
     Hub.listen('auth', (reply) => {
       const event = reply.payload.event
@@ -62,8 +64,8 @@ export default {
       switch (event) {
         case 'signIn':
           console.log('now the user is signed in', data)
-          this.$store.dispatch('fetchUserInfos')
           this.$store.commit('setCognitoUsername', data.username)
+          this.$store.dispatch('fetchUserInfos')
 
           break
         case 'signIn_failure':

@@ -62,7 +62,7 @@ export default new Vuex.Store({
       const infos = state.auth.infos as unknown as User
       return infos?.family_name
     },
-    getUsername (state) {
+    getCurrentUserHandle (state) {
       const infos = state.auth.infos as unknown as User
       return infos?.preferred_username
     },
