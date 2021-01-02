@@ -15,7 +15,7 @@ module.exports = {
     cacheWithContext: false,
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, './tsconfig.json'),
+        configFile: path.resolve(__dirname, slsw.lib.webpack.isLocal ? './tsconfig.json' : './tsconfig.build.json'),
         extensions: ['.ts', '.js']
       })
     ]
