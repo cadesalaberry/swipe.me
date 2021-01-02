@@ -124,7 +124,7 @@ export default {
       return this.$store.getters.getUserEmail
     },
     username () {
-      return this.$store.getters.getUsername
+      return this.$store.getters.getCurrentUserHandle
     }
   },
   methods: {
@@ -154,7 +154,7 @@ export default {
     },
     onChangedUsername () {
       this.shouldShowChangeUsernameDialog = false
-      this.username = this.$store.getters.getUsername
+      this.username = this.$store.getters.getCurrentUserHandle
     },
     onDeleteAccount () {
       this.shouldShowAccountDeletionDialog = true

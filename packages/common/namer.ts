@@ -41,7 +41,7 @@ function getSKFromDeckHandle (deckHandle: string): string {
 }
 
 function sanitizeHandle (handle: string): string {
-  return (handle || '').replace(/[\W_]+/, '').toLowerCase()
+  return (handle || '').replace(/\s+/g, '-').replace(/[\W_-]+/g, '-').toLowerCase()
 }
 
 export default {

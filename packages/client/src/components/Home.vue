@@ -6,7 +6,7 @@
       md-icon="accessible_forward"
       md-label="Work in progress..."
       md-description="You probably want to checkout the demo deck meanwhile.">
-      <md-button href="#/cadesalaberry/banana" class="md-primary md-raised">Demo deck</md-button>
+      <md-button href="cadesalaberry/banana" class="md-primary md-raised">Demo deck</md-button>
     </md-empty-state>
 
     <loader v-if="loading"></loader>
@@ -16,7 +16,7 @@
       md-icon="accessibility_new"
       md-label="Time to get creative"
       md-description="You should go ahead and create your first deck">
-      <md-button href="#/decks/new" class="md-primary md-raised">Create my first deck</md-button>
+      <md-button href="decks/new" class="md-primary md-raised">Create my first deck</md-button>
     </md-empty-state>
 
     <ul v-if="isAuthenticated && decks.length" class="main-content">
@@ -26,13 +26,13 @@
         <deck-summary
           :imageURL="deck.cards[0].picturePath"
           :description="deck.cards[0].description"
-          :title="deck.deckHandle">
+          :title="deck.title">
           </deck-summary>
       </router-link>
       </li>
     </ul>
 
-    <md-button v-if="isAuthenticated && decks.length" href="#/decks/new" class="md-fixed md-fab md-fab-bottom-right">
+    <md-button v-if="isAuthenticated && decks.length" href="decks/new" class="md-fixed md-fab md-fab-bottom-right">
         <md-icon>add</md-icon>
     </md-button>
   </div>
@@ -49,6 +49,9 @@ export default {
     Loader
   },
   computed: {
+    currentUserHandle () {
+      return this.$store.getters.getCurrentUserHandle
+    },
     isAuthenticated () {
       return this.$store.getters.isAuthenticated
     },
@@ -61,10 +64,12 @@ export default {
   },
   mounted () {
     const { userHandle } = this.$route.params
+    const { currentUserHandle } = this
+    const handle = userHandle || currentUserHandle
 
     if (!this.isAuthenticated) return
 
-    this.$store.dispatch('fetchAllDecksByOwnerHandle', userHandle)
+    this.$store.dispatch('fetchAllDecksByOwnerHandle', handle)
   }
 }
 </script>
