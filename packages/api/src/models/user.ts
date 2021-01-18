@@ -73,7 +73,9 @@ const changeUsername = async (username: string, newPreferredUsername: string): P
   const cognitoIdServiceProvider = new CognitoIdentityServiceProvider({
     region: cognitoRegion
   })
-  const updateUserAttributes = (newAttributes: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest) => new Promise((resolve, reject) => {
+  const updateUserAttributes = (
+    newAttributes: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest
+  ): CognitoIdentityServiceProvider.AdminUpdateUserAttributesResponse => new Promise((resolve, reject) => {
     cognitoIdServiceProvider.adminUpdateUserAttributes(newAttributes, (err, data) => {
       if (err) return reject(err)
       return resolve(data)
