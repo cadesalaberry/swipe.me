@@ -46,10 +46,12 @@ app.post('/users/username', (req, res, next) => {
   } = req.body
 
   userModel.changeUsername(username, newPreferredUsername)
-    .then(res.json)
+    .then(reply => res.json(reply))
     .catch((error) => {
+      console.error(error)
       res.status(error.statusCode || 500).json({
         error: 'Could not change username',
+        message: error.message,
         ...error
       })
     })
