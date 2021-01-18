@@ -49,17 +49,17 @@ module.exports = {
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        build: true,
-        extensions: {
-          vue: true
-        }
-      },
-      eslint: {
-        files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
-        cache: true
-      }
-    })
+    // new ForkTsCheckerWebpackPlugin({
+    //   typescript: {
+    //     build: true,
+    //     extensions: {
+    //       vue: true
+    //     }
+    //   },
+    //   eslint: {
+    //     files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+    //     cache: true
+    //   }
+    // })
   ]
 }

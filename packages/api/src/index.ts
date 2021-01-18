@@ -39,9 +39,7 @@ app.get('/config.json', function (_req, res) {
   }
 })
 
-app.get('/users/:userId', userModel.getUserById)
 app.post('/users/username', userModel.changeUsername)
-app.post('/users', userModel.createUser)
 app.get('/decks/:userHandle/:deckHandle', (req, res) => {
   const { deckHandle, userHandle } = req.params
 

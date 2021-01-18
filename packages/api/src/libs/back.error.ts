@@ -11,6 +11,7 @@ interface PrintableError {
 
 export class ExtendableError extends Error {
   public name: string;
+  public message: string;
   public statusCode: number;
 
   constructor (message: string, statusCode: number) {
@@ -29,6 +30,15 @@ export default class BackError extends ExtendableError {
   }
 
   toJSON (): PrintableError {
+    console.log('toJSON', this)
+    return {
+      message: this.message,
+      statusCode: this.statusCode,
+      ...(this.statusCode < 500) ? { name: this.name } : {}
+    }
+  }
+
+  toObject (): PrintableError {
     return {
       message: this.message,
       statusCode: this.statusCode,

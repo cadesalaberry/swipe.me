@@ -1,20 +1,4 @@
 Resources:
-  UsersDynamoDBTable:
-    Type: 'AWS::DynamoDB::Table'
-    DeletionPolicy: Delete
-    Properties:
-      AttributeDefinitions:
-        -
-          AttributeName: userId
-          AttributeType: S
-      KeySchema:
-        -
-          AttributeName: userId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
-      TableName: ${self:custom.tables.users}
   DecksDynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Delete
@@ -31,7 +15,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       TableName: ${self:custom.tables.decks}
-  DecksV2DynamoDBTable:
+  SingleDynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Delete
     Properties:
@@ -52,4 +36,4 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: ${self:custom.tables.decks-v2}
+      TableName: ${self:custom.tables.single}

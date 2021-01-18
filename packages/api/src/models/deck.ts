@@ -5,11 +5,11 @@ import BackError from '../libs/back.error'
 import type { GetItemInput, PutItemInput, QueryInput } from 'aws-sdk/clients/dynamodb'
 import type { Deck, NewDeck } from '@swipeme.io/common/types'
 
-const DECKS_TABLE = process.env.DECKS_TABLE || ''
+const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
 
 const getDeckByHandle = (userHandle: string, deckHandle: string): Promise<Deck> => {
   const params = {
-    TableName: DECKS_TABLE,
+    TableName: SINGLE_TABLE,
     Key: {
       PK: Namer.getPKFromUserHandle(userHandle),
       SK: Namer.getSKFromDeckHandle(deckHandle)
@@ -30,7 +30,7 @@ const getDeckByHandle = (userHandle: string, deckHandle: string): Promise<Deck> 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getDecksByUserHandle = (ownerHandle: string): Promise<Deck[]> => {
   const params = {
-    TableName: DECKS_TABLE,
+    TableName: SINGLE_TABLE,
     KeyConditionExpression: 'PK = :ownerHandle AND begins_with ( SK, :sortKey )',
     Select: 'ALL_ATTRIBUTES',
     ExpressionAttributeValues: {
@@ -69,7 +69,7 @@ const createDeck = ({ deckHandle, cards, ownerHandle, title }: NewDeck): Promise
 
   const createdAt = new Date().toISOString()
   const params = {
-    TableName: DECKS_TABLE,
+    TableName: SINGLE_TABLE,
     Item: {
       PK: Namer.getPKFromUserHandle(ownerHandle),
       SK: Namer.getSKFromDeckHandle(deckHandle),
