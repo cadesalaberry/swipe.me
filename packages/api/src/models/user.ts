@@ -79,7 +79,7 @@ const changeUsername = async (username: string, newPreferredUsername: string): P
       return resolve(data)
     })
   })
-  const getOldPreferredUsername = (username: string) => new Promise<string>((resolve, reject) => {
+  const getOldPreferredUsername = (username: string) => new Promise<string|undefined>((resolve, reject) => {
     const params: CognitoIdentityServiceProvider.Types.AdminGetUserRequest = {
       UserPoolId: cognitoUserPoolId,
       Username: username
@@ -89,8 +89,6 @@ const changeUsername = async (username: string, newPreferredUsername: string): P
       const attributes = data.UserAttributes || []
       const [attribute] = attributes.filter((o) => o.Name === 'preferred_username')
       const preferredUsername = attribute?.Value
-
-      if (!preferredUsername) throw new BackError('User has no preferred_username', httpStatus.FORBIDDEN)
 
       return resolve(preferredUsername)
     })
@@ -113,8 +111,10 @@ const changeUsername = async (username: string, newPreferredUsername: string): P
 
   if (entries && entries.length) throw new BackError('This username is already taken', httpStatus.CONFLICT)
 
-  const oldPreferredUsername = await getOldPreferredUsername(username)
-  const oldEntries = await getAllEntriesForUsername(oldPreferredUsername)
+  const oldPreferredUsername = await getOldPreferredUsername(username) || ''
+  const oldEntries = oldPreferredUsername
+    ? await getAllEntriesForUsername(oldPreferredUsername)
+    : []
 
   await addAllEntriesToUsername(oldEntries, newPreferredUsername)
     .then(() => deleteAllEntries(oldEntries))
