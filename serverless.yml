@@ -115,6 +115,7 @@ provider:
     - Effect: Allow
       Action:
         - 'cognito-idp:AdminUpdateUserAttributes' # To update username
+        - 'cognito-idp:AdminGetUser' # To get user attributes
       Resource:
         - { "Fn::GetAtt": ["CognitoUserPool", "Arn"] }
 
