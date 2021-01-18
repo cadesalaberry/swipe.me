@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // Needed for yarn api
+    "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
     "strictNullChecks": true,
     "declaration": true,

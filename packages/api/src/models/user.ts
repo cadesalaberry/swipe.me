@@ -1,90 +1,77 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk'
+import asyncPool from 'tiny-async-pool'
+import Namer from '@swipeme.io/common/namer'
 
 import { getConfig } from '../config'
 import dynamoDb from '../libs/dynamodb-lib'
+import BackError from '../libs/back.error'
 
+import type { DeleteItemInput, DocumentClient, PutItemInput, QueryInput } from 'aws-sdk/clients/dynamodb'
 import type { Handler } from 'express'
 
-const USERS_TABLE = process.env.USERS_TABLE || ''
+const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
 
-const getUserById: Handler = (req, res) => {
+const validateUsername = (username: string) => {
+  if (Namer.sanitizeHandle(username) !== username) throw new Error('Username contains invalid characters')
+}
+
+const getAllEntriesForUsername = (username: string) => {
   const params = {
-    TableName: USERS_TABLE,
-    Key: {
-      userId: { S: req.params.userId }
+    TableName: SINGLE_TABLE,
+    KeyConditionExpression: 'PK = :ownerHandle',
+    Select: 'ALL_ATTRIBUTES',
+    ExpressionAttributeValues: {
+      ':ownerHandle': Namer.getPKFromUserHandle(username)
     }
   }
 
   return dynamoDb
-    .get(params)
-    .then((result) => {
-      if (!result.Item) {
-        return res.status(404).json({
-          error: 'User not found'
-        })
-      }
-
-      const {
-        userId,
-        name
-      } = result.Item
-
-      res.json({
-        userId,
-        name
-      })
-    })
-    .catch((error) => {
-      res.status(400).json({
-        message: 'Could not get user',
-        error
-      })
-    })
+    .query(params as QueryInput)
+    .then((result) => result.Items || [])
 }
 
-const createUser: Handler = (req, res) => {
-  const {
-    userId,
-    name
-  } = req.body
-
-  if (typeof userId !== 'string') {
-    res.status(400).json({
-      error: '"userId" must be a string'
-    })
-  } else if (typeof name !== 'string') {
-    res.status(400).json({
-      error: '"name" must be a string'
-    })
+const deleteAllEntries = (entries: DocumentClient.ItemList) => {
+  const deleteSingleEntry = (entry: DocumentClient.AttributeMap) => {
+    return dynamoDb
+      .delete({
+        TableName: SINGLE_TABLE,
+        Key: {
+          PK: entry.PK,
+          SK: entry.SK
+        }
+      } as DeleteItemInput)
+      .then((result) => result.Attributes)
   }
 
-  const params = {
-    TableName: USERS_TABLE,
-    Item: {
-      userId: userId,
-      name: name
-    }
+  return asyncPool(5, entries, deleteSingleEntry)
+}
+
+const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: string) => {
+  const createSingleEntry = (entry: DocumentClient.AttributeMap) => {
+    return dynamoDb
+      .put({
+        TableName: SINGLE_TABLE,
+        Item: {
+          ...entry,
+          PK: Namer.getPKFromUserHandle(username)
+        }
+      } as PutItemInput)
+      .then((result) => result.Attributes)
   }
 
-  return dynamoDb.put(params)
-    .then(() => {
-      res.json({
-        userId,
-        name
-      })
-    })
-    .catch((error) => {
-      res.status(400).json({
-        message: 'Could not create user',
-        error
-      })
-    })
+  return asyncPool(5, entries, createSingleEntry)
 }
 
 const changeUsername: Handler = async (req, res) => {
   const { cognitoRegion, cognitoUserPoolId } = getConfig()
   const cognitoIdServiceProvider = new CognitoIdentityServiceProvider({
     region: cognitoRegion
+  })
+  const updateUserAttributes = (newAttributes: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest) => new Promise((resolve, reject) => {
+    cognitoIdServiceProvider.adminUpdateUserAttributes(newAttributes, (err, data) => {
+      if (err) return reject(err)
+      return resolve(data)
+    })
   })
 
   const {
@@ -103,15 +90,27 @@ const changeUsername: Handler = async (req, res) => {
     Username: username
   }
 
-  return new Promise((resolve, reject) => {
-    cognitoIdServiceProvider
-      .adminUpdateUserAttributes(params, (err, data) => {
-        if (err) return reject(err)
-        return resolve(data)
-      })
-  })
+  return Promise.resolve()
+    .then(() => validateUsername(newPreferredUsername))
+    .then(() => console.log('name validated'))
+    .then(() => getAllEntriesForUsername(newPreferredUsername))
+    .then((entries) => {
+      if (entries && entries.length) throw new BackError('This username is already taken')
+      // if (true) throw new BackError('This username is already taken')
+    })
+    .then(() => getAllEntriesForUsername(newPreferredUsername))
+    .then((entries) => {
+      console.log('entries2', entries)
+      return addAllEntriesToUsername(entries, newPreferredUsername)
+        .then(() => deleteAllEntries(entries))
+    })
+    .then(() => updateUserAttributes(params))
     .then(() => res.json({ username, newPreferredUsername }))
     .catch((error) => {
+      console.log(error)
+      console.log('string', error.toString())
+      console.log('toJSON', error.toJSON())
+      console.log('stringify', JSON.stringify(error))
       res.status(400).json({
         message: 'Could not change username',
         error
@@ -120,7 +119,5 @@ const changeUsername: Handler = async (req, res) => {
 }
 
 export default {
-  changeUsername,
-  getUserById,
-  createUser
+  changeUsername
 }
