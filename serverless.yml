@@ -41,6 +41,7 @@ custom:
           - cors
           - express
           - http-status
+          - tiny-async-pool
           - uuid
   customDomain:
     domainName: api.swipeme.io
