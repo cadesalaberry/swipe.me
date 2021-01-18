@@ -7,7 +7,13 @@ import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
 import type { DeleteItemInput, DocumentClient, PutItemInput, QueryInput } from 'aws-sdk/clients/dynamodb'
-import type { Handler } from 'express'
+import httpStatus from 'http-status'
+
+interface ChangeUsernameReply {
+  oldPreferredUsername: string;
+  newPreferredUsername: string;
+  username: string;
+}
 
 const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
 
@@ -62,7 +68,7 @@ const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: str
   return asyncPool(5, entries, createSingleEntry)
 }
 
-const changeUsername: Handler = async (req, res) => {
+const changeUsername = async (username: string, newPreferredUsername: string): Promise<ChangeUsernameReply> => {
   const { cognitoRegion, cognitoUserPoolId } = getConfig()
   const cognitoIdServiceProvider = new CognitoIdentityServiceProvider({
     region: cognitoRegion
@@ -73,11 +79,22 @@ const changeUsername: Handler = async (req, res) => {
       return resolve(data)
     })
   })
+  const getOldPreferredUsername = (username: string) => new Promise<string>((resolve, reject) => {
+    const params: CognitoIdentityServiceProvider.Types.AdminGetUserRequest = {
+      UserPoolId: cognitoUserPoolId,
+      Username: username
+    }
+    cognitoIdServiceProvider.adminGetUser(params, (err, data) => {
+      if (err) return reject(err)
+      const attributes = data.UserAttributes || []
+      const [attribute] = attributes.filter((o) => o.Name === 'preferred_username')
+      const preferredUsername = attribute?.Value
 
-  const {
-    username,
-    newPreferredUsername
-  } = req.body
+      if (!preferredUsername) throw new BackError('User has no preferred_username', httpStatus.FORBIDDEN)
+
+      return resolve(preferredUsername)
+    })
+  })
 
   const params = {
     UserAttributes: [
@@ -90,32 +107,25 @@ const changeUsername: Handler = async (req, res) => {
     Username: username
   }
 
-  return Promise.resolve()
-    .then(() => validateUsername(newPreferredUsername))
-    .then(() => console.log('name validated'))
-    .then(() => getAllEntriesForUsername(newPreferredUsername))
-    .then((entries) => {
-      if (entries && entries.length) throw new BackError('This username is already taken')
-      // if (true) throw new BackError('This username is already taken')
-    })
-    .then(() => getAllEntriesForUsername(newPreferredUsername))
-    .then((entries) => {
-      console.log('entries2', entries)
-      return addAllEntriesToUsername(entries, newPreferredUsername)
-        .then(() => deleteAllEntries(entries))
-    })
-    .then(() => updateUserAttributes(params))
-    .then(() => res.json({ username, newPreferredUsername }))
-    .catch((error) => {
-      console.log(error)
-      console.log('string', error.toString())
-      console.log('toJSON', error.toJSON())
-      console.log('stringify', JSON.stringify(error))
-      res.status(400).json({
-        message: 'Could not change username',
-        error
-      })
-    })
+  await validateUsername(newPreferredUsername)
+
+  const entries = await getAllEntriesForUsername(newPreferredUsername)
+
+  if (entries && entries.length) throw new BackError('This username is already taken', httpStatus.CONFLICT)
+
+  const oldPreferredUsername = await getOldPreferredUsername(username)
+  const oldEntries = await getAllEntriesForUsername(oldPreferredUsername)
+
+  await addAllEntriesToUsername(oldEntries, newPreferredUsername)
+    .then(() => deleteAllEntries(oldEntries))
+
+  await updateUserAttributes(params)
+
+  return {
+    username,
+    newPreferredUsername,
+    oldPreferredUsername
+  }
 }
 
 export default {

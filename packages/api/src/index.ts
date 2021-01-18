@@ -39,7 +39,21 @@ app.get('/config.json', function (_req, res) {
   }
 })
 
-app.post('/users/username', userModel.changeUsername)
+app.post('/users/username', (req, res, next) => {
+  const {
+    username,
+    newPreferredUsername
+  } = req.body
+
+  userModel.changeUsername(username, newPreferredUsername)
+    .then(res.json)
+    .catch((error) => {
+      res.status(error.statusCode || 500).json({
+        error: 'Could not change username',
+        ...error
+      })
+    })
+})
 app.get('/decks/:userHandle/:deckHandle', (req, res) => {
   const { deckHandle, userHandle } = req.params
 

@@ -3,46 +3,17 @@
  */
 import * as httpStatus from 'http-status'
 
-interface PrintableError {
-  name?: string;
-  message: string;
-  statusCode: number;
-}
-
-export class ExtendableError extends Error {
+export default class BackError extends Error {
   public name: string;
-  public message: string;
+  public details: string;
   public statusCode: number;
 
-  constructor (message: string, statusCode: number) {
+  constructor (message: string, statusCode: number = httpStatus.INTERNAL_SERVER_ERROR) {
     super(message)
     this.name = this.constructor.name
-    this.message = message
+    this.details = message
     this.statusCode = statusCode
 
     Error.captureStackTrace(this, this.constructor)
-  }
-}
-
-export default class BackError extends ExtendableError {
-  constructor (message: string, statusCode = httpStatus.INTERNAL_SERVER_ERROR) {
-    super(message, statusCode)
-  }
-
-  toJSON (): PrintableError {
-    console.log('toJSON', this)
-    return {
-      message: this.message,
-      statusCode: this.statusCode,
-      ...(this.statusCode < 500) ? { name: this.name } : {}
-    }
-  }
-
-  toObject (): PrintableError {
-    return {
-      message: this.message,
-      statusCode: this.statusCode,
-      ...(this.statusCode < 500) ? { name: this.name } : {}
-    }
   }
 }

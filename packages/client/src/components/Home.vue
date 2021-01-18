@@ -1,25 +1,33 @@
 <template>
   <div class="home">
 
+    <loader v-if="loading"></loader>
+
     <md-empty-state
-      v-if="!isAuthenticated"
+      v-else-if="!isAuthenticated"
       md-icon="accessible_forward"
       md-label="Work in progress..."
       md-description="You probably want to checkout the demo deck meanwhile.">
       <md-button href="cadesalaberry/banana" class="md-primary md-raised">Demo deck</md-button>
     </md-empty-state>
 
-    <loader v-if="loading"></loader>
-
     <md-empty-state
-      v-else-if="isAuthenticated && !decks.length"
+      v-else-if="isMe && isAuthenticated && !decks.length"
       md-icon="accessibility_new"
       md-label="Time to get creative"
       md-description="You should go ahead and create your first deck">
       <md-button href="decks/new" class="md-primary md-raised">Create my first deck</md-button>
     </md-empty-state>
 
-    <ul v-if="isAuthenticated && decks.length" class="main-content">
+    <md-empty-state
+      v-else-if="!isMe && isAuthenticated && !decks.length"
+      md-icon="production_quantity_limits"
+      md-label="There is just emptiness"
+      md-description="This user seems to want to keep his stuff for himself">
+      <md-button href="/" class="md-primary md-raised">Go home</md-button>
+    </md-empty-state>
+
+    <ul v-else-if="isAuthenticated && decks.length" class="main-content">
       <div class="intro-text">Have a look at the decks already on the platform</div>
       <li v-for="deck in decks" :key="deck.deckHandle">
       <router-link :to="deck.ownerHandle + '/' + deck.deckHandle">
@@ -54,6 +62,11 @@ export default {
     },
     isAuthenticated () {
       return this.$store.getters.isAuthenticated
+    },
+    isMe () {
+      const { userHandle } = this.$route.params
+      const { currentUserHandle } = this
+      return userHandle === currentUserHandle || !userHandle
     },
     loading () {
       return this.$store.getters.getLoadingDecksStatus
