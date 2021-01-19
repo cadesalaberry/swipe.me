@@ -130,6 +130,7 @@ provider:
     AWS_S3_REGION: ${self:provider.region}
     AWS_S3_BUCKET: !Ref S3Bucket
     STAGE: ${self:custom.stage}
+    USERNAME_ZERO: cadesalaberry
     DECKS_TABLE: ${self:custom.tables.decks}
     SINGLE_TABLE: ${self:custom.tables.single}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodb-url}

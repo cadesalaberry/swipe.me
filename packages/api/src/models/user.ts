@@ -16,9 +16,17 @@ interface ChangeUsernameReply {
 }
 
 const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
+const USERNAME_ZERO = process.env.USERNAME_ZERO || ''
+const RESERVED_USERNAMES = [
+  'login',
+  'profile',
+  'decks'
+]
 
 const validateUsername = (username: string) => {
+  if (!username) throw new Error('Username cannot be empty')
   if (Namer.sanitizeHandle(username) !== username) throw new Error('Username contains invalid characters')
+  if (RESERVED_USERNAMES.includes(username)) throw new Error('Username is reserved')
 }
 
 const getAllEntriesForUsername = (username: string) => {
@@ -110,18 +118,19 @@ const changeUsername = async (username: string, newPreferredUsername: string): P
   await validateUsername(newPreferredUsername)
 
   const entries = await getAllEntriesForUsername(newPreferredUsername)
+  const isUsernameZero = newPreferredUsername === USERNAME_ZERO
 
-  if (entries && entries.length) throw new BackError('This username is already taken', httpStatus.CONFLICT)
+  if (!isUsernameZero && entries?.length) throw new BackError('This username is already taken', httpStatus.CONFLICT)
 
   const oldPreferredUsername = await getOldPreferredUsername(username) || ''
   const oldEntries = oldPreferredUsername
     ? await getAllEntriesForUsername(oldPreferredUsername)
     : []
 
+  await updateUserAttributes(params)
+
   await addAllEntriesToUsername(oldEntries, newPreferredUsername)
     .then(() => deleteAllEntries(oldEntries))
-
-  await updateUserAttributes(params)
 
   return {
     username,
