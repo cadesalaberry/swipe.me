@@ -60,9 +60,10 @@ export default {
 
         setTimeout(() => this.$emit('done'), 300)
       } catch (e) {
-        console.log(e)
+        const message = e.response?.data?.message || e.message
+        console.log(message, e)
         Sentry.captureException(e)
-        this.errorMessage = e.message
+        this.errorMessage = message
       }
       this.sending = false
     }
