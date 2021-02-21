@@ -27,12 +27,13 @@ const Seeder = {
    * Backs up the cognito users to the `.dumps` folder
    * 
    * @param {String} userPoolId the ID of the pool you want to backup
+   * @param {String} exportFolder the folder where to store the backup
    */
-  dumpCognitoFromUserPoolId: (userPoolId) => {
+  dumpCognitoFromUserPoolId: (userPoolId, exportFolder) => {
     const cognitoParams = Seeder.getCognitoParams(userPoolId)
     const cognitoISP = new AWS.CognitoIdentityServiceProvider(cognitoParams)
     
-    return cognitoBackup.backupUsers(cognitoISP, userPoolId, EXPORT_FOLDER)
+    return cognitoBackup.backupUsers(cognitoISP, userPoolId, exportFolder)
   },
 
     /**
@@ -43,19 +44,32 @@ const Seeder = {
   dumpDataFromStage: async (stageName) => {
   
     const exportFolder = path.join(EXPORT_FOLDER, stageName)
-    const tableName = Seeder.getDynamoDBTableFromStage(stageName)
-    const exportDBFile = path.join(EXPORT_FOLDER, stageName, `dynamodb.json`)
+    const exportCognitoFolder = path.join(EXPORT_FOLDER, stageName)
+    const exportDBDeckFile = path.join(EXPORT_FOLDER, stageName, `dynamodb-deck.json`)
+    const exportDBSingleFile = path.join(EXPORT_FOLDER, stageName, `dynamodb-single.json`)
     const exportS3Folder = path.join(EXPORT_FOLDER, stageName, 's3')
     const s3Name = 'api-swipe-me-master-s3bucket-156n8almk2y5u'
+    const userPoolId = 'eu-west-1_gFeeEp3Mo'
+
+    console.log(`Dumping data for stage ${stageName}:`)
+    console.log(`* Dumping data from user pool ${userPoolId}...`)
+    Seeder.dumpCognitoFromUserPoolId(userPoolId, exportCognitoFolder)
 
     fs.mkdirSync(exportFolder, { recursive: true })
 
-    console.log(`Saving data from table ${tableName}...`)
-    await Seeder.dumpDataFromDynamoDBTable(tableName, exportDBFile)
+    console.log(`* Dumping data from table decks-table-${stageName}...`)
+    await Seeder.dumpDataFromDynamoDBTable(`decks-table-${stageName}`, exportDBDeckFile)
+
+    if (stageName !== 'master') {
+      console.log(`* Dumping data from table single-table-${stageName}...`)
+      await Seeder.dumpDataFromDynamoDBTable(`single-table-${stageName}`, exportDBSingleFile)
+    }
 
     fs.mkdirSync(exportS3Folder, { recursive: true })
 
     await Seeder.dumpFilesFromS3(s3Name, exportS3Folder)
+
+    console.log(`Done dumping data for stage ${stageName}...`)
   },
 
   /**
@@ -82,17 +96,17 @@ const Seeder = {
    * @param {String} s3Name the name of the s3 bucket you want to backup
    */
   dumpFilesFromS3: async (s3Name, exportFolder) => {
-    // const params = Seeder.getCognitoParams()
-    // var s3 = new AWS.S3(params);
     const awsArgs = ['s3', 'sync', `s3://${s3Name}`, exportFolder]
-    console.log(`Running command: aws ${awsArgs.join(' ')}`)
+
+    // console.log(`Running command: aws ${awsArgs.join(' ')}`)
+
     const running = spawnSync('aws', awsArgs, { env: { PATH } })
     const results = [
       (running.stdout || '').toString(),
       (running.stderr || '').toString(),
     ]
 
-    console.log(results)
+    // console.log(results.join('\n\n\n'))
 
     return results
   },
@@ -132,13 +146,6 @@ const Seeder = {
   getStageNameFromBranch: function (branchName) {
     return brancher.dashify(branchName)
   },
-
-  /**
-   * @param {String} stageName the stageName to get the stage from
-   */
-  getDynamoDBTableFromStage: function (stageName) {
-    return `decks-table-${stageName}`
-  }
 }
 
 const main = async () => {
