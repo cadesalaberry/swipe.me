@@ -19,7 +19,7 @@ const syntax = `
 By default data will be imported from master to the stage associated to the current branch.
 Usage:
   seeder.js
-  seeder.js [--from-branch=<source-branch>] [<target-branch>]
+  seeder.js [--from-cache] [--dump-only] [--from-branch=<source-branch>] [<target-branch>]
 `
 
 const Seeder = {
@@ -44,18 +44,18 @@ const Seeder = {
   dumpDataFromStage: async (stageName) => {
   
     const exportFolder = path.join(EXPORT_FOLDER, stageName)
-    const exportCognitoFolder = path.join(EXPORT_FOLDER, stageName)
-    const exportDBDeckFile = path.join(EXPORT_FOLDER, stageName, `dynamodb-deck.json`)
-    const exportDBSingleFile = path.join(EXPORT_FOLDER, stageName, `dynamodb-single.json`)
-    const exportS3Folder = path.join(EXPORT_FOLDER, stageName, 's3')
+    const exportCognitoFolder = exportFolder
+    const exportDBDeckFile = path.join(exportFolder, `dynamodb-deck.json`)
+    const exportDBSingleFile = path.join(exportFolder, `dynamodb-single.json`)
+    const exportS3Folder = path.join(exportFolder, 's3')
     const s3Name = 'api-swipe-me-master-s3bucket-156n8almk2y5u'
     const userPoolId = 'eu-west-1_gFeeEp3Mo'
 
     console.log(`Dumping data for stage ${stageName}:`)
-    console.log(`* Dumping data from user pool ${userPoolId}...`)
-    Seeder.dumpCognitoFromUserPoolId(userPoolId, exportCognitoFolder)
-
     fs.mkdirSync(exportFolder, { recursive: true })
+
+    console.log(`* Dumping data from user pool ${userPoolId}...`)
+    await Seeder.dumpCognitoFromUserPoolId(userPoolId, exportCognitoFolder)
 
     console.log(`* Dumping data from table decks-table-${stageName}...`)
     await Seeder.dumpDataFromDynamoDBTable(`decks-table-${stageName}`, exportDBDeckFile)
@@ -70,6 +70,27 @@ const Seeder = {
     await Seeder.dumpFilesFromS3(s3Name, exportS3Folder)
 
     console.log(`Done dumping data for stage ${stageName}...`)
+  },
+
+  /**
+   * Backs up all data from stage to the `.dumps` folder
+   *
+   * @param {String} stageName the name of the stage you want to backup data from
+   */
+  injectDataToStage: async (sourceStage, targetStage) => {
+    const sourceFolder = path.join(EXPORT_FOLDER, sourceStage)
+    const sourceDBDeckFile = path.join(sourceFolder, `dynamodb-deck.json`)
+    const sourceDBSingleFile = path.join(sourceFolder, `dynamodb-single.json`)
+
+    console.log(`Injecting data to stage ${targetStage}:`)
+
+    console.log(`* Injecting data to table decks-table-${targetStage}...`)
+    await Seeder.seedDataFromDynamoDBTable(`decks-table-${targetStage}`, sourceDBDeckFile)
+
+    console.log(`* Injecting data to table single-table-${targetStage}...`)
+    await Seeder.seedDataFromDynamoDBTable(`single-table-${targetStage}`, sourceDBSingleFile)
+
+    console.log(`Done injecting data to stage ${targetStage}.`)
   },
 
   /**
@@ -88,6 +109,34 @@ const Seeder = {
     fs.writeFileSync(exportDBFile, stringContent)
 
     return scanResults
+  },
+
+    /**
+   * Inject the provided JSON into the given table
+   *
+   * @param {String} tableName the name of the table you want to backup
+   * @param {String} jsonDataLocation the items to add to the table
+   */
+  seedDataFromDynamoDBTable: async (tableName, jsonDataLocation) => {
+    const params = Seeder.getCognitoParams()
+    const dynamoDB = new AWS.DynamoDB.DocumentClient(params)
+    const { Count, Items: items } = require(jsonDataLocation)
+    const putItem = async (item) => {
+      const putQuery = {
+        TableName: tableName,
+        Item: item,
+      }
+
+      const reply = await dynamoDB.put(putQuery).promise()
+
+      console.log(putQuery, reply)
+
+      return reply
+    }
+
+    console.log(jsonDataLocation, Count)
+
+    return Promise.all(items.map(putItem))
   },
 
     /**
@@ -151,21 +200,25 @@ const Seeder = {
 const main = async () => {
   const options = neodoc.run(syntax)
 
+  console.log(options)
+
   // let masterPoolId = 'eu-west-1_gFeeEp3Mo'
   // let targetUserPoolId = 'eu-west-1_w2a8KV3G1'
-  let targetBranchName = options['<target-branch>'] || brancher.getBranchName()
-  let sourceBranchName = options['<source-branch>'] || 'master'  
+  const targetBranchName = options['<target-branch>'] || brancher.getBranchName()
+  const sourceBranchName = options['--from-branch'] || 'master'
+  const dumpOnly = options['--dump-only']
+  const fromCache = options['--from-cache']
 
   const sourceStage = Seeder.getStageNameFromBranch(sourceBranchName)
   const targetStage = Seeder.getStageNameFromBranch(targetBranchName)
 
-  await Seeder.dumpDataFromStage(sourceStage)
-  // console.log(`Saving users in pool ${targetUserPoolId}...`)
-  // await Seeder.dumpCognitoFromUserPoolId(targetUserPoolId)
-  // console.log(`Importing users from pool ${masterPoolId} to pool ${targetUserPoolId}...`)
-  // await Seeder.seedCognitoWithUserPoolId(masterPoolId, targetUserPoolId)
-  // console.log(`Saving users in pool ${targetUserPoolId}...`)
-  // await Seeder.dumpCognitoFromUserPoolId(targetUserPoolId)
+  console.log(`Seeding stage...\nfrom: ${sourceStage}\nto  : ${targetStage}`)
+
+  if (!fromCache) await Seeder.dumpDataFromStage(sourceStage)
+  else console.log('Using cache. skipping data dump')
+
+  if (!dumpOnly) await Seeder.injectDataToStage(sourceStage, targetStage)
+  else console.log('Dump only mode. skipping data injection')
 
   console.log(`Work on branch "${sourceBranchName}" done.`)
 }
