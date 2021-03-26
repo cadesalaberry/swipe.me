@@ -40,7 +40,7 @@
     "@types/aws-serverless-express": "3.3.3",
     "@types/cors": "2.8.9",
     "@types/express": "4.17.8",
-    "@types/node": "12.12.39",
+    "@types/node": "14.14.36",
     "@types/uuid": "8.3.0",
     "@types/tiny-async-pool": "^1.0.0",
     "@types/webpack-dev-server": "^3.11.1",
