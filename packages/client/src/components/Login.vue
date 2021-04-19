@@ -8,7 +8,8 @@
           <div class="md-title">Fancy seeing you here!</div>
         </md-card-header>
 
-        <md-card-content>
+        <md-card-content class="md-alignment-center-center"
+                         v-if="!googleLoginEnabled">
           <md-field :class="getValidationClass('email')">
             <label for="email">Email</label>
             <md-input type="email" name="email" id="email"
@@ -33,14 +34,21 @@
           </md-field>
         </md-card-content>
 
+        <md-card-content class="md-alignment-center-center"
+                         v-if="googleLoginEnabled">
+          <md-button class="md-alignment-center-center" @click="loginWithGoogle">
+            <md-icon :md-src="require('@/assets/google_g_logo.svg')" />
+          </md-button>
+        </md-card-content>
+
         <md-card-actions>
           <md-button type="submit"
+                     v-if="!googleLoginEnabled"
                      class="md-primary"
                      :disabled="sending">Login</md-button>
         </md-card-actions>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
       </md-card>
-      <md-button class="md-raised md-primary" @click="loginWithGoogle">Login with Google</md-button>
     </form>
   </div>
 </template>
@@ -48,9 +56,13 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 
+import GoogleGLogo from '@/assets/google_g_logo.svg'
+
 export default {
   name: 'Home',
   data: () => ({
+    googleLoginIcon: GoogleGLogo,
+    googleLoginEnabled: true,
     emailValue: null,
     passwordValue: null,
     sending: false

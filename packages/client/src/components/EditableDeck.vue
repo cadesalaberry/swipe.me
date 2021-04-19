@@ -7,10 +7,6 @@
         v-model="deck.title"
         @keyup="saveDeckLocally"
         placeholder="Name of the deck">
-
-      <button
-        @click="createDeck()"
-        class="">Create</button>
     </div>
     <loader v-if="loading"></loader>
 
@@ -33,6 +29,10 @@
                @click="addEmptyCard(deck)">
       <md-icon>add</md-icon>
     </md-button>
+
+    <md-button
+        @click="createDeck()"
+        class="md-primary md-raised">Create Deck</md-button>
   </div>
 </template>
 
