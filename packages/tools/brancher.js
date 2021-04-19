@@ -86,6 +86,18 @@ const Brancher = {
     const firstLetter = string[0] // the shortened string should always start with a letter
 
     return `${firstLetter}${string.substring(breakpoint)}-${hash}`
+  },
+
+  /**
+   * AWS does not allow stage names to contain "aws" in its name.
+   * Turns: dependabot/npm_and_yarn/aws-sdk-2.887.0
+   * Into : dependabot/npm_and_yarn/swa-sdk-2.887.0
+   *
+   * @param {string} stageName the stageName to sanitize
+   * @returns {string}
+   */
+  awsSanitize: function (stageName) {
+    return (stageName || '').replace('aws', 'swa')
   }
 }
 

@@ -1,7 +1,8 @@
 const Brancher = require('@swipeme.io/tools/brancher')
 
 module.exports = (serverless) => {
-  const { stage } = serverless.variables.options
+  const { stage: originalStageName } = serverless.variables.options
+  const stage = Brancher.awsSanitize(originalStageName)
   const snakedStage = Brancher.snakeify(stage)
   const shortStageName = Brancher.shortenStringToXCharacters(stage, 29)
   // cognito.domain(63): swipeme-io-${stage}
