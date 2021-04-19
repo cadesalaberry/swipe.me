@@ -4719,10 +4719,10 @@ autoprefixer@^9.8.6:
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
 
-aws-amplify-vue@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/aws-amplify-vue/-/aws-amplify-vue-2.1.2.tgz#09c72b0724279fa167e879c04cbbd6bc49e7bfa0"
-  integrity sha512-1Iay7FDgWI2kE0amSHkIqYA1bJLkLq08DWoGF6JHtxTRRCJ/CNstpRf+j1L30h+ry4DlBh00+ABe5PnJqTiuVA==
+aws-amplify-vue@2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/aws-amplify-vue/-/aws-amplify-vue-2.1.5.tgz#56e2a79ee924bd108dea4d9b6e7613142e936569"
+  integrity sha512-Dr/ZJJUHlvCanIjcrzhPmOt3QhTBvpDvxRs2L9UOdSs9klqxuA04Akwl1dxeaaYL9UZ0VXF0LGu/PPootcO0bg==
   dependencies:
     lodash.orderby "^4.6.0"
     qrcode.vue "^1.6.0"
