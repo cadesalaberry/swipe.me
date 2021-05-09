@@ -3,6 +3,7 @@
   "compilerOptions": {
     "preserveConstEnums": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "declaration": true,
     "sourceMap": true,
     "allowJs": true,
