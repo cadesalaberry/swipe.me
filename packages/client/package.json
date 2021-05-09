@@ -13,7 +13,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@sentry/browser": "5.26.0",
+    "@sentry/browser": "6.3.5",
     "@sentry/integrations": "6.3.5",
     "@swipeme.io/common": "*",
     "aws-amplify": "3.3.10",
