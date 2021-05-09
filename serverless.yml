@@ -165,6 +165,10 @@ functions:
           path: /decks/{userHandle}/{deckHandle}
           method: GET
           cors: true
+      - http:
+          path: /decks/{userHandle}/{deckHandle}
+          method: POST
+          cors: true
 
 # Create our resources with separate CloudFormation templates
 resources:
