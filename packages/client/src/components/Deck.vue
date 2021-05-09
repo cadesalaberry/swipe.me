@@ -48,6 +48,11 @@
           class="back-button" />
       </transition>
     </div>
+    <md-button title="Edit deck"
+               class="md-fixed md-fab md-primary md-fab-bottom-right"
+               @click="editDeck()">
+      <md-icon>edit</md-icon>
+    </md-button>
   </div>
 </template>
 
@@ -116,6 +121,11 @@ export default {
   },
 
   methods: {
+    editDeck () {
+      const { deckHandle, userHandle } = this.$route.params
+
+      this.$router.push(`/${userHandle}/${deckHandle}/edit`)
+    },
     previousCard () {
       const swingCard = this.$refs.vueswing.cards[this.currentIndex - 1]
       const card = this.cards[this.currentIndex - 1]

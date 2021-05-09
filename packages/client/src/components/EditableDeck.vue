@@ -4,6 +4,7 @@
     <div class="top-bar">
       <input
         class="deck-name"
+        :disabled="editionModeEnabled"
         v-model="deck.title"
         @keyup="saveDeckLocally"
         placeholder="Name of the deck">
@@ -22,17 +23,20 @@
       />
     </div>
 
-    <md-button href="#/decks/new"
-               v-if="canAddCard"
-               title="Add a card"
+    <div
+      v-if="canAddCard"
+      @click="addEmptyCard(deck)"
+      class="card md-elevation-1"
+    >
+      <md-icon class="md-size-5x new-card-icon">add</md-icon>
+    </div>
+
+    <md-button title="Save deck"
                class="md-fixed md-fab md-primary md-fab-bottom-right"
-               @click="addEmptyCard(deck)">
-      <md-icon>add</md-icon>
+               @click="createDeck()">
+      <md-icon>save</md-icon>
     </md-button>
 
-    <md-button
-        @click="createDeck()"
-        class="md-primary md-raised">Create Deck</md-button>
   </div>
 </template>
 
@@ -46,7 +50,7 @@ const MAX_CARD_COUNT = 9
 export default {
   name: 'EditableDeck',
   props: {
-    subtitle: String
+    editionModeEnabled: Boolean
   },
   components: {
     EditableCard,
@@ -81,6 +85,19 @@ export default {
   },
 
   mounted: function () {
+    const { editionModeEnabled } = this
+    const { deckHandle, userHandle } = this.$route.params
+
+    console.log(this.$route.params, editionModeEnabled)
+    if (editionModeEnabled) {
+      this.$store
+        .dispatch('fetchDeckByHandle', { userHandle, deckHandle })
+        .then((existingDeck) => {
+          if (!existingDeck) return
+          this.$store.commit('setNewDeck', existingDeck)
+        })
+    }
+
     if (!this.deck?.cards?.length) {
       this.addEmptyCard()
     }
@@ -90,7 +107,7 @@ export default {
 
   methods: {
     createDeck () {
-      const { deck, currentUserHandle } = this
+      const { deck, currentUserHandle, editionModeEnabled } = this
 
       const deckHandle = deck.deckHandle || Namer.sanitizeHandle(deck.title)
       const deckToCreate = {
@@ -99,8 +116,11 @@ export default {
         deckHandle
       }
 
-      this.$store
-        .dispatch('createDeck', deckToCreate)
+      const promiseToSaveDeck = editionModeEnabled
+        ? this.$store.dispatch('updateDeck', deckToCreate)
+        : this.$store.dispatch('createDeck', deckToCreate)
+
+      return promiseToSaveDeck
         .then((newDeckHandle) => {
           // An error must have occured
           if (!newDeckHandle) return
@@ -146,6 +166,10 @@ export default {
 }
 .top-bar {
   display: flex;
+}
+.new-card-icon {
+  height: 100%;
+  width: 100%;
 }
 .deck-name {
   font-size: 1.5rem;

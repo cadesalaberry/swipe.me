@@ -1,11 +1,20 @@
 import { AWSError, DynamoDB } from 'aws-sdk'
 import { PromiseResult } from 'aws-sdk/lib/request'
 
-import type { PutItemInput, GetItemInput, QueryInput, ScanInput, DeleteItemInput } from 'aws-sdk/clients/dynamodb'
+import type {
+  UpdateItemInput,
+  PutItemInput,
+  GetItemInput,
+  QueryInput,
+  ScanInput,
+  DeleteItemInput
+} from 'aws-sdk/clients/dynamodb'
 
 function getInstance () {
   return new DynamoDB.DocumentClient({
-    ...process.env.NODE_ENV === 'development' ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT } : {}
+    ...process.env.NODE_ENV === 'development'
+      ? { region: 'localhost', endpoint: process.env.DYNAMODB_ENDPOINT }
+      : {}
   })
 }
 
@@ -27,6 +36,12 @@ function put (params: PutItemInput): Promise<PromiseResult<DynamoDB.DocumentClie
   return dynamoDb.put(params).promise()
 }
 
+function update (params: UpdateItemInput): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
+  const dynamoDb = getInstance()
+
+  return dynamoDb.update(params).promise()
+}
+
 function query (params: QueryInput): Promise<PromiseResult<DynamoDB.DocumentClient.QueryOutput, AWSError>> {
   const dynamoDb = getInstance()
 
@@ -43,6 +58,7 @@ export default {
   delete: deleteItem,
   get,
   put,
+  update,
   query,
   scan
 }

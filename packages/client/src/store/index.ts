@@ -212,12 +212,13 @@ export default new Vuex.Store({
     },
     async fetchDeckByHandle ({ commit }, { userHandle, deckHandle }) {
       commit('setLoadingDeckStatus', true)
-
+      let deck = null
       try {
         const response = await API.get('main', `decks/${userHandle}/${deckHandle}`, {})
 
         commit('setCurrentDeck', response)
         commit('setLoadingDeckError', null)
+        deck = response
       } catch (e) {
         Sentry.captureException(e)
         commit('setCurrentDeck', null)
@@ -225,6 +226,8 @@ export default new Vuex.Store({
       }
 
       commit('setLoadingDeckStatus', false)
+
+      return deck
     },
     async fetchAllDecksByOwnerHandle ({ commit }, ownerHandle: string) {
       commit('setLoadingDecksStatus', true)
@@ -260,6 +263,30 @@ export default new Vuex.Store({
         commit('setNewDeckError', null)
 
         deckHandle = createdDeck.deckHandle
+      } catch (e) {
+        Sentry.captureException(e)
+        commit('setNewDeckError', e)
+      }
+
+      commit('setLoadingDeckStatus', false)
+
+      return deckHandle
+    },
+    async updateDeck ({ commit }, deck: Deck) {
+      commit('setLoadingDeckStatus', true)
+
+      const { deckHandle, ownerHandle } = deck
+      const deckToCreate = {
+        ...deck,
+        cards: deck.cards.filter(c => c.title || c.description)
+      }
+      const deckUrl = `decks/${ownerHandle}/${deckHandle}`
+
+      try {
+        const updatedDeck = await API.post('main', deckUrl, { body: deckToCreate })
+
+        commit('setNewDeck', updatedDeck)
+        commit('setNewDeckError', null)
       } catch (e) {
         Sentry.captureException(e)
         commit('setNewDeckError', e)

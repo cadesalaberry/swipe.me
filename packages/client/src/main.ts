@@ -75,7 +75,8 @@ const routes = [
   { path: '/profile', component: Profile },
   { path: '/decks/new', component: EditableDeck },
   { path: '/:userHandle', component: Home },
-  { path: '/:userHandle/:deckHandle', component: Deck }
+  { path: '/:userHandle/:deckHandle', component: Deck },
+  { path: '/:userHandle/:deckHandle/edit', component: EditableDeck, props: { editionModeEnabled: true } }
 ]
 
 const router = new VueRouter({

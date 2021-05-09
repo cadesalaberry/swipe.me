@@ -37,7 +37,7 @@ export interface Deck {
   cards: Array<Card>;
   createdAt: number;
 }
-export interface NewDeck {
+export interface DeckPayload {
   ownerHandle: string;
   deckHandle: string;
   title: string;

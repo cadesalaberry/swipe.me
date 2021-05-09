@@ -71,6 +71,25 @@ app.get('/decks/:userHandle/:deckHandle', (req, res) => {
       })
     })
 })
+app.post('/decks/:ownerHandle/:deckHandle', (req, res) => {
+  const { deckHandle, ownerHandle } = req.params
+  const {
+    title,
+    cards
+  } = req.body
+
+  return deckModel
+    .updateDeck({ title, ownerHandle, deckHandle, cards })
+    .then((deck) => {
+      res.status(httpStatus.OK).json(deck)
+    })
+    .catch((error) => {
+      res.status(error.statusCode || 500).json({
+        error: 'Could not edit deck',
+        ...error
+      })
+    })
+})
 app.post('/decks', (req, res) => {
   const {
     ownerHandle,
