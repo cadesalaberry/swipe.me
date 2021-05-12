@@ -83,6 +83,11 @@ const router = new VueRouter({
   mode: 'history',
   routes // short for `routes: routes`
 })
+router.beforeEach((to, from, next) => {
+  console.debug('navigation', { from, to })
+  next()
+})
+
 // injects $router and $route to all router-enabled child components
 Vue.use(VueRouter)
 
