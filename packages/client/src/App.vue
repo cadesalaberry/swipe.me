@@ -45,6 +45,9 @@ export default {
     shouldShowPickUsernameDialog () {
       return this.showPickUsernameDialog && this.$store.getters.isAuthenticated && !this.$store.getters.getCurrentUserHandle
     },
+    currentUserHandle () {
+      return this.$store.getters.getCurrentUserHandle
+    },
     userPicture () {
       return this.$store.getters.getProfilePicture
     },
@@ -61,11 +64,18 @@ export default {
     Hub.listen('auth', (reply) => {
       const event = reply.payload.event
       const data = reply.payload.data
+      const cognitoUsername = data?.username
+
       switch (event) {
         case 'signIn':
           console.log('now the user is signed in', data)
-          this.$store.commit('setCognitoUsername', data.username)
+          this.$store.commit('setCognitoUsername', cognitoUsername)
           this.$store.dispatch('fetchUserInfos')
+            .then(() => {
+              const { currentUserHandle } = this
+
+              this.$store.dispatch('fetchAllDecksByOwnerHandle', currentUserHandle)
+            })
 
           break
         case 'signIn_failure':
@@ -75,7 +85,7 @@ export default {
           this.$store.commit('setGlobalError', data)
           break
         case 'oAuthSignOut':
-          console.log('Signing out user', data.username)
+          console.log('Signing out user', cognitoUsername)
           console.log('the payload is', data)
 
           this.$store.commit('resetState')
