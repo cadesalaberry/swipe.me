@@ -49,6 +49,7 @@
       </transition>
     </div>
     <md-button title="Edit deck"
+               v-if="belongsToCurrentUser"
                class="md-fixed md-fab md-primary md-fab-bottom-right"
                @click="editDeck()">
       <md-icon>edit</md-icon>
@@ -104,6 +105,14 @@ export default {
     },
     loading () {
       return this.$store.state.loadingDeck
+    },
+    currentUserHandle () {
+      return this.$store.getters.getCurrentUserHandle
+    },
+    belongsToCurrentUser () {
+      const { userHandle } = this.$route.params
+
+      return this.currentUserHandle === userHandle
     },
     currentDeck () {
       return this.$store.state.currentDeck
