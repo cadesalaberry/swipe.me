@@ -13,14 +13,23 @@
 
     <div
       v-for="(card, index) in deck.cards"
-      :key="index"
-      class="card md-elevation-1"
+      :key="index + '-' + deck.title"
+      class="card-action-bar-container"
     >
-      <editable-card
-        :uniqueId="'card-' + index"
-        :card="card"
-        @onCardEdited="saveDeckLocally"
-      />
+      <span class="card-action-bar">
+        <md-button title="Remove this card"
+               class="md-icon-button md-dense"
+               @click="removeCard(index)">
+          <md-icon>delete</md-icon>
+        </md-button>
+      </span>
+      <div class="card md-elevation-1">
+        <editable-card
+          :uniqueId="index + '-' + deck.title"
+          :card="card"
+          @onCardEdited="saveDeckLocally"
+        />
+      </div>
     </div>
 
     <div
@@ -130,6 +139,11 @@ export default {
         })
     },
 
+    removeCard (index) {
+      console.log('removing card', index)
+      this.deck.cards.splice(index, 1)
+    },
+
     saveDeckLocally () {
       this.$store.commit('setNewDeck', this.deck)
     },
@@ -166,6 +180,14 @@ export default {
 }
 .top-bar {
   display: flex;
+}
+.card-action-bar {
+  background-color: darkgrey;
+  /* padding: 5px; */
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  margin-top: 12px;
+  float: right;
 }
 .new-card-icon {
   height: 100%;
