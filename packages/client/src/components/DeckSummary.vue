@@ -65,9 +65,10 @@ export default {
 }
 .tile__title {
   /* padding: 0 15px; */
+  line-height: 28px;
   margin-block-start: 0;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .tile__description {
