@@ -12,7 +12,7 @@ module.exports = (serverless) => {
   const appDomainUrl = {
     ...{ [stage]: `https://${s3Name}.swipeme.io/` },
     dev: 'https://www.swipeme.io/',
-    undefined: 'http://localhost:8080/'
+    '': 'http://localhost:8080/'
   }[stage]
 
   const config = {
@@ -20,7 +20,8 @@ module.exports = (serverless) => {
     shortStageName,
     appDomainUrl,
     s3Name,
-    functionName
+    functionName,
+    stage
   }
 
   console.log('Injected config file:', config)
