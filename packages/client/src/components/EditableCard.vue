@@ -70,12 +70,13 @@ a {
 }
 
 input, textarea {
-  border:none;
-  background-image:none;
-  background-color:transparent;
+  border: none;
+  background-image: none;
+  background-color: transparent;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  resize: none;
   width: 100%;
 }
 
