@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:14.17
     steps:
       - checkout
       - restore_cache:
