@@ -3,7 +3,6 @@ import * as awsServerlessExpress from 'aws-serverless-express'
 
 import type { Handler } from 'aws-lambda'
 import * as express from 'express'
-import * as bodyParser from 'body-parser'
 import * as cors from 'cors'
 
 import userModel from './models/user'
@@ -14,7 +13,7 @@ import * as httpStatus from 'http-status'
 
 const app = express()
 
-app.use(bodyParser.json({
+app.use(express.json({
   strict: false
 }))
 app.use(cors({

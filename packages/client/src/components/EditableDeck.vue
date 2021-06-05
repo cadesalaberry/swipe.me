@@ -42,8 +42,8 @@
 
 <script>
 import { Namer } from '@swipeme.io/common'
-import EditableCard from 'components/EditableCard.vue'
-import Loader from 'components/Loader.vue'
+import EditableCard from '@/components/EditableCard.vue'
+import Loader from '@/components/Loader.vue'
 
 const MAX_CARD_COUNT = 9
 

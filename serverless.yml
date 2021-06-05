@@ -31,18 +31,6 @@ custom:
   webpack:
     packager: yarn
     webpackConfig: ./webpack.config.js
-    includeModules:
-        forceInclude:
-          # - @swipeme.io/client
-          # - @swipeme.io/common
-          - aws-sdk
-          - aws-serverless-express
-          - body-parser
-          - cors
-          - express
-          - http-status
-          - tiny-async-pool
-          - uuid
   customDomain:
     domainName: api.swipeme.io
     stage: ${self:custom.stage}
