@@ -74,7 +74,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs14.x
-  stage: ${self:custom.stage}
+  stage: local
   region: eu-west-1
   apiGateway:
     shouldStartNameWithService: true # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE

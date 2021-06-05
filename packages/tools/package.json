@@ -13,7 +13,7 @@
     "./brancher": "./dist/brancher.js"
   },
   "scripts": {
-    "build": "yarn run clean && yarn run compile",
+    "build": "yarn run clean && yarn run compile && chmod +x ./dist/brancher.js ./dist/seeder.js",
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
   },

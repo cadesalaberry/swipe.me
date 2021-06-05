@@ -17,6 +17,7 @@
   ],
   "exclude": [
     "node_modules",
+    "packages/client/*",
     "packages/api/config.js",
     "webpack.config.js",
     ".webpack",
