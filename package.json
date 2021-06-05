@@ -19,6 +19,8 @@
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
+    "tools:build": "yarn workspace @swipeme.io/tools build",
+    "common:build": "yarn workspace @swipeme.io/common build",
     "build": "yarn run clean && yarn run compile",
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
