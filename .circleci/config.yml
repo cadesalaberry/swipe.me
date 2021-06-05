@@ -10,16 +10,16 @@ jobs:
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
-            - node-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - node-v3-{{ .Branch }}-
-            - node-v3-
+            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v4-{{ .Branch }}-
+            - node-v4-
       - run: yarn
       - run: yarn build
       # needed to install brancher properly
-      - run: yarn
+      - run: yarn add ./packages/tools -W
       - run: ls -la node_modules/.bin
       - save_cache:
-          key: node-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
 

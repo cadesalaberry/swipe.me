@@ -26,7 +26,7 @@
     "compile": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "@swipeme.io/tools": "1.0.0"
+    "@swipeme.io/tools": "./packages/tools"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.76",
@@ -75,7 +75,9 @@
     "rules": {
       "@typescript-eslint/no-var-requires": 0
     },
-    "ignorePatterns": ["**/dist/**"],
+    "ignorePatterns": [
+      "**/dist/**"
+    ],
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     }
