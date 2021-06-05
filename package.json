@@ -26,9 +26,9 @@
     "compile": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
+    "@swipeme.io/tools": "1.0.0"
   },
   "devDependencies": {
-    "@swipeme.io/tools": "1.0.0",
     "@types/aws-lambda": "8.10.76",
     "@types/aws-serverless-express": "3.3.3",
     "@types/cors": "2.8.10",

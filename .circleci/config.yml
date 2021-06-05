@@ -19,6 +19,7 @@ jobs:
           paths:
             - node_modules
       - run: yarn build
+      - run: ls -la node_modules/.bin
       - run: yarn api:lint
       - run: SLS_DEBUG=* yarn api:deploy
       - run: yarn client:lint
