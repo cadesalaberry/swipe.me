@@ -1,4 +1,4 @@
-import { ServerConfig } from '@swipeme.io/common/types'
+import { ServerConfig } from './types'
 
 export interface AmplifyConfig {
   Auth: {

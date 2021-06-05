@@ -1,4 +1,4 @@
-import { ServerConfig } from '@swipeme.io/common/types'
+import { ServerConfig } from '@swipeme.io/common'
 import * as httpStatus from 'http-status'
 import BackError from './libs/back.error'
 

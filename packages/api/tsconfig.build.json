@@ -4,12 +4,14 @@
     "composite": true,
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "allowSyntheticDefaultImports": true
   },
 
-  "references": [{
-    "path": "../common/tsconfig.build.json"
-  }],
+  "references": [
+    { "path": "../common/tsconfig.build.json" },
+    { "path": "../tools/tsconfig.build.json" }
+  ],
 
   "include": [
     "src/**/*"

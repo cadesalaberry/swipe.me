@@ -40,13 +40,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import VueRouter from 'vue-router'
-import Vuex from 'vuex'
-import Namer from '@swipeme.io/common/namer'
+<script>
+import { Namer } from '@swipeme.io/common'
 import EditableCard from 'components/EditableCard.vue'
 import Loader from 'components/Loader.vue'
-import { Deck } from '@swipeme.io/common/types'
 
 const MAX_CARD_COUNT = 9
 
@@ -68,7 +65,7 @@ export default {
     loading () {
       return this.$store.getters.getLoadingDeckStatus
     },
-    deck (): Deck {
+    deck () {
       return this.$store.state.newDeck
     },
     tooManyCards () {

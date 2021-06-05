@@ -23,6 +23,7 @@ yarn-error.log*
 
 # typescript directories
 .build
+tsconfig.build.tsbuildinfo
 
 # Serverless directories
 .serverless

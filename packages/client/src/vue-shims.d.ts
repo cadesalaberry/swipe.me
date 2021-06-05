@@ -1,6 +1,6 @@
 // 1. Make sure to import 'vue' before declaring augmented types
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-import Vue from 'vue'
+import Vue, { Component } from 'vue'
 import VueRouter from 'vue-router'
 
 // src/vue-shims.d.ts
@@ -13,4 +13,9 @@ declare module 'vue/types/vue' {
   interface Vue {
     $router: VueRouter
   }
+}
+
+declare module '*.vue' {
+  const component: Component
+  export default component
 }

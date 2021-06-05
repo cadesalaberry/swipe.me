@@ -39,7 +39,7 @@ app.get('/config.json', function (_req, res) {
   }
 })
 
-app.post('/users/username', (req, res, next) => {
+app.post('/users/username', (req, res) => {
   const {
     username,
     newPreferredUsername

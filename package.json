@@ -18,11 +18,12 @@
     "client:deploy": "export STAGE=\"$(brancher dashify)\" && sls client deploy --stage=$STAGE --no-confirm",
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "postinstall": "patch-package",
-    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\""
+    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
+    "compile": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "@swipeme.io/client": "*",
-    "@swipeme.io/common": "*",
     "tiny-async-pool": "^1.2.0",
     "aws-sdk": "^2.887.0",
     "aws-serverless-express": "^3.4.0",
@@ -34,7 +35,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@swipeme.io/common": "1.0.0",
     "@swipeme.io/tools": "1.0.0",
     "@types/aws-lambda": "8.10.76",
     "@types/aws-serverless-express": "3.3.3",
@@ -42,7 +42,6 @@
     "@types/express": "4.17.8",
     "@types/node": "12.12.39",
     "@types/uuid": "8.3.0",
-    "@types/tiny-async-pool": "^1.0.0",
     "@types/webpack-dev-server": "^3.11.4",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.15.0",
@@ -65,9 +64,9 @@
     "serverless-offline": "6.8.0",
     "serverless-s3-remover": "^0.6.0",
     "serverless-webpack": "5.3.5",
-    "ts-loader": "9.0.1",
+    "ts-loader": "9.2.2",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
-    "typescript": "4.0.5",
+    "typescript": "4.3.2",
     "webpack": "5.21.2",
     "webpack-node-externals": "^3.0.0"
   },
@@ -84,6 +83,7 @@
     "rules": {
       "@typescript-eslint/no-var-requires": 0
     },
+    "ignorePatterns": ["**/dist/**"],
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     }

@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.build.json",
+
   "compilerOptions": {
     // Allows imports from js files
     "module": "CommonJS",
@@ -10,6 +11,6 @@
   },
 
   "include": [
-    "src/*.ts"
+    "src/**/*"
   ]
 }

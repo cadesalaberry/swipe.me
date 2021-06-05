@@ -26,7 +26,9 @@ module.exports = {
     filename: '[name].js'
   },
   target: 'node',
-  externals: [nodeExternals({ allowlist: (name) => name.startsWith('@swipeme.io/') })],
+  externals: [nodeExternals({
+    // allowlist: (name) => name.startsWith('@swipeme.io/')
+  })],
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
@@ -35,7 +37,7 @@ module.exports = {
         loader: 'ts-loader',
         exclude: [
           [
-            path.resolve(__dirname, '../../node_modules'),
+            path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, '.serverless'),
             path.resolve(__dirname, '.webpack')
           ]
@@ -49,17 +51,18 @@ module.exports = {
     ]
   },
   plugins: [
-    // new ForkTsCheckerWebpackPlugin({
-    //   typescript: {
-    //     build: true,
-    //     extensions: {
-    //       vue: true
-    //     }
-    //   },
-    //   eslint: {
-    //     files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
-    //     cache: true
-    //   }
-    // })
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: path.resolve(__dirname, slsw.lib.webpack.isLocal ? './tsconfig.json' : './tsconfig.build.json'),
+        build: true,
+        extensions: {
+          vue: true
+        }
+      },
+      eslint: {
+        files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+        cache: true
+      }
+    })
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@swipeme.io/common",
+  "name": "@swipeme.io/api",
   "version": "1.0.0",
   "private": true,
   "main": "dist/index",
@@ -12,6 +12,9 @@
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@swipeme.io/common": "1.0.0"
+  },
+  "devDependencies": {
+  }
 }

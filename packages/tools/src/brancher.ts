@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 'use strict'
-const neodoc = require('neodoc')
+import neodoc from 'neodoc'
 
 const syntax = `
 Usage:
@@ -24,7 +24,7 @@ const Brancher = {
    *   * CircleCI
    *   * git
    */
-  getBranchName: function () {
+  getBranchName: (): string => {
     const {
       GITHUB_EVENT_NAME,
       GITHUB_EVENT_PATH,
@@ -45,7 +45,7 @@ const Brancher = {
    * Returns the branch name with all invalid characters
    * replaced by dashes (-).
    */
-  dashify: function (string = '') {
+  dashify: (string = ''): string => {
     return `${string}`.replace(/[\W_]+/g, '-')
   },
 
@@ -57,11 +57,11 @@ const Brancher = {
    *    Member must satisfy regular expression pattern: [\w\s+=,.@-]+
    *
    */
-  snakeify: function (string = '') {
+  snakeify: (string = ''): string => {
     return `${string}`.replace(/[\W-]+/g, '_')
   },
 
-  hashString: function (str) {
+  hashString: (str = ''): string => {
     let hash = 5381
     let i = str.length
 
@@ -78,7 +78,7 @@ const Brancher = {
     return `${unsigned % 9999}`
   },
 
-  shortenStringToXCharacters: function (string = '', maxSize) {
+  shortenStringToXCharacters: (string = '', maxSize: number): string => {
     if (string.length <= maxSize) { return string }
     const hash = Brancher.hashString(string)
     const nbAvailableSlots = maxSize - hash.length - 1 - 1 // count the dash & first letter
@@ -96,30 +96,35 @@ const Brancher = {
    * @param {string} stageName the stageName to sanitize
    * @returns {string}
    */
-  awsSanitize: function (stageName) {
+  awsSanitize: (stageName: string): string => {
     return (stageName || '').replace('aws', 'swa')
   }
+}
+
+const main = async () => {
+  const options = neodoc.run(syntax)
+  let branchName = options['<branch-name>'] || Brancher.getBranchName()
+
+  if (options.snakeify) {
+    branchName = Brancher.snakeify(branchName)
+  }
+
+  if (options.dashify) {
+    branchName = Brancher.dashify(branchName)
+  }
+
+  if (options['--shorten']) {
+    branchName = Brancher.shortenStringToXCharacters(branchName, options['--shorten'])
+  }
+
+  console.log(branchName)
 }
 
 module.exports = {
   ...Brancher
 }
 
-if (require.main !== module) return
+export default Brancher
 
-const options = neodoc.run(syntax)
-let branchName = options['<branch-name>'] || Brancher.getBranchName()
-
-if (options.snakeify) {
-  branchName = Brancher.snakeify(branchName)
-}
-
-if (options.dashify) {
-  branchName = Brancher.dashify(branchName)
-}
-
-if (options['--shorten']) {
-  branchName = Brancher.shortenStringToXCharacters(branchName, options['--shorten'])
-}
-
-console.log(branchName)
+// Execute main if the script is not imported
+if (require.main === module) main()

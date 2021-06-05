@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import EditableImage from '@/components/EditableImage.vue'
+import EditableImage from '@/components/EditableImage'
 
 export default {
   name: 'EditableCard',

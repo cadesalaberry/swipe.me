@@ -1,13 +1,13 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk'
-import asyncPool from 'tiny-async-pool'
-import Namer from '@swipeme.io/common/namer'
+import * as tinyAsyncPool from 'tiny-async-pool'
+import { Namer } from '@swipeme.io/common'
 
 import { getConfig } from '../config'
 import dynamoDb from '../libs/dynamodb-lib'
 import BackError from '../libs/back.error'
 
 import type { DeleteItemInput, DocumentClient, PutItemInput, QueryInput } from 'aws-sdk/clients/dynamodb'
-import httpStatus from 'http-status'
+import * as httpStatus from 'http-status'
 
 interface ChangeUsernameReply {
   oldPreferredUsername: string;
@@ -57,7 +57,7 @@ const deleteAllEntries = (entries: DocumentClient.ItemList) => {
       .then((result) => result.Attributes)
   }
 
-  return asyncPool(5, entries, deleteSingleEntry)
+  return tinyAsyncPool.default(5, entries, deleteSingleEntry)
 }
 
 const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: string) => {
@@ -73,7 +73,7 @@ const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: str
       .then((result) => result.Attributes)
   }
 
-  return asyncPool(5, entries, createSingleEntry)
+  return tinyAsyncPool.default(5, entries, createSingleEntry)
 }
 
 const changeUsername = async (username: string, newPreferredUsername: string): Promise<ChangeUsernameReply> => {
