@@ -5,6 +5,14 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines" : {
+    "node": "~14.17",
+    "yarn": "~1.22"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
   "scripts": {
     "api": "NODE_ENV=development sls offline start",
     "api:deploy": "export STAGE=\"$(brancher dashify)\" && sls deploy --stage=$STAGE",
@@ -33,7 +41,7 @@
     "@types/aws-serverless-express": "3.3.3",
     "@types/cors": "2.8.10",
     "@types/express": "4.17.8",
-    "@types/node": "12.12.39",
+    "@types/node": "^14.17.2",
     "@types/uuid": "8.3.0",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.15.0",

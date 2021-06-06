@@ -3217,8 +3217,8 @@
 "@swipeme.io/api@file:./packages/api":
   version "1.0.0"
   dependencies:
-    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-4f5adaca-f8d2-422f-af43-b5f9d249ac48-1622972333375/node_modules/@swipeme.io/common"
-    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-4f5adaca-f8d2-422f-af43-b5f9d249ac48-1622972333375/node_modules/@swipeme.io/tools"
+    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-de5b2d91-ddef-4aee-8f64-1280c8a49384-1622984503937/node_modules/@swipeme.io/common"
+    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-de5b2d91-ddef-4aee-8f64-1280c8a49384-1622984503937/node_modules/@swipeme.io/tools"
     aws-sdk "^2.922.0"
     aws-serverless-express "^3.4.0"
     cors "^2.8.5"
@@ -3542,10 +3542,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
   integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
 
-"@types/node@12.12.39":
-  version "12.12.39"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.39.tgz#532d25c1e639d89dd6f3aa1d7b3962e3e7fa943d"
-  integrity sha512-pADGfwnDkr6zagDwEiCVE4yQrv7XDkoeVa4OfA9Ju/zRTk6YNDLGtQbkdL4/56mCQQCs4AhNrBIag6jrp7ZuOg==
+"@types/node@^14.17.2":
+  version "14.17.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
+  integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
