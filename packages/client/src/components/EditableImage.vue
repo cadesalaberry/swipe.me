@@ -1,12 +1,11 @@
 <template>
 
-  <label :for="id + '-image-file'" class="label">
-    <input :id="id + '-image-file'"
-            class="hidden__input"
-            type="file"
-            accept="image/*"
-            @change="onFileChange"
-            name="image">
+  <label class="label">
+    <input class="hidden__input"
+           type="file"
+           accept="image/*"
+           @change="onFileChange"
+           name="image">
 
     <img v-if="previewData" class="image__preview blured" :src="previewData" />
     <s3-image v-if="!previewData && value" class="image__preview" :src="value" />
