@@ -29,6 +29,7 @@ jobs:
       - run: yarn client:lint
       - run: yarn client:build
       - run: yarn client:deploy
+      - run: yarn api:seed:online
 
 # Orchestrate or schedule a set of jobs
 workflows:
