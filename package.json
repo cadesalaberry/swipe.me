@@ -20,7 +20,7 @@
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
     "tools:build": "yarn workspace @swipeme.io/tools build",
     "common:build": "yarn workspace @swipeme.io/common build",
-    "build": "yarn run clean && yarn common:build && yarn tools:build && yarn run compile",
+    "build": "yarn run clean && yarn common:build && yarn tools:build",
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
   },
