@@ -4,7 +4,10 @@
     "composite": true,
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./*"],
+    },
   },
 
   "references": [

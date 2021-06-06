@@ -40,96 +40,96 @@ export default new Vuex.Store({
   plugins: [vuexLocal.plugin],
   state: getDefaultState(),
   getters: {
-    isAuthenticated (state) {
+    isAuthenticated (state): boolean {
       return state.auth.isAuthenticated
     },
-    getAuthError (state) {
+    getAuthError (state): Error {
       return state.auth.error
     },
-    getUserEmail (state) {
+    getUserEmail (state): string {
       const infos = state.auth.infos as unknown as User
       return infos?.email
     },
-    getProfilePicture (state) {
+    getProfilePicture (state): string {
       const infos = state.auth.infos as unknown as User
       return infos?.picture
     },
-    getFirstName (state) {
+    getFirstName (state): string {
       const infos = state.auth.infos as unknown as User
       return infos?.given_name
     },
-    getLastName (state) {
+    getLastName (state): string {
       const infos = state.auth.infos as unknown as User
       return infos?.family_name
     },
-    getCurrentUserHandle (state) {
+    getCurrentUserHandle (state): string {
       const infos = state.auth.infos as unknown as User
       return infos?.preferred_username
     },
-    getCognitoUsername (state) {
+    getCognitoUsername (state): string {
       return state.auth.cognitoUsername
     },
-    getLoadingDeckError (state) {
+    getLoadingDeckError (state): Error {
       return state.loadingDeckError
     },
-    getLoadingDeckStatus (state) {
+    getLoadingDeckStatus (state): boolean {
       return state.isLoadingDeck
     },
-    getLoadingDecksStatus (state) {
+    getLoadingDecksStatus (state): boolean {
       return state.isLoadingDecks
     },
-    getGlobalError (state) {
+    getGlobalError (state): Error {
       return state.globalError
     },
-    getDeckList (state) {
+    getDeckList (state): Deck[] {
       return state.deckList
     }
   },
   mutations: {
-    setCognitoUsername (state, username) {
+    setCognitoUsername (state, username): void {
       state.auth.cognitoUsername = username
     },
-    setUserInfos (state, infos) {
+    setUserInfos (state, infos): void {
       state.auth.infos = infos
       state.auth.isAuthenticated = !!infos
     },
-    setAuthError (state, error) {
+    setAuthError (state, error): void {
       state.auth.error = error
 
       if (error) state.auth.isAuthenticated = false
     },
-    setGlobalError (state, globalError) {
+    setGlobalError (state, globalError): void {
       state.globalError = globalError
     },
-    setCurrentDeck (state, currentDeck) {
+    setCurrentDeck (state, currentDeck): void {
       state.currentDeck = currentDeck
     },
-    setDeckList (state, deckList) {
+    setDeckList (state, deckList): void {
       state.deckList = deckList
     },
-    setLoadingDeckStatus (state, status: boolean) {
+    setLoadingDeckStatus (state, status: boolean): void {
       state.isLoadingDeck = status
     },
-    setLoadingDecksStatus (state, status: boolean) {
+    setLoadingDecksStatus (state, status: boolean): void {
       state.isLoadingDecks = status
     },
-    setLoadingDeckError (state, error) {
+    setLoadingDeckError (state, error: Error): void {
       state.loadingDeckError = error
     },
-    setNewDeck (state, deck) {
+    setNewDeck (state, deck: Deck): void {
       state.newDeck = deck
     },
-    resetNewDeck (state) {
+    resetNewDeck (state): void {
       state.newDeck = {
         title: '',
         deckHandle: '',
         cards: []
       }
     },
-    setNewDeckError (state, error) {
+    setNewDeckError (state, error: Error): void {
       state.newDeckError = error
     },
-    resetState (state) {
+    resetState (state): void {
       // Merge rather than replace so we don't lose observers
       // https://github.com/vuejs/vuex/issues/1118
       Object.assign(state, getDefaultState())
