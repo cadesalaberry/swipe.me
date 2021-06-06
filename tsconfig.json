@@ -1,35 +1,23 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    // Needed for yarn api
-    "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
     "strictNullChecks": true,
     "declaration": true,
     "sourceMap": true,
     "allowJs": true,
-    // this aligns with Vue's browser support
-    "target": "es5",
-    // this enables stricter inference for data properties on `this`
-    "strict": true,
-    // if using webpack 2+ or rollup, to leverage tree shaking:
-    "module": "es2015",
-    "moduleResolution": "node",
+
     "baseUrl": "./packages",
     "paths": {
-      "@swipeme.io/*": ["*/src"]
+      "@swipeme.io/*": ["*/src/dist"]
     }
   },
-  "references": [
-    { "path": "packages/common", "prepend": true },
-    { "path": "packages/client", "prepend": true },
-    { "path": "packages/api", "prepend": true }
-  ],
   "include": [
     "packages/api/**/*"
   ],
   "exclude": [
     "node_modules",
-    "packages/api/package.js",
+    "packages/client/*",
     "packages/api/config.js",
     "webpack.config.js",
     ".webpack",

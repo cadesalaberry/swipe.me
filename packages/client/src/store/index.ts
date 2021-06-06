@@ -3,8 +3,8 @@ import Vuex from 'vuex'
 import * as Sentry from '@sentry/browser'
 import VuexPersistence from 'vuex-persist'
 
-import { AmplifyConfig, EnvHelper } from '@swipeme.io/common/environment'
-import type { User, Deck } from '@swipeme.io/common/types'
+import { AmplifyConfig, EnvHelper } from '@swipeme.io/common'
+import type { User, Deck } from '@swipeme.io/common'
 
 import Amplify, { API } from 'aws-amplify'
 import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'

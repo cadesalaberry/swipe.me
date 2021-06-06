@@ -1,6 +1,22 @@
 {
-  "extends": "../../tsconfig.json",
-
+  // "extends": "../../tsconfig.json",
+  
+  // Borrowed from: https://vuejs.org/v2/guide/typescript.html
   "compilerOptions": {
+    // this aligns with Vue's browser support
+    "target": "es5",
+    // this enables stricter inference for data properties on `this`
+    "strict": true,
+    // if using webpack 2+ or rollup, to leverage tree shaking:
+    "module": "es2015",
+    "moduleResolution": "node",
+
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"],
+    },
   },
+  "files": [
+    "src/vue-shims.d.ts"
+  ]
 }

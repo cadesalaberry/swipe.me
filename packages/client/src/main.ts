@@ -70,18 +70,47 @@ Vue.prototype.$http = axios.create({
 })
 
 const routes = [
-  { path: '', component: Home },
-  { path: '/login', component: Login },
-  { path: '/profile', component: Profile },
-  { path: '/decks/new', component: EditableDeck },
-  { path: '/:userHandle', component: Home },
-  { path: '/:userHandle/:deckHandle', component: Deck },
-  { path: '/:userHandle/:deckHandle/edit', component: EditableDeck, props: { editionModeEnabled: true } }
+  {
+    name: 'home',
+    path: '',
+    component: Home
+  },
+  {
+    name: 'login',
+    path: '/login',
+    component: Login
+  },
+  {
+    name: 'profile',
+    path: '/profile',
+    component: Profile
+  },
+  {
+    name: 'decks.new',
+    path: '/decks/new',
+    component: EditableDeck
+  },
+  {
+    name: 'decks',
+    path: '/:userHandle',
+    component: Home
+  },
+  {
+    name: 'decks.view',
+    path: '/:userHandle/:deckHandle',
+    component: Deck
+  },
+  {
+    name: 'decks.edit',
+    path: '/:userHandle/:deckHandle/edit',
+    component: EditableDeck,
+    props: { editionModeEnabled: true }
+  }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  routes // short for `routes: routes`
+  routes
 })
 router.beforeEach((to, from, next) => {
   console.debug('navigation', { from, to })

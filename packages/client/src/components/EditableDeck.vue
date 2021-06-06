@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Namer from '@swipeme.io/common/namer'
+import { Namer } from '@swipeme.io/common'
 import EditableCard from '@/components/EditableCard.vue'
 import Loader from '@/components/Loader.vue'
 

@@ -4,10 +4,12 @@
     "target": "es5",
     "moduleResolution": "node",
     "sourceMap": true,
+    "outDir": "./dist",
     "baseUrl": "./packages"
   },
 
   "exclude": [
+    "packages/client/*",
     "node_modules",
     "dist"
   ]

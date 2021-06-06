@@ -1,5 +1,5 @@
 import dynamoDb from '../libs/dynamodb-lib'
-import Namer from '@swipeme.io/common/namer'
+import { Namer } from '@swipeme.io/common'
 import BackError from '../libs/back.error'
 
 import type {
@@ -11,7 +11,7 @@ import type {
 import type {
   Deck,
   DeckPayload
-} from '@swipeme.io/common/types'
+} from '@swipeme.io/common'
 
 const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
 

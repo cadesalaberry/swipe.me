@@ -1,6 +1,6 @@
 import type { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
-import type { Deck } from '@swipeme.io/common/types'
+import type { Deck } from './types'
 
 const getDeckFromDynamoItem = (item: DocumentClient.AttributeMap): Deck => {
   const {
@@ -44,7 +44,7 @@ function sanitizeHandle (handle: string): string {
   return (handle || '').replace(/\s+/g, '-').replace(/[\W_-]+/g, '-').toLowerCase()
 }
 
-export default {
+export const Namer = {
   getDeckFromDynamoItem,
   getUserHandleFromPK,
   getDeckHandleFromSK,

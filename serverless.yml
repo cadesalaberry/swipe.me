@@ -14,7 +14,7 @@ package:
 plugins:
   - serverless-s3-remover
   - serverless-domain-manager
-  - serverless-webpack # should be before dynamodb and offline
+  - serverless-bundle # should be before dynamodb and offline
   - serverless-finch # should be before dynamodb and offline
   - serverless-dynamodb-local
   - serverless-offline  # should be last in list
@@ -28,21 +28,21 @@ custom:
     bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
     manageResources: false # make sure we use the s3 created by cloudfront and not a new one
-  webpack:
-    packager: yarn
-    webpackConfig: ./webpack.config.js
-    includeModules:
-        forceInclude:
-          # - @swipeme.io/client
-          # - @swipeme.io/common
-          - aws-sdk
-          - aws-serverless-express
-          - body-parser
-          - cors
-          - express
-          - http-status
-          - tiny-async-pool
-          - uuid
+  # webpack:
+  #   packager: yarn
+  #   # packagerOptions:
+  #   #   noFrozenLockFile: true
+  #   webpackConfig: packages/api/webpack.config.js
+  #   includeModules:
+  #     forceInclude:
+  #       # - @swipeme.io/client
+  #       # - @swipeme.io/common
+  #       - aws-sdk
+  #       - aws-serverless-express
+  #       - cors
+  #       - express
+  #       - http-status
+  #       - tiny-async-pool
   customDomain:
     domainName: api.swipeme.io
     stage: ${self:custom.stage}
@@ -85,8 +85,8 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  stage: ${self:custom.stage}
+  runtime: nodejs14.x
+  stage: local
   region: eu-west-1
   apiGateway:
     shouldStartNameWithService: true # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
