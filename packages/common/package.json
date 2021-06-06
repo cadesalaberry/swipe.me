@@ -13,12 +13,6 @@
     "compile": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "aws-sdk": "^2.887.0",
-    "aws-serverless-express": "^3.4.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "http-status": "^1.4.2",
-    "tiny-async-pool": "^1.2.0"
   },
   "devDependencies": {}
 }

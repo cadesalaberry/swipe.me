@@ -15,7 +15,7 @@
   "dependencies": {
     "@sentry/browser": "6.4.1",
     "@sentry/integrations": "6.3.5",
-    "@swipeme.io/common": "1.0.0",
+    "@swipeme.io/common": "file:../common",
     "aws-amplify": "3.3.10",
     "aws-amplify-vue": "2.1.5",
     "axios": "0.21.1",

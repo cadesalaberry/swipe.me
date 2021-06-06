@@ -4,12 +4,14 @@ const nodeExternals = require('webpack-node-externals')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
-module.exports = {
+const webpackConfig = {
   context: __dirname,
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
-  entry: slsw.lib.entries,
   devtool: slsw.lib.webpack.isLocal ? 'eval-cheap-module-source-map' : 'source-map',
   resolve: {
+    alias: {
+      './packages/api/src': path.resolve(__dirname, 'src')
+    },
     extensions: ['.mjs', '.json', '.ts'],
     symlinks: false,
     cacheWithContext: false,
@@ -37,9 +39,9 @@ module.exports = {
         loader: 'ts-loader',
         exclude: [
           [
-            path.resolve(__dirname, 'node_modules'),
-            path.resolve(__dirname, '.serverless'),
-            path.resolve(__dirname, '.webpack')
+            // path.resolve(__dirname, 'node_modules')
+            // path.resolve(__dirname, '.serverless'),
+            // path.resolve(__dirname, '.webpack')
           ]
         ],
         options: {
@@ -60,9 +62,12 @@ module.exports = {
         }
       },
       eslint: {
-        files: './packages/api/**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+        files: './**/*.{ts,js,vue}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
         cache: true
       }
     })
   ]
 }
+
+console.log('WEBPACK CONFIG', webpackConfig)
+module.exports = webpackConfig
