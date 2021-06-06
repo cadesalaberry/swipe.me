@@ -25,9 +25,8 @@
       </span>
       <div class="card md-elevation-1">
         <editable-card
-          :uniqueId="index + '-' + deck.title"
           :card="card"
-          @onCardEdited="saveDeckLocally"
+          @onCardEdited="(newCard) => onCardEdition(index, newCard)"
         />
       </div>
     </div>
@@ -64,10 +63,6 @@ export default {
   components: {
     EditableCard,
     Loader
-  },
-
-  data () {
-    return {}
   },
 
   computed: {
@@ -140,8 +135,20 @@ export default {
     },
 
     removeCard (index) {
-      console.log('removing card', index)
       this.deck.cards.splice(index, 1)
+    },
+
+    onCardEdition (index, card) {
+      const { cards } = this.deck
+
+      cards[index] = card
+
+      const newDeck = {
+        ...this.deck,
+        cards
+      }
+      console.log(newDeck.cards[index])
+      this.$store.commit('setNewDeck', newDeck)
     },
 
     saveDeckLocally () {

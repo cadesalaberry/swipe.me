@@ -1,20 +1,19 @@
 <template>
   <div class="card__container">
 
-    <editable-image :id="'image-' + uniqueId"
-                    v-model="card.picturePath"
+    <editable-image :value="card.picturePath"
                     class="card__image"
-                    @input="this.onCardEdited" />
+                    @change="this.onImageEdition" />
 
     <h1 class="card__title">
       <input placeholder="Title"
-             v-model="card.title"
-             @keyup="this.onCardEdited">
+             :value="card.title"
+             @change="this.onTitleEdition">
     </h1>
     <div class="card__description">
       <textarea placeholder="Some short description"
-                v-model="card.description"
-                @keyup="this.onCardEdited"></textarea>
+                :value="card.description"
+                @change="this.onDescriptionEdition"></textarea>
     </div>
   </div>
 </template>
@@ -29,15 +28,38 @@ export default {
       title: String,
       picturePath: String,
       description: String
-    },
-    uniqueId: String
+    }
   },
   components: {
     EditableImage
   },
   methods: {
-    onCardEdited () {
-      this.$emit('onCardEdited')
+    onTitleEdition ({ target: { value: newTitle } }) {
+      const { picturePath, description } = this.card
+      this.onCardEdited({
+        title: newTitle,
+        picturePath,
+        description
+      })
+    },
+    onImageEdition ({ target: { value: newImageUrl } }) {
+      const { title, description } = this.card
+      this.onCardEdited({
+        title,
+        picturePath: newImageUrl,
+        description
+      })
+    },
+    onDescriptionEdition ({ target: { value: newDescription } }) {
+      const { title, picturePath } = this.card
+      this.onCardEdited({
+        title,
+        picturePath,
+        description: newDescription
+      })
+    },
+    onCardEdited (newCard) {
+      this.$emit('onCardEdited', newCard)
     }
   }
 }
