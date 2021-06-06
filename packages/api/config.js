@@ -1,7 +1,7 @@
 const Brancher = require('@swipeme.io/tools/brancher')
 
-module.exports = (serverless) => {
-  const { stage: originalStageName } = serverless.variables.options
+module.exports = async ({ options }) => {
+  const { stage: originalStageName } = options
   const stage = Brancher.awsSanitize(originalStageName)
   const snakedStage = Brancher.snakeify(stage)
   const shortStageName = Brancher.shortenStringToXCharacters(stage, 29)
