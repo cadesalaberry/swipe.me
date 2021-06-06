@@ -13,7 +13,7 @@
 
     <div
       v-for="(card, index) in deck.cards"
-      :key="index + '-' + deck.title"
+      :key="index + '-' + card.title"
       class="card-action-bar-container"
     >
       <span class="card-action-bar">
