@@ -1,7 +1,10 @@
 // 1. Make sure to import 'vue' before declaring augmented types
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+/* eslint-disable @typescript-eslint/no-unused-vars, no-unused-vars */
 import Vue, { Component } from 'vue'
+// These lines are required to have $store ans $router properly added to a vue instance
+import Vuex from 'vuex'
 import VueRouter from 'vue-router'
+/* eslint-enable @typescript-eslint/no-unused-vars, no-unused-vars */
 
 // src/vue-shims.d.ts
 declare module 'vue-material'
@@ -10,12 +13,7 @@ declare module 'vue-material'
 //    Vue has the constructor type in types/vue.d.ts
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
-  interface Vue {
-    $router: VueRouter
-  }
-}
+  // interface Vue {
 
-declare module '*.vue' {
-  const component: Component
-  export default component
+  // }
 }
