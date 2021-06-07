@@ -5,7 +5,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "engines" : {
+  "engines": {
     "node": "~14.17",
     "yarn": "~1.22"
   },
@@ -32,8 +32,7 @@
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@swipeme.io/api": "file:./packages/api",
     "@swipeme.io/tools": "file:./packages/tools",
@@ -47,6 +46,7 @@
     "@typescript-eslint/parser": "4.15.0",
     "concurrently": "^6.2.0",
     "current-git-branch": "1.1.0",
+    "cypress": "^7.4.0",
     "eslint": "7.17.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-node": "11.1.0",
