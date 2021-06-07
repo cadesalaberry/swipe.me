@@ -32,8 +32,7 @@
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@swipeme.io/api": "file:./packages/api",
     "@swipeme.io/tools": "file:./packages/tools",
@@ -47,6 +46,7 @@
     "@typescript-eslint/parser": "4.33.0",
     "concurrently": "^6.2.0",
     "current-git-branch": "1.1.0",
+    "cypress": "^7.4.0",
     "eslint": "7.32.0",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-node": "11.1.0",
