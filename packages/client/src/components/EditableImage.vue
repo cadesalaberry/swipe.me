@@ -59,7 +59,7 @@ export default {
         .then((previewData) => { this.previewData = previewData })
         .then(() => uploadFile(file, SecurityLevel.PROTECTED))
         .then(({ url }) => preloadImage(url))
-        .then(pictureUrl => this.$emit('input', pictureUrl))
+        .then(pictureUrl => this.$emit('change', pictureUrl))
         .catch(e => {
           console.error(e)
           Sentry.captureException(e)

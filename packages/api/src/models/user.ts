@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk'
-import * as tinyAsyncPool from 'tiny-async-pool'
+import tinyAsyncPool from 'tiny-async-pool'
 import { Namer } from '@swipeme.io/common'
 
 import { getConfig } from '../config'
@@ -57,7 +57,7 @@ const deleteAllEntries = (entries: DocumentClient.ItemList) => {
       .then((result) => result.Attributes)
   }
 
-  return tinyAsyncPool.default(5, entries, deleteSingleEntry)
+  return tinyAsyncPool(5, entries, deleteSingleEntry)
 }
 
 const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: string) => {
@@ -73,7 +73,7 @@ const addAllEntriesToUsername = (entries: DocumentClient.ItemList, username: str
       .then((result) => result.Attributes)
   }
 
-  return tinyAsyncPool.default(5, entries, createSingleEntry)
+  return tinyAsyncPool(5, entries, createSingleEntry)
 }
 
 const changeUsername = async (username: string, newPreferredUsername: string): Promise<ChangeUsernameReply> => {
