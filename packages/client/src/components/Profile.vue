@@ -6,7 +6,7 @@
         <md-card-header class="md-layout md-alignment-center-space-between">
           <md-content>{{ email }}</md-content>
           <md-avatar class="md-large">
-            <editable-image v-model="pictureUrl" @input="onProfilePictureEdited"/>
+            <editable-image :value="pictureUrl" @change="onProfilePictureEdited"/>
           </md-avatar>
         </md-card-header>
 

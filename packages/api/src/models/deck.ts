@@ -16,13 +16,13 @@ import type {
 const SINGLE_TABLE = process.env.SINGLE_TABLE || ''
 
 const validateDeck = ({ deckHandle, cards, ownerHandle, title }: DeckPayload) => {
-  if (typeof deckHandle !== 'string') {
+  if (typeof deckHandle !== 'string' || !deckHandle) {
     throw new BackError('"deckHandle" must be a string', 400)
   }
-  if (typeof ownerHandle !== 'string') {
+  if (typeof ownerHandle !== 'string' || !ownerHandle) {
     throw new BackError('"ownerHandle" must be a string', 400)
   }
-  if (typeof title !== 'string') {
+  if (typeof title !== 'string' || !title) {
     throw new BackError('"title" must be a string', 400)
   }
   if (deckHandle !== Namer.sanitizeHandle(deckHandle)) {

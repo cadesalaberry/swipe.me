@@ -42,7 +42,7 @@ export default {
         description
       })
     },
-    onImageEdition ({ target: { value: newImageUrl } }) {
+    onImageEdition (newImageUrl) {
       const { title, description } = this.card
       this.onCardEdited({
         title,
