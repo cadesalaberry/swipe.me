@@ -29,10 +29,39 @@ jobs:
       - run: yarn client:lint
       - run: yarn client:build
       - run: yarn client:deploy
+  cypress:
+    docker:
+      - image: cimg/node:14.17
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v4-{{ .Branch }}-
+            - node-v4-
+      - run: yarn
+      - run: yarn build
+      # needed to install brancher properly
+      - run: yarn add ./packages/tools -W
+      # Install dynamodb for serverless-offline
+      - run: yarn sls dynamodb install
+      - run: ls -la node_modules/.bin
+      - save_cache:
+          key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          command: SLS_DEBUG=* yarn api
+          background: true
+      - run: yarn cypress run
 
 # Orchestrate or schedule a set of jobs
 workflows:
-  deploy:
+  ci:
     jobs:
       - deploy:
+          context: dev.swipeme.io
+      - cypress:
           context: dev.swipeme.io
