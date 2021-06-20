@@ -30,6 +30,12 @@ jobs:
     - name: Install dependencies
       run: yarn --frozen-lockfile
 
+    - name: Install brancher
+      run: |
+        yarn build
+        # needed to install brancher properly
+        yarn add ./packages/tools -W
+
     - name: Log variables
       run: |
         echo $GITHUB_SHA
