@@ -17,7 +17,8 @@
     },
   },
   "files": [
-    "src/vue-shims.d.ts"
+    "src/vue-shims.d.ts",
+    "src/amplify-types.d.ts"
   ],
   "include": [
     "src/**/*.ts",
