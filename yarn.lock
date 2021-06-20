@@ -3264,8 +3264,8 @@
 "@swipeme.io/api@file:./packages/api":
   version "1.0.0"
   dependencies:
-    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-f45f7665-aaad-410d-a1c8-a5b1338c94d8-1624182938854/node_modules/@swipeme.io/common"
-    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-f45f7665-aaad-410d-a1c8-a5b1338c94d8-1624182938854/node_modules/@swipeme.io/tools"
+    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-8e5ea8ab-937e-4b09-808b-2f6014c630a2-1624183596567/node_modules/@swipeme.io/common"
+    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-8e5ea8ab-937e-4b09-808b-2f6014c630a2-1624183596567/node_modules/@swipeme.io/tools"
     aws-sdk "^2.922.0"
     aws-serverless-express "^3.4.0"
     cors "^2.8.5"
@@ -8219,6 +8219,13 @@ eslint-module-utils@^2.6.0:
     debug "^3.2.7"
     pkg-dir "^2.0.0"
 
+eslint-plugin-cypress@2.11.3:
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-cypress/-/eslint-plugin-cypress-2.11.3.tgz#54ee4067aa8192aa62810cd35080eb577e191ab7"
+  integrity sha512-hOoAid+XNFtpvOzZSNWP5LDrQBEJwbZwjib4XJ1KcRYKjeVj0mAmPmucG4Egli4j/aruv+Ow/acacoloWWCl9Q==
+  dependencies:
+    globals "^11.12.0"
+
 eslint-plugin-es@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-es/-/eslint-plugin-es-3.0.1.tgz#75a7cdfdccddc0589934aeeb384175f221c57893"
@@ -9593,7 +9600,7 @@ global-dirs@^3.0.0:
   dependencies:
     ini "2.0.0"
 
-globals@^11.1.0:
+globals@^11.1.0, globals@^11.12.0:
   version "11.12.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==

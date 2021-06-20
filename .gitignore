@@ -36,3 +36,9 @@ s_app.js
 
 # Webpack directories
 .webpack
+
+# Cypress genenrated files
+cypress/videos/
+cypress/screenshots/
+cypress/fixtures/users.json
+cypress/fixtures/profile.json
