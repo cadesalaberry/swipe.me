@@ -7,13 +7,13 @@ import VueRouter from 'vue-router'
 /* eslint-enable @typescript-eslint/no-unused-vars, no-unused-vars */
 
 // src/vue-shims.d.ts
-declare module 'vue-material'
+// declare module 'vue-material'
 
-// 2. Specify a file with the types you want to augment
-//    Vue has the constructor type in types/vue.d.ts
-declare module 'vue/types/vue' {
-  // 3. Declare augmentation for Vue
-  // interface Vue {
+// // 2. Specify a file with the types you want to augment
+// //    Vue has the constructor type in types/vue.d.ts
+// declare module 'vue/types/vue' {
+//   // 3. Declare augmentation for Vue
+//   // interface Vue {
 
-  // }
-}
+//   // }
+// }
