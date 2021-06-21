@@ -69,4 +69,5 @@ workflows:
       - cypress:
           context: dev.swipeme.io
       - cypress/run:
+          executor: base-14
           yarn: true
