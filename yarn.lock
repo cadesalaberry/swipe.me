@@ -3220,8 +3220,8 @@
 "@swipeme.io/api@file:./packages/api":
   version "1.0.0"
   dependencies:
-    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-55b91180-33f0-4ceb-84b3-e4702cf88f40-1624180893320/node_modules/@swipeme.io/common"
-    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-55b91180-33f0-4ceb-84b3-e4702cf88f40-1624180893320/node_modules/@swipeme.io/tools"
+    "@swipeme.io/common" "file:packages/common"
+    "@swipeme.io/tools" "file:packages/tools"
     aws-sdk "^2.922.0"
     aws-serverless-express "^3.4.0"
     cors "^2.8.5"
@@ -15658,9 +15658,9 @@ set-blocking@^2.0.0, set-blocking@~2.0.0:
   integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
 
 set-getter@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/set-getter/-/set-getter-0.1.0.tgz#d769c182c9d5a51f409145f2fba82e5e86e80376"
-  integrity sha1-12nBgsnVpR9AkUXy+6guXoboA3Y=
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/set-getter/-/set-getter-0.1.1.tgz#a3110e1b461d31a9cfc8c5c9ee2e9737ad447102"
+  integrity sha512-9sVWOy+gthr+0G9DzqqLaYNA7+5OKkSmcqjL9cBpDEaZrr3ShQlyX2cZ/O/ozE41oxn/Tt0LGEM/w4Rub3A3gw==
   dependencies:
     to-object-path "^0.3.0"
 
