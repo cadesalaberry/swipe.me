@@ -6,7 +6,7 @@
         class="deck-name"
         :disabled="editionModeEnabled"
         v-model="deck.title"
-        @keyup="saveDeckLocally"
+        @keyup="() => saveDeckLocally(deck)"
         placeholder="Name of the deck">
     </div>
     <loader v-if="loading"></loader>
@@ -70,7 +70,11 @@ export default {
       return this.$store.getters.getLoadingDeckStatus
     },
     deck () {
-      return this.$store.state.newDeck
+      const { editionModeEnabled } = this
+
+      return editionModeEnabled
+        ? this.$store.state.existingDeck
+        : this.$store.state.newDeck
     },
     tooManyCards () {
       return this.deck.cards.length >= MAX_CARD_COUNT
@@ -89,7 +93,7 @@ export default {
   },
 
   mounted: function () {
-    const { editionModeEnabled } = this
+    const { editionModeEnabled, deck } = this
     const { deckHandle, userHandle } = this.$route.params
 
     console.log(this.$route.params, editionModeEnabled)
@@ -98,15 +102,15 @@ export default {
         .dispatch('fetchDeckByHandle', { userHandle, deckHandle })
         .then((existingDeck) => {
           if (!existingDeck) return
-          this.$store.commit('setNewDeck', existingDeck)
+          this.$store.commit('setExistingDeck', existingDeck)
         })
     }
 
-    if (!this.deck?.cards?.length) {
+    if (!deck?.cards?.length) {
       this.addEmptyCard()
     }
 
-    this.saveDeckLocally()
+    this.saveDeckLocally(deck)
   },
 
   methods: {
@@ -130,7 +134,8 @@ export default {
           if (!newDeckHandle) return
 
           this.$router.push(`/${currentUserHandle}/${newDeckHandle}`)
-          this.$store.commit('resetNewDeck')
+
+          this.resetDeck()
         })
     },
 
@@ -148,14 +153,28 @@ export default {
         cards
       }
       console.log(newDeck.cards[index])
-      this.$store.commit('setNewDeck', newDeck)
+      this.saveDeckLocally(newDeck)
     },
 
-    saveDeckLocally () {
-      this.$store.commit('setNewDeck', this.deck)
+    saveDeckLocally (deck) {
+      const { editionModeEnabled } = this
+
+      if (editionModeEnabled) return this.$store.commit('setExistingDeck', deck)
+
+      this.$store.commit('setNewDeck', deck)
+    },
+
+    resetDeck () {
+      const { editionModeEnabled } = this
+
+      if (editionModeEnabled) return this.$store.commit('resetExistingDeck')
+
+      this.$store.commit('resetNewDeck')
     },
 
     addEmptyCard () {
+      const { deck } = this
+
       if (this.tooManyCards) {
         return alert(`You cannot add more than ${MAX_CARD_COUNT} cards`)
       }
@@ -164,13 +183,13 @@ export default {
         return alert('The last card is already empty')
       }
 
-      this.deck.cards.push({
+      deck.cards.push({
         title: '',
         picturePath: 'https://images.unsplash.com/photo-1578666859768-10f9910a2045?auto=format&fit=crop&w=350&h=280&q=80',
         description: ''
       })
 
-      this.saveDeckLocally()
+      this.saveDeckLocally(deck)
     }
   }
 }

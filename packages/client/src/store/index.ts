@@ -33,6 +33,11 @@ interface GlobalState {
     deckHandle: string,
     cards: Card[]
   },
+  existingDeck: {
+    title: string,
+    deckHandle: string,
+    cards: Card[]
+  },
   newDeckError: Error | null
 }
 
@@ -50,6 +55,11 @@ const getDefaultState = (): GlobalState => ({
   loadingDeckError: null,
   deckList: [],
   newDeck: {
+    title: '',
+    deckHandle: '',
+    cards: []
+  },
+  existingDeck: {
     title: '',
     deckHandle: '',
     cards: []
@@ -140,8 +150,18 @@ export default new Vuex.Store({
     setNewDeck (state: GlobalState, deck: Deck): void {
       state.newDeck = deck
     },
+    setExistingDeck (state: GlobalState, deck: Deck): void {
+      state.existingDeck = deck
+    },
     resetNewDeck (state: GlobalState): void {
       state.newDeck = {
+        title: '',
+        deckHandle: '',
+        cards: []
+      }
+    },
+    resetExistingDeck (state: GlobalState): void {
+      state.existingDeck = {
         title: '',
         deckHandle: '',
         cards: []
