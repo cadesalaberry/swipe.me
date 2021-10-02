@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: cimg/node:14.17
+      - image: cimg/node:14.18
     steps:
       - checkout
       - restore_cache:
