@@ -1,20 +1,48 @@
 import { Storage } from 'aws-amplify'
+import { StorageAccessLevel } from '@aws-amplify/storage'
 import { v4 as uuidv4 } from 'uuid'
 
-export const SecurityLevel = Object.freeze({
+/* eslint-disable no-unused-vars */
+/* FIXME: The @typescript-eslint/no-unused-vars should apply, not the JS one */
+export enum SecurityLevelEnum {
   /**
    * Readable by all users, but writable only by the creating user
    */
-  PROTECTED: 'protected',
+  PROTECTED = 'protected',
   /**
    * Only accessible for the individual user
    */
-  PRIVATE: 'private',
+  PRIVATE = 'private',
   /**
    * Accessible by all users of your app. Files are stored under the `public/` path in your S3 bucket
    */
-  PUBLIC: 'public'
+  PUBLIC = 'public'
+}
+/* eslint-enable no-unused-vars */
+
+export const SecurityLevel = Object.freeze({
+  PROTECTED: SecurityLevelEnum.PROTECTED,
+  PRIVATE: SecurityLevelEnum.PRIVATE,
+  PUBLIC: SecurityLevelEnum.PUBLIC
 })
+
+/**
+ * I had to trick to make the ts compiler happy:
+ *   48 Type 'string' is not assignable to type 'StorageAccessLevel | undefined'.
+ *   49 |   }
+ *   50 |
+ * > 51 |   const urlOrObject = await Storage.get(key, { level: securityLevel })
+ *      |                                                ^
+ * @param level string
+ * @returns boolean
+ */
+function isValidSecurityLevel (level: string): level is SecurityLevelEnum {
+  return [
+    SecurityLevelEnum.PRIVATE,
+    SecurityLevelEnum.PROTECTED,
+    SecurityLevelEnum.PUBLIC
+  ].includes(level as SecurityLevelEnum)
+}
 
 interface InputFile {
   name: string;
@@ -42,13 +70,13 @@ export const getAuthenticatedUrl = async (url: string): Promise<string> => {
   const protocolLess = url.slice(5) // takes out s3://
   const [securityLevel, ...rest] = protocolLess.split('/') // reads the vault value
   const key = rest.join('/')
-  const allowedValues = Object.values(SecurityLevel).map(s => s)
 
-  if (!allowedValues.includes(securityLevel)) {
+  if (!isValidSecurityLevel(securityLevel)) {
     throw new Error(`Unsupported security level ${securityLevel}`)
   }
 
-  const urlOrObject = await Storage.get(key, { level: securityLevel })
+  const storageAccessLevel = securityLevel as StorageAccessLevel
+  const urlOrObject = await Storage.get(key, { level: storageAccessLevel })
   const authenticatedUrl = urlOrObject as string
   const parsed = new URL(authenticatedUrl)
   const publicUrl = [parsed.origin, parsed.pathname].join('')
@@ -81,7 +109,7 @@ export const loadImagePreview = (file: Blob): unknown => {
   })
 }
 
-export const uploadFile = (file: InputFile, vaultType = SecurityLevel.PRIVATE): Promise<UploadedFile> => {
+export const uploadFile = (file: InputFile, vaultType: StorageAccessLevel = SecurityLevel.PRIVATE): Promise<UploadedFile> => {
   const extension = file.name.split('.').pop()
   const randomIdentifier = uuidv4()
   const uniqueFilename = `${randomIdentifier}.${extension}`
