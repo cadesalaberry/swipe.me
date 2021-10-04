@@ -39,7 +39,7 @@
     "@types/vue-material": "https://github.com/calebsander/vue-material-types",
     "@types/vuelidate": "0.7.14",
     "@types/zen-observable": "0.8.2",
-    "@vue/cli-plugin-babel": "4.5.12",
+    "@vue/cli-plugin-babel": "4.5.13",
     "@vue/cli-plugin-eslint": "4.5.12",
     "@vue/cli-plugin-pwa": "4.5.13",
     "@vue/cli-plugin-typescript": "4.5.12",
