@@ -44,6 +44,8 @@ context('Deck', () => {
       // queries the entire table again
       cy.get('.card__description').contains('a simple file system in C').end()
     }).end()
+
+    cy.percySnapshot()
   })
 
   it.skip('should drag the first card left', () => {

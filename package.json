@@ -5,7 +5,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "engines" : {
+  "engines": {
     "node": "~14.18",
     "yarn": "~1.22"
   },
@@ -28,13 +28,16 @@
     "client:lint": "yarn workspace @swipeme.io/client lint",
     "common:build": "yarn workspace @swipeme.io/common build",
     "compile": "tsc -p tsconfig.build.json",
-    "cypress:open": "cypress open",
+    "cypress:open": "percy exec -- cypress open",
+    "cypress:run": "percy exec -- cypress run",
     "postinstall": "patch-package",
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
     "tools:build": "yarn workspace @swipeme.io/tools build"
   },
   "dependencies": {},
   "devDependencies": {
+    "@percy/cli": "^1.0.0-beta.70",
+    "@percy/cypress": "^3.1.1",
     "@swipeme.io/api": "file:packages/api",
     "@swipeme.io/tools": "file:packages/tools",
     "@types/aws-lambda": "8.10.76",
@@ -47,7 +50,7 @@
     "@typescript-eslint/parser": "4.33.0",
     "concurrently": "^6.2.0",
     "current-git-branch": "1.1.0",
-    "cypress": "^8.6.0",
+    "cypress": "^8.7.0",
     "eslint": "7.32.0",
     "eslint-plugin-cypress": "2.11.3",
     "eslint-plugin-import": "2.23.4",
