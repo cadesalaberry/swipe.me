@@ -51,6 +51,7 @@ workflows:
             yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
             yarn brancher
             yarn client:build
+            yarn serverless dynamodb install
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
