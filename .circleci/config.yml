@@ -32,7 +32,7 @@ jobs:
       - run: yarn client:lint
       - run: yarn client:build
       - run: yarn client:deploy
-  cypress:
+  api:
     docker:
       - image: cimg/node:14.17
     steps:
@@ -66,8 +66,10 @@ workflows:
     jobs:
       - deploy:
           context: dev.swipeme.io
-      - cypress:
+      - api:
           context: dev.swipeme.io
       - cypress/run:
+          context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
+          install-command: yarn install --ignore-engines
