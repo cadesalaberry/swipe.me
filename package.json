@@ -29,12 +29,13 @@
     "client:build": "yarn workspace @swipeme.io/client build",
     "client:deploy": "export STAGE=\"$(brancher dashify)\" && sls client deploy --stage=$STAGE --no-confirm",
     "client:lint": "yarn workspace @swipeme.io/client lint",
+    "client:static": "yarn workspace @swipeme.io/client static",
     "common:build": "yarn workspace @swipeme.io/common build",
     "compile": "tsc -p tsconfig.build.json",
-    "cypress:open": "percy exec -- cypress open",
+    "cypress:open": "cypress open",
     "cypress:run": "percy exec -- cypress run",
     "postinstall": "patch-package",
-    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
+    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client:static\"",
     "tools:build": "yarn workspace @swipeme.io/tools build"
   },
   "devDependencies": {
