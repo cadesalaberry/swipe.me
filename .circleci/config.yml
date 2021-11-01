@@ -7,7 +7,7 @@ orbs:
 jobs:
   deploy:
     docker:
-      - image: cimg/node:14.18
+      - image: cimg/node:12.22
     steps:
       - checkout
       - restore_cache:
@@ -34,7 +34,7 @@ jobs:
       - run: yarn client:deploy
   cypress:
     docker:
-      - image: cimg/node:14.17
+      - image: cimg/node:12.22
     steps:
       - checkout
       - restore_cache:
@@ -69,5 +69,6 @@ workflows:
       - cypress:
           context: dev.swipeme.io
       - cypress/run:
-          executor: cypress/base-14
+          context: dev.swipeme.io
+          executor: cypress/base-12
           yarn: true
