@@ -52,12 +52,13 @@ workflows:
             yarn brancher
             yarn client:build
             yarn serverless dynamodb install
+            ls .dynamodb
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
           install-command: yarn install --ignore-engines
-          start: yarn serve
+          start: sudo apt install default-jdk -y && yarn serverless dynamodb install && yarn serve
           wait-on: http://localhost:3000
           command-prefix: yarn percy exec --
