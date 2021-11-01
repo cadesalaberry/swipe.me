@@ -44,12 +44,12 @@ workflows:
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
-          install-command: yarn install --ignore-engines
+          install-command: yarn install --ignore-engines && yarn build && yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev && yarn brancher
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
           install-command: yarn install --ignore-engines
-          start: yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev && yarn serve
+          start: yarn serve
           wait-on: http://localhost:8080
