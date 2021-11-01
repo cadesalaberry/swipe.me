@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "static": "http-server dist -p 8080",
+    "static": "ls dist && http-server dist -p 8080",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
