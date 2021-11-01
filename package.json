@@ -35,8 +35,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@swipeme.io/api": "file:./packages/api",
-    "@swipeme.io/tools": "file:./packages/tools",
+    "@swipeme.io/api": "file:packages/api",
+    "@swipeme.io/tools": "file:packages/tools",
     "@types/aws-lambda": "8.10.76",
     "@types/aws-serverless-express": "3.3.5",
     "@types/cors": "2.8.10",
