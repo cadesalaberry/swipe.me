@@ -11,8 +11,5 @@
     "build": "yarn run clean && yarn run compile",
     "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "compile": "tsc -p tsconfig.build.json"
-  },
-  "dependencies": {
-  },
-  "devDependencies": {}
+  }
 }

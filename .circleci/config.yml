@@ -19,7 +19,7 @@ jobs:
       - run: yarn
       - run: yarn build
       # needed to install brancher properly
-      - run: yarn add ./packages/tools -W
+      - run: yarn add file:packages/tools -W
       - run: ls -la node_modules/.bin
       - save_cache:
           key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -68,6 +68,11 @@ workflows:
     jobs:
       - build:
           context: dev.swipeme.io
+      - cypress/install:
+          context: dev.swipeme.io
+          executor: cypress/base-14
+          yarn: true
+          install-command: yarn install --ignore-engines
       - api:
           context: dev.swipeme.io
           requires: [build]
@@ -75,8 +80,10 @@ workflows:
           context: dev.swipeme.io
           requires: [build]
       - cypress/run:
-          requires: [build]
+          requires: [build, cypress/install]
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
-          install-command: yarn install --ignore-engines && yarn wait-on http://localhost:8080
+          install-command: yarn install --ignore-engines
+          start: yarn client
+          wait-on: http://localhost:8080

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/api",
+    "packages/client",
+    "packages/common",
+    "packages/tools"
   ],
   "engines": {
     "node": "~14",
@@ -34,7 +37,6 @@
     "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
     "tools:build": "yarn workspace @swipeme.io/tools build"
   },
-  "dependencies": {},
   "devDependencies": {
     "@percy/cli": "^1.0.0-beta.70",
     "@percy/cypress": "^3.1.1",
@@ -99,5 +101,6 @@
     "packages/client/**/*.{js,ts,vue}": "yarn client:lint",
     "packages/api/**/*.{js,ts}": "yarn api:lint"
   },
-  "homepage": "git@github.com:cadesalaberry/swipe.me"
+  "homepage": "git@github.com:cadesalaberry/swipe.me",
+  "packageManager": "yarn@1.22.17"
 }
