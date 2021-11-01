@@ -25,6 +25,7 @@ jobs:
           key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+            - packages/client/dist
             - .dynamodb
 
       - run: yarn brancher
@@ -53,3 +54,4 @@ workflows:
           install-command: yarn install --ignore-engines
           start: yarn serve
           wait-on: http://localhost:8080
+          command-prefix: yarn percy exec --
