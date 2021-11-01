@@ -19,7 +19,7 @@ jobs:
       - run: yarn
       - run: yarn build
       # needed to install brancher properly
-      - run: yarn add file:packages/tools -W
+      - run: yarn add file:packages/tools -W --frozen-lockfile
       - run: ls -la node_modules/.bin
       - save_cache:
           key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -85,5 +85,5 @@ workflows:
           executor: cypress/base-14
           yarn: true
           install-command: yarn install --ignore-engines
-          start: yarn client
+          start: yarn add file:packages/tools -W --ignore-engines --frozen-lockfile && yarn client
           wait-on: http://localhost:8080
