@@ -19,12 +19,13 @@ jobs:
       - run: yarn
       - run: yarn build
       # needed to install brancher properly
-      - run: yarn add file:packages/tools -W --frozen-lockfile
+      - run: yarn add file:packages/tools -W --frozen-lockfile --dev
       - run: ls -la node_modules/.bin
       - save_cache:
           key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+            - .dynamodb
 
       - run: yarn brancher
       - run: yarn api:lint
@@ -32,35 +33,6 @@ jobs:
       - run: yarn client:lint
       - run: yarn client:build
       # - run: yarn client:deploy
-  api:
-    docker:
-      - image: cimg/node:14.17
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            # when lock file changes, use increasingly general patterns to restore cache
-            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      # Install dynamodb for serverless-offline
-      - run: yarn sls dynamodb install
-      - run: ls -la node_modules/.bin
-      - run:
-          command: SLS_DEBUG=* yarn api
-          background: true
-  client:
-    docker:
-      - image: cimg/node:14.17
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            # when lock file changes, use increasingly general patterns to restore cache
-            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: ls -la node_modules/.bin
-      - run:
-          command: yarn client
-          background: true
-
 
 # Orchestrate or schedule a set of jobs
 workflows:
@@ -73,17 +45,11 @@ workflows:
           executor: cypress/base-14
           yarn: true
           install-command: yarn install --ignore-engines
-      - api:
-          context: dev.swipeme.io
-          requires: [build]
-      - client:
-          context: dev.swipeme.io
-          requires: [build]
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
           install-command: yarn install --ignore-engines
-          start: yarn add file:packages/tools -W --ignore-engines --frozen-lockfile && yarn client
+          start: yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev && yarn serve
           wait-on: http://localhost:8080
