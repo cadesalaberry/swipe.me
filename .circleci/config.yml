@@ -5,7 +5,7 @@ orbs:
   cypress: cypress-io/cypress@1
 
 jobs:
-  deploy:
+  build:
     docker:
       - image: cimg/node:14.18
     steps:
@@ -28,10 +28,10 @@ jobs:
 
       - run: yarn brancher
       - run: yarn api:lint
-      - run: SLS_DEBUG=* yarn api:deploy
+      # - run: SLS_DEBUG=* yarn api:deploy
       - run: yarn client:lint
       - run: yarn client:build
-      - run: yarn client:deploy
+      # - run: yarn client:deploy
   api:
     docker:
       - image: cimg/node:14.17
@@ -41,22 +41,24 @@ jobs:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
             - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - node-v4-{{ .Branch }}-
-            - node-v4-
-      - run: yarn
-      - run: yarn build
-      # needed to install brancher properly
-      - run: yarn add ./packages/tools -W
       # Install dynamodb for serverless-offline
       - run: yarn sls dynamodb install
       - run: ls -la node_modules/.bin
-      - save_cache:
-          key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
       - run:
           command: SLS_DEBUG=* yarn api
+          background: true
+  client:
+    docker:
+      - image: cimg/node:14.17
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: ls -la node_modules/.bin
+      - run:
+          command: yarn client
           background: true
 
 
@@ -64,12 +66,17 @@ jobs:
 workflows:
   ci:
     jobs:
-      - deploy:
+      - build:
           context: dev.swipeme.io
       - api:
           context: dev.swipeme.io
+          requires: [build]
+      - client:
+          context: dev.swipeme.io
+          requires: [build]
       - cypress/run:
+          requires: [build]
           context: dev.swipeme.io
           executor: cypress/base-14
           yarn: true
-          install-command: yarn install --ignore-engines
+          install-command: yarn install --ignore-engines && yarn wait-on http://localhost:8080

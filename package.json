@@ -68,7 +68,8 @@
     "serverless-offline": "^7.0.0",
     "serverless-s3-remover": "^0.6.0",
     "ts-loader": "9.2.3",
-    "typescript": "4.3.5"
+    "typescript": "4.3.5",
+    "wait-on": "^6.0.0"
   },
   "eslintConfig": {
     "root": true,
