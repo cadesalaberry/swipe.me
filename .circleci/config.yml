@@ -76,5 +76,5 @@ workflows:
           yarn: true
           install-command: yarn install --ignore-engines
           start: yarn serve
-          wait-on: http://localhost:3000
+          wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
