@@ -42,13 +42,28 @@ jobs:
           paths:
             - node_modules
             - packages/client/dist
+            - .webpack
 
       - run: yarn brancher
       - run: yarn api:lint
-      # - run: SLS_DEBUG=* yarn api:deploy
       - run: yarn client:lint
       - run: yarn client:build
-      # - run: yarn client:deploy
+
+  deploy:
+    docker:
+      - image: cimg/node:14.18
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v4-{{ .Branch }}-
+            - node-v4-
+
+      - run: yarn brancher
+      - run: SLS_DEBUG=* yarn api:deploy
+      - run: yarn client:deploy
 
 # Orchestrate or schedule a set of jobs
 workflows:
@@ -76,3 +91,6 @@ workflows:
           wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
           store_artifacts: true
+      - deploy:
+          requires: [cypress/run]
+          context: dev.swipeme.io
