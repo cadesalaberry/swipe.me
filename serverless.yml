@@ -71,6 +71,8 @@ custom:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
     start:
+      # dynamodb should be started with docker on port 8000
+      noStart: true
       migrate: true
       seed: true
     stages:

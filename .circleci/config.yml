@@ -4,6 +4,22 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
 
+# using service containers on CircleCI
+# https://circleci.com/docs/2.0/databases/
+executors:
+  with-dynamodb:
+    docker:
+      # image used to install source code,
+      # run our server and run Cypress tests
+      - image: cypress/base:14.17.3
+        environment:
+          WITH_DYNAMODB: true
+
+      # image used to run Dynamodb in a separate container
+      - image: amazon/dynamodb-local:1.17.0
+        environment:
+          WITH_DYNAMODB: true
+
 jobs:
   build:
     docker:
@@ -56,9 +72,9 @@ workflows:
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
-          executor: cypress/base-14
+          executor: with-dynamodb
           yarn: true
           install-command: yarn install --ignore-engines
-          start: sudo apt install default-jdk -y && yarn serverless dynamodb install && yarn serve
+          start: yarn serve
           wait-on: http://localhost:3000
           command-prefix: yarn percy exec --
