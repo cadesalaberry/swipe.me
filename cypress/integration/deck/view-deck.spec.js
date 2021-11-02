@@ -26,7 +26,7 @@ context('Deck', () => {
     cy.visit('http://localhost:8080/cadesalaberry/banana')
   })
 
-  it('Should show the first card', () => {
+  it.skip('Should show the first card', () => {
     getCard(0).within(() => {
       // ends the current chain and yields null
       cy.get('.card__title').contains('Degree').end()
@@ -36,7 +36,7 @@ context('Deck', () => {
     })
   })
 
-  it('Should have the second card', () => {
+  it.skip('Should have the second card', () => {
     getCard(1).within(() => {
       // ends the current chain and yields null
       cy.get('.card__title').contains('C').end()
