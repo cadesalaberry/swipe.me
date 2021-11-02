@@ -78,5 +78,4 @@ workflows:
           start: yarn serve
           wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
-          record: true
           store_artifacts: true
