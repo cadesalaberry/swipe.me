@@ -42,7 +42,6 @@ jobs:
           paths:
             - node_modules
             - packages/client/dist
-            - .dynamodb
 
       - run: yarn brancher
       - run: yarn api:lint
@@ -67,8 +66,6 @@ workflows:
             yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
             yarn brancher
             yarn client:build
-            yarn serverless dynamodb install
-            ls .dynamodb
       - cypress/run:
           requires: [build, cypress/install]
           context: dev.swipeme.io
