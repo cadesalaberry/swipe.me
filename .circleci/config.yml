@@ -41,13 +41,19 @@ jobs:
           key: node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-            - packages/client/dist
-            - .webpack
 
       - run: yarn brancher
       - run: yarn api:lint
       - run: yarn client:lint
       - run: yarn client:build
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - packages/common/dist
+            - packages/client/dist
+            - packages/tools/dist
+            - .webpack
 
   deploy:
     docker:
@@ -60,6 +66,8 @@ jobs:
             - node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - node-v5-{{ .Branch }}-
             - node-v5-
+      - attach_workspace:
+          at: .
 
       - run: yarn brancher
       - run: SLS_DEBUG=* yarn api:deploy
