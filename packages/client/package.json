@@ -46,7 +46,7 @@
     "@vue/cli-plugin-pwa": "4.5.13",
     "@vue/cli-plugin-typescript": "4.5.14",
     "@vue/cli-service": "4.5.8",
-    "@vue/eslint-config-standard": "6.0.0",
+    "@vue/eslint-config-standard": "6.1.0",
     "@vue/eslint-config-typescript": "7.0.0",
     "babel-loader": "^8.2.2",
     "http-server": "14.0.0",
