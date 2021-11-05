@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/api",
+    "packages/client",
+    "packages/common",
+    "packages/tools"
   ],
-  "engines" : {
-    "node": "~14.18",
+  "engines": {
+    "node": "~14",
     "yarn": "~1.22"
   },
   "os": [
@@ -17,26 +20,30 @@
     "api": "NODE_ENV=development sls offline start",
     "api:deploy": "export STAGE=\"$(brancher dashify)\" && sls deploy --stage=$STAGE",
     "api:remove": "export STAGE=\"$(brancher dashify)\" && sls remove --stage=$STAGE",
+    "api:package": "export STAGE=\"$(brancher dashify)\" && SLS_DEBUG=* sls package --stage=$STAGE",
     "api:logs": "export STAGE=\"$(brancher dashify)\" && sls logs -f app -t --stage=$STAGE",
     "api:lint": "eslint packages/api/**/*.{js,ts}",
     "api:seed:online": "export STAGE=\"$(brancher dashify)\" && sls dynamodb seed --online --region eu-west-1 --stage=$STAGE",
+    "build": "yarn run clean && yarn common:build && yarn tools:build",
+    "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
     "client": "yarn workspace @swipeme.io/client serve",
     "client:build": "yarn workspace @swipeme.io/client build",
     "client:deploy": "export STAGE=\"$(brancher dashify)\" && sls client deploy --stage=$STAGE --no-confirm",
     "client:lint": "yarn workspace @swipeme.io/client lint",
-    "postinstall": "patch-package",
-    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client\"",
-    "tools:build": "yarn workspace @swipeme.io/tools build",
+    "client:static": "yarn workspace @swipeme.io/client static",
     "common:build": "yarn workspace @swipeme.io/common build",
-    "build": "yarn run clean && yarn common:build && yarn tools:build",
-    "clean": "rm -rf ./dist ./tsconfig.build.tsbuildinfo",
-    "compile": "tsc -p tsconfig.build.json"
-  },
-  "dependencies": {
+    "compile": "tsc -p tsconfig.build.json",
+    "cypress:open": "cypress open",
+    "cypress:run": "percy exec -- cypress run",
+    "postinstall": "patch-package",
+    "serve": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn client:static\"",
+    "tools:build": "yarn workspace @swipeme.io/tools build"
   },
   "devDependencies": {
-    "@swipeme.io/api": "file:./packages/api",
-    "@swipeme.io/tools": "file:./packages/tools",
+    "@percy/cli": "^1.0.0-beta.70",
+    "@percy/cypress": "^3.1.1",
+    "@swipeme.io/api": "file:packages/api",
+    "@swipeme.io/tools": "file:packages/tools",
     "@types/aws-lambda": "8.10.76",
     "@types/aws-serverless-express": "3.3.5",
     "@types/cors": "2.8.10",
@@ -47,7 +54,9 @@
     "@typescript-eslint/parser": "4.33.0",
     "concurrently": "^6.2.0",
     "current-git-branch": "1.1.0",
+    "cypress": "^8.7.0",
     "eslint": "7.32.0",
+    "eslint-plugin-cypress": "2.11.3",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "5.1.0",
@@ -63,7 +72,8 @@
     "serverless-offline": "^7.0.0",
     "serverless-s3-remover": "^0.6.0",
     "ts-loader": "9.2.3",
-    "typescript": "4.3.5"
+    "typescript": "4.3.5",
+    "wait-on": "^6.0.0"
   },
   "eslintConfig": {
     "root": true,
@@ -72,6 +82,7 @@
     },
     "extends": [
       "plugin:vue/essential",
+      "plugin:cypress/recommended",
       "@vue/typescript/recommended",
       "@vue/standard"
     ],
@@ -92,5 +103,6 @@
     "packages/client/**/*.{js,ts,vue}": "yarn client:lint",
     "packages/api/**/*.{js,ts}": "yarn api:lint"
   },
-  "homepage": "git@github.com:cadesalaberry/swipe.me"
+  "homepage": "git@github.com:cadesalaberry/swipe.me",
+  "packageManager": "yarn@1.22.17"
 }

@@ -28,6 +28,8 @@ custom:
     bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
     manageResources: false # make sure we use the s3 created by cloudfront and not a new one
+  bundle:
+    linting: false
   # webpack:
   #   packager: yarn
   #   # packagerOptions:
@@ -71,6 +73,8 @@ custom:
     dynamodb-url: 'http://localhost:8000'
   dynamodb:
     start:
+      # dynamodb should be started with docker on port 8000
+      noStart: true
       migrate: true
       seed: true
     stages:

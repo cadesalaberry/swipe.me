@@ -1,7 +1,60 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  cypress: cypress-io/cypress@1
+
+# using service containers on CircleCI
+# https://circleci.com/docs/2.0/databases/
+executors:
+  with-dynamodb:
+    docker:
+      # image used to install source code,
+      # run our server and run Cypress tests
+      - image: cypress/base:14.17.3
+        environment:
+          WITH_DYNAMODB: true
+
+      # image used to run Dynamodb in a separate container
+      - image: amazon/dynamodb-local:1.17.0
+        environment:
+          WITH_DYNAMODB: true
+
 jobs:
+  build:
+    docker:
+      - image: cimg/node:14.18
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v5-{{ .Branch }}-
+            - node-v5-
+      - run: yarn
+      - run: yarn build
+      # needed to install brancher properly
+      - run: yarn add file:packages/tools -W --frozen-lockfile --dev
+      - run: ls -la node_modules/.bin
+      - save_cache:
+          key: node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run: yarn brancher
+      - run: yarn api:lint
+      - run: yarn client:lint
+      - run: yarn client:build
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - packages/common/dist
+            - packages/client/dist
+            - packages/tools/dist
+            - .webpack
+
   deploy:
     docker:
       - image: cimg/node:14.18
@@ -10,29 +63,42 @@ jobs:
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
-            - node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - node-v4-{{ .Branch }}-
-            - node-v4-
-      - run: yarn
-      - run: yarn build
-      # needed to install brancher properly
-      - run: yarn add ./packages/tools -W
-      - run: ls -la node_modules/.bin
-      - save_cache:
-          key: node-v4-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+            - node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v5-{{ .Branch }}-
+            - node-v5-
+      - attach_workspace:
+          at: .
 
       - run: yarn brancher
-      - run: yarn api:lint
       - run: SLS_DEBUG=* yarn api:deploy
-      - run: yarn client:lint
-      - run: yarn client:build
       - run: yarn client:deploy
 
 # Orchestrate or schedule a set of jobs
 workflows:
-  deploy:
+  ci:
     jobs:
+      - build:
+          context: dev.swipeme.io
+      - cypress/install:
+          context: dev.swipeme.io
+          executor: cypress/base-14
+          yarn: true
+          install-command: |
+            yarn install --ignore-engines
+            yarn build
+            yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
+            yarn brancher
+            yarn client:build
+      - cypress/run:
+          requires: [build, cypress/install]
+          context: dev.swipeme.io
+          executor: with-dynamodb
+          yarn: true
+          install-command: yarn install --ignore-engines
+          start: yarn serve
+          wait-on: http://localhost:3000/local
+          command-prefix: yarn percy exec --
+          store_artifacts: true
       - deploy:
+          requires: [cypress/run]
           context: dev.swipeme.io

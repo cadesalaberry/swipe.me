@@ -7,10 +7,10 @@
     "outDir": "./dist",
     "baseUrl": "./packages"
   },
-
   "exclude": [
     "packages/client/*",
     "node_modules",
     "dist"
-  ]
+  ],
+  "types": ["cypress", "@percy/cypress"]
 }
