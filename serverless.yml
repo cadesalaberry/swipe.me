@@ -28,6 +28,8 @@ custom:
     bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
     manageResources: false # make sure we use the s3 created by cloudfront and not a new one
+  bundle:
+    linting: false
   # webpack:
   #   packager: yarn
   #   # packagerOptions:
