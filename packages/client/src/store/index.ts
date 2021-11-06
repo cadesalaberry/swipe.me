@@ -350,7 +350,7 @@ export default new Vuex.Store({
         commit('setGlobalError', null)
       } catch (e) {
         Sentry.captureException(e)
-        commit('setGlobalError', e.message)
+        if (e instanceof Error) { commit('setGlobalError', e.message) }
       }
     },
     configureAmplify ({ commit }, config: AmplifyConfig) {
@@ -359,7 +359,7 @@ export default new Vuex.Store({
         commit('setGlobalError', null)
       } catch (e) {
         Sentry.captureException(e)
-        commit('setGlobalError', e.message)
+        if (e instanceof Error) { commit('setGlobalError', e.message) }
       }
     },
     async fetchUserInfos ({ commit }) {
