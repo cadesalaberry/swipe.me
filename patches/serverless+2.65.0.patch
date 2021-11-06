@@ -1,0 +1,13 @@
+diff --git a/node_modules/serverless/lib/plugins/aws/package/lib/mergeIamTemplates.js b/node_modules/serverless/lib/plugins/aws/package/lib/mergeIamTemplates.js
+index e0bf88a..504ffa4 100644
+--- a/node_modules/serverless/lib/plugins/aws/package/lib/mergeIamTemplates.js
++++ b/node_modules/serverless/lib/plugins/aws/package/lib/mergeIamTemplates.js
+@@ -70,7 +70,7 @@ module.exports = {
+       )
+     );
+     iamRoleLambdaExecutionTemplate.Properties.Path = this.provider.naming.getRolePath();
+-    iamRoleLambdaExecutionTemplate.Properties.RoleName = this.provider.naming.getRoleName();
++    iamRoleLambdaExecutionTemplate.Properties.RoleName = this.serverless.service.provider.iamRoleStatementsName || this.provider.naming.getRoleName();
+ 
+     // set role tags
+     if (iamRole.tags) {
