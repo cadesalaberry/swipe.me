@@ -1,5 +1,6 @@
 {
   "ignoreTestFiles": [
     "**/examples/**.spec.js"
-  ]
+  ],
+  "projectId": "mffknf"
 }

@@ -17,6 +17,8 @@ executors:
 
       # image used to run Dynamodb in a separate container
       - image: amazon/dynamodb-local:1.17.0
+        # https://stackoverflow.com/questions/29558948/dynamo-local-from-node-aws-all-operations-fail-cannot-do-operations-on-a-non-e
+        command: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]
         environment:
           WITH_DYNAMODB: true
 
@@ -99,6 +101,7 @@ workflows:
           wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
           store_artifacts: true
+          record: true
       - deploy:
           requires: [cypress/run]
           context: dev.swipeme.io
