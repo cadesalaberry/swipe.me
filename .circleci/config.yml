@@ -101,6 +101,7 @@ workflows:
           wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
           store_artifacts: true
+          record: true
       - deploy:
           requires: [cypress/run]
           context: dev.swipeme.io
