@@ -31,16 +31,16 @@ jobs:
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
-            - node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - node-v5-{{ .Branch }}-
-            - node-v5-
+            - cache-v6-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - cache-v6-{{ .Branch }}-
+            - cache-v6-
       - run: yarn
       - run: yarn build
       # needed to install brancher properly
       - run: yarn add file:packages/tools -W --frozen-lockfile --dev
       - run: ls -la node_modules/.bin
       - save_cache:
-          key: node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: cache-v6-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
 
@@ -65,9 +65,9 @@ jobs:
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
-            - node-v5-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - node-v5-{{ .Branch }}-
-            - node-v5-
+            - cache-v6-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - cache-v6-{{ .Branch }}-
+            - cache-v6-
       - attach_workspace:
           at: .
 
