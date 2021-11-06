@@ -65,6 +65,7 @@
     "postinstall-postinstall": "^2.1.0",
     "serverless": "2.13.0",
     "serverless-bundle": "^4.3.1",
+    "serverless-cloudfront-invalidate": "^1.11.0",
     "serverless-domain-manager": "5.1.0",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-finch": "^2.6.0",
