@@ -26,7 +26,7 @@ context('Deck', () => {
     cy.visit('http://localhost:8080/cadesalaberry/banana')
   })
 
-  it.skip('Should show the first card', () => {
+  it('Should show the first card', () => {
     getCard(0).within(() => {
       // ends the current chain and yields null
       cy.get('.card__title').contains('Degree').end()
@@ -36,7 +36,7 @@ context('Deck', () => {
     })
   })
 
-  it.skip('Should have the second card', () => {
+  it('Should have the second card', () => {
     getCard(1).within(() => {
       // ends the current chain and yields null
       cy.get('.card__title').contains('C').end()
@@ -48,7 +48,7 @@ context('Deck', () => {
     cy.percySnapshot()
   })
 
-  it.skip('should drag the first card left', () => {
+  it('should drag the first card left', () => {
     moveCard(0, 10, 10)
 
     getCard(1).should('be.visible')
