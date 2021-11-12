@@ -7,21 +7,27 @@ why my company/product?
 why spend the money?
 
 ### Run server and client in development
-```
+```bash
+docker compose start # to start the dynamodb instance
 yarn api
 yarn client
 ```
 
 ### Deploy in production
-```
 
+```bash
 yarn api:deploy
-> https://api.swipeme.io/master
+> https://api.swipeme.io/master/config.json
 
 yarn client:build
 yarn client:deploy
 > https://master.swipeme.io/
 
+# seed the db with some data
+yarn api:seed:online
+
+# Use the files built for the frontend in packages/client/dist
+yarn serve
 ```
 
 ### Create user in Cognito
