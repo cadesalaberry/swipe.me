@@ -74,6 +74,7 @@ jobs:
       - run: yarn brancher
       - run: SLS_DEBUG=* yarn api:deploy
       - run: yarn client:deploy
+      - run: yarn api:seed:online
 
 # Orchestrate or schedule a set of jobs
 workflows:
