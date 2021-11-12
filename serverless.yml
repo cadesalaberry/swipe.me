@@ -4,6 +4,8 @@ app: api-swipe-me
 
 frameworkVersion: ^2.13.0
 useDotenv: true
+# More Info: https://www.serverless.com/framework/docs/deprecations/#NEW_VARIABLES_RESOLVER
+variablesResolutionMode: 20210326
 
 service: api-swipe-me
 
@@ -54,7 +56,13 @@ custom:
     endpointType: 'regional'
     securityPolicy: tls_1_2
   stage: ${opt:stage, 'local'}
-  computed: ${file(./packages/api/config.js)}
+  configFile: ${file(./packages/api/config.js)}
+  computed:
+    shortStageName: ${self:custom.configFile.shortStageName}
+    functionName: ${self:custom.configFile.functionName}
+    appDomainUrl: ${self:custom.configFile.appDomainUrl}
+    snakedStage: ${self:custom.configFile.snakedStage}
+    s3Name: ${self:custom.configFile.s3Name}
   cognito:
     identity-pool: swipeme_io_${self:custom.computed.snakedStage}_id_pool
     user-pool: swipeme.io-${self:custom.stage}-user-pool
@@ -92,8 +100,12 @@ provider:
   runtime: nodejs14.x
   stage: local
   region: eu-west-1
+  # Deprecation warning: Resolution of lambda version hashes was improved with better algorithm, which will be used in next major release.
+  # More Info: https://www.serverless.com/framework/docs/deprecations/#LAMBDA_HASHING_VERSION_V2
+  lambdaHashingVersion: 20201221
   apiGateway:
-    shouldStartNameWithService: true # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
+    # https://www.serverless.com/framework/docs/deprecations/#AWS_API_GATEWAY_NAME_STARTING_WITH_SERVICE
+    shouldStartNameWithService: true
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
   iamRoleStatementsName:
