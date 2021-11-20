@@ -33,6 +33,7 @@ s_app.js
 
 # DynamoDB directories
 .dynamodb
+.dynamodb-local-data
 
 # Webpack directories
 .webpack
