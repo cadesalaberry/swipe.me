@@ -4159,8 +4159,8 @@
 "@swipeme.io/api@file:packages/api":
   version "1.0.0"
   dependencies:
-    "@swipeme.io/common" "file:../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-d9b593ec-3a93-4b88-ab96-c5154aeb62a1-1637430178012/node_modules/@swipeme.io/common"
-    "@swipeme.io/tools" "file:../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-d9b593ec-3a93-4b88-ab96-c5154aeb62a1-1637430178012/node_modules/@swipeme.io/tools"
+    "@swipeme.io/common" "file:packages/common"
+    "@swipeme.io/tools" "file:packages/tools"
     aws-sdk "^2.922.0"
     aws-serverless-express "^3.4.0"
     cors "^2.8.5"
@@ -5059,13 +5059,13 @@
   dependencies:
     "@vue/cli-shared-utils" "^4.5.15"
 
-"@vue/cli-plugin-typescript@4.5.14":
-  version "4.5.14"
-  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-typescript/-/cli-plugin-typescript-4.5.14.tgz#f7aaf290ed6eb6ccdc882cc488493919800ab187"
-  integrity sha512-V38wA/xYaxUwYexnWQ1KVEEYaB5lMdpeAsOAe5OxQrp0+J2wwl9+ocx57JGfdqszDSQzZqoHFcCcwG1AXziDew==
+"@vue/cli-plugin-typescript@4.5.15":
+  version "4.5.15"
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-typescript/-/cli-plugin-typescript-4.5.15.tgz#14ba0ddcf3b94e73148ff84ac904fbc5346c14d1"
+  integrity sha512-g2HDBwWBboTzNvVrS+w4Ctl7CCErboTlx7PyQrXgY+7uGdPVUT9PWuv4DjaZhosSk7WI3qSIpruCBIkdHX5bwQ==
   dependencies:
     "@types/webpack-env" "^1.15.2"
-    "@vue/cli-shared-utils" "^4.5.14"
+    "@vue/cli-shared-utils" "^4.5.15"
     cache-loader "^4.1.0"
     fork-ts-checker-webpack-plugin "^3.1.1"
     globby "^9.2.0"
@@ -5145,7 +5145,7 @@
   optionalDependencies:
     vue-loader-v16 "npm:vue-loader@^16.1.0"
 
-"@vue/cli-shared-utils@^4.5.13", "@vue/cli-shared-utils@^4.5.14", "@vue/cli-shared-utils@^4.5.15":
+"@vue/cli-shared-utils@^4.5.13", "@vue/cli-shared-utils@^4.5.15":
   version "4.5.15"
   resolved "https://registry.yarnpkg.com/@vue/cli-shared-utils/-/cli-shared-utils-4.5.15.tgz#dba3858165dbe3465755f256a4890e69084532d6"
   integrity sha512-SKaej9hHzzjKSOw1NlFmc6BSE0vcqUQMQiv1cxQ2DhVyy4QxZXBmzmiLBUBe+hYZZs1neXW7n//udeN9bCAY+Q==
