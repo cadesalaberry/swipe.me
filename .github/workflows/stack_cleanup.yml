@@ -6,13 +6,13 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    
+
     - uses: actions/checkout@v2
- 
+
     - uses: actions/setup-node@v1
       with:
         node-version: '14.18'
-    
+
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -48,4 +48,7 @@ jobs:
 
     - run: yarn api:remove
       env:
+        # Fake credentials are needed for serverless to run
+        SWIPE_ME_SSO_GOOGLE_CLIENT_ID: 'FAKE_GOOGLE_CLIENT_ID'
+        SWIPE_ME_SSO_GOOGLE_CLIENT_SECRET: 'FAKE_GOOGLE_CLIENT_SECRET'
         SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
