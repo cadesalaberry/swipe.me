@@ -49,7 +49,7 @@
     "@vue/eslint-config-standard": "6.1.0",
     "@vue/eslint-config-typescript": "9.0.0",
     "babel-loader": "^8.2.2",
-    "http-server": "14.0.0",
+    "http-server": "14.1.0",
     "vue-template-compiler": "2.6.14"
   },
   "postcss": {
