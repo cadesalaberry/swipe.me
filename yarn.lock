@@ -4154,8 +4154,8 @@
 "@swipeme.io/api@file:packages/api":
   version "1.0.0"
   dependencies:
-    "@swipeme.io/common" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-0ea2c0b8-5c12-4898-abd1-45b051043b16-1641590498210/node_modules/@swipeme.io/common"
-    "@swipeme.io/tools" "file:../../../Library/Caches/Yarn/v6/npm-@swipeme-io-api-1.0.0-0ea2c0b8-5c12-4898-abd1-45b051043b16-1641590498210/node_modules/@swipeme.io/tools"
+    "@swipeme.io/common" "file:packages/common"
+    "@swipeme.io/tools" "file:packages/tools"
     aws-sdk "^2.1049.0"
     aws-serverless-express "^3.4.0"
     cors "^2.8.5"
@@ -4335,19 +4335,10 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
-"@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
+"@types/express-serve-static-core@*", "@types/express-serve-static-core@4.17.27", "@types/express-serve-static-core@^4.17.18":
   version "4.17.27"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.27.tgz#7a776191e47295d2a05962ecbb3a4ce97e38b401"
   integrity sha512-e/sVallzUTPdyOTiqi8O8pMdBBphscvI6E4JYaKlja4Lm+zh7UFSSdW5VMkRbhDtmrONqOUHOXRguPsDckzxNA==
-  dependencies:
-    "@types/node" "*"
-    "@types/qs" "*"
-    "@types/range-parser" "*"
-
-"@types/express-serve-static-core@4.17.24":
-  version "4.17.24"
-  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.24.tgz#ea41f93bf7e0d59cd5a76665068ed6aab6815c07"
-  integrity sha512-3UJuW+Qxhzwjq3xhwXm2onQcFHn76frIYVbTu+kn24LFxI+dEhdfISDFovPB8VpEgW8oQCTpRuCe+0zJxB7NEA==
   dependencies:
     "@types/node" "*"
     "@types/qs" "*"
