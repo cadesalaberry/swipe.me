@@ -5935,15 +5935,15 @@ aws-amplify@4.3.12:
     "@aws-amplify/ui" "2.0.5"
     "@aws-amplify/xr" "3.0.30"
 
-aws-sdk@^2.1025.0, aws-sdk@^2.1048.0, aws-sdk@^2.1049.0, aws-sdk@^2.343.0, aws-sdk@^2.7.0, aws-sdk@^2.834.0:
-  version "2.1053.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1053.0.tgz#cd8263bde89177351e7ef49d9e6a89d4584c852c"
-  integrity sha512-bsVudymGczfn7kOsY9tiMFZUCNFOQi7iG3d1HiBFrnEDCKtVTyKuFrXy4iKUPCcjfOaqNnb1S3ZxN/A70MOTkg==
+aws-sdk@^2.1048.0, aws-sdk@^2.1049.0, aws-sdk@^2.1064.0, aws-sdk@^2.343.0, aws-sdk@^2.7.0, aws-sdk@^2.834.0:
+  version "2.1066.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1066.0.tgz#2a9b00d983f3c740a7adda18d4e9a5c34d4d3887"
+  integrity sha512-9BZPdJgIvau8Jf2l3PxInNqQd733uKLqGGDywMV71duxNTLgdBZe2zvCkbgl22+ldC8R2LVMdS64DzchfQIxHg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
     ieee754 "1.1.13"
-    jmespath "0.15.0"
+    jmespath "0.16.0"
     querystring "0.2.0"
     sax "1.2.1"
     url "0.10.3"
@@ -12353,10 +12353,10 @@ jest@^26.5.3:
     import-local "^3.0.2"
     jest-cli "^26.6.3"
 
-jmespath@0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
-  integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
+jmespath@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.16.0.tgz#b15b0a85dfd4d930d43e69ed605943c802785076"
+  integrity sha512-9FzQjJ7MATs1tSpnco1K6ayiYE3figslrXA72G2HQ/n76RzvYlofyi5QM+iX4YRs/pu3yzxlVQSST23+dMDknw==
 
 joi@^17.4.0:
   version "17.5.0"
@@ -16498,12 +16498,12 @@ serverless-bundle@^4.3.1:
     webpack-node-externals "^2.5.2"
     webpack-permissions-plugin "^1.0.8"
 
-serverless-domain-manager@^5.1.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-5.2.0.tgz#07584794cd6ea90844b8af9201ec36dc748cb572"
-  integrity sha512-YeqH8FNPF4VuWy7D9FXl5g2uBDdKuf7idHTsgr+mGAxn4WTFhl0+ql7Yq/LRyV7OHoHX9BzCcrmA+rrw9rL8Hw==
+serverless-domain-manager@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-5.8.0.tgz#67cbdf39c1bea98cb3df49a91af623fffacb5c53"
+  integrity sha512-AaSmJAc51aEvIaj7RHS3C1apkf1EJ2g9C5rDM+5I7EMlNJmj8u+gKc+7v7vtae17YEdGB3nrXoUYknJ3Gaxl4g==
   dependencies:
-    aws-sdk "^2.1025.0"
+    aws-sdk "^2.1064.0"
     chalk "^4.1.2"
 
 serverless-dynamodb-local@^0.2.39:
