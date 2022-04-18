@@ -5961,10 +5961,10 @@ aws-amplify@4.3.19:
     "@aws-amplify/ui" "2.0.5"
     "@aws-amplify/xr" "3.0.37"
 
-aws-sdk@^2.1048.0, aws-sdk@^2.1049.0, aws-sdk@^2.1073.0, aws-sdk@^2.1076.0, aws-sdk@^2.343.0, aws-sdk@^2.7.0:
-  version "2.1078.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1078.0.tgz#5871750b38045f05e141e5217521f8ff8bf73a26"
-  integrity sha512-eJuiiCE4tomYzsxqfsjERmQ1WQkNAe5RUhOXUwJbGTEfwmbiQqq/HgVYrwcMswOHoURbtKpB5SSrTLNOBuyurA==
+aws-sdk@^2.1048.0, aws-sdk@^2.1049.0, aws-sdk@^2.1076.0, aws-sdk@^2.1113.0, aws-sdk@^2.343.0, aws-sdk@^2.7.0:
+  version "2.1116.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1116.0.tgz#1187ab943e6bf730db282afe7950dd2af409cb5b"
+  integrity sha512-36JFrxPPh/fRQWsgGrZZbzTxRu7dq4KyCKKXPxgVMXylEJsG/KEAVMB1f3eq4PiI5eGxYrpt2OkKoMQZQZLjPA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -16484,12 +16484,12 @@ serverless-bundle@^4.3.1:
     webpack-node-externals "^2.5.2"
     webpack-permissions-plugin "^1.0.8"
 
-serverless-domain-manager@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-6.0.2.tgz#d93578843b50d5e2e8dd96870e0d9489f21d2135"
-  integrity sha512-57PaNI0/LtFubn5/F0i2eTV6eQ9BFDXn1kk90/eHRKpQql0e/udMEWkJ9rk+Mgzv6lushHo9EPeyGVcl85RF9Q==
+serverless-domain-manager@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-6.0.3.tgz#1a19fb2b9ff7d8542c0c891bf4d57e8f4b1f70d6"
+  integrity sha512-vwIhxaUpAf32I3fxuY0gHoZKHlPmWXZQZPfbN3kRz7UIo6j7Zf+FlL4dUm5JYWz7B2gPEz1ZPW9mBtPeAVbEAg==
   dependencies:
-    aws-sdk "^2.1073.0"
+    aws-sdk "^2.1113.0"
 
 serverless-dynamodb-local@^0.2.39:
   version "0.2.40"
