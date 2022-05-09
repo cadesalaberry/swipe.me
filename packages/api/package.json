@@ -18,7 +18,7 @@
     "aws-sdk": "^2.1049.0",
     "aws-serverless-express": "^3.4.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.18.1",
     "http-status": "^1.5.1",
     "tiny-async-pool": "^1.2.0"
   }
