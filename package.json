@@ -40,7 +40,7 @@
     "tools:build": "yarn workspace @swipeme.io/tools build"
   },
   "devDependencies": {
-    "@percy/cli": "^1.0.0-beta.70",
+    "@percy/cli": "^1.1.2",
     "@percy/cypress": "^3.1.1",
     "@swipeme.io/api": "file:packages/api",
     "@swipeme.io/tools": "file:packages/tools",
@@ -55,7 +55,7 @@
     "@types/webpack-dev-server": "^4.5.0",
     "@typescript-eslint/eslint-plugin": "5.21.0",
     "@typescript-eslint/parser": "5.9.0",
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.1.0",
     "current-git-branch": "1.1.0",
     "cypress": "9.5.4",
     "eslint": "7.32.0",
