@@ -40,7 +40,7 @@
     "tools:build": "yarn workspace @swipeme.io/tools build"
   },
   "devDependencies": {
-    "@percy/cli": "^1.0.0-beta.70",
+    "@percy/cli": "^1.12.0",
     "@percy/cypress": "^3.1.1",
     "@swipeme.io/api": "file:packages/api",
     "@swipeme.io/tools": "file:packages/tools",
