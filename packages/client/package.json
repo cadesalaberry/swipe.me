@@ -19,7 +19,7 @@
     "@swipeme.io/common": "file:../common",
     "aws-amplify": "4.3.19",
     "aws-amplify-vue": "2.1.5",
-    "axios": "0.24.0",
+    "axios": "0.28.0",
     "core-js": "3.19.1",
     "current-git-branch": "1.1.0",
     "eslint-plugin-vue": "7.20.0",
