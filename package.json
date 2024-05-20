@@ -78,6 +78,10 @@
     "typescript": "4.6.4",
     "wait-on": "^6.0.0"
   },
+  "resolutions": {
+    "@types/serve-static": "1.13.9",
+    "@types/express-serve-static-core": "4.17.28"
+  },
   "eslintConfig": {
     "root": true,
     "env": {
