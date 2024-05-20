@@ -9,8 +9,8 @@
     "packages/tools"
   ],
   "engines": {
-    "node": "~14",
-    "yarn": "~1.22"
+    "node": "~20",
+    "yarn": "~4"
   },
   "os": [
     "darwin",
@@ -107,5 +107,5 @@
     "packages/api/**/*.{js,ts}": "yarn api:lint"
   },
   "homepage": "git@github.com:cadesalaberry/swipe.me",
-  "packageManager": "yarn@1.22.17"
+  "packageManager": "yarn@4.2.2"
 }

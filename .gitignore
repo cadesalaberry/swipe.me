@@ -43,3 +43,14 @@ cypress/videos/
 cypress/screenshots/
 cypress/fixtures/users.json
 cypress/fixtures/profile.json
+
+# Yarn 4 generated files
+# "If you're not using Zero-Installs:"
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
