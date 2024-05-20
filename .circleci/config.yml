@@ -84,7 +84,8 @@ workflows:
       - cypress/install:
           context: dev.swipeme.io
           executor: cypress/base-20
-          yarn: true
+          package-manager: yarn
+          start-command: yarn serve
           install-command: |
             yarn install --ignore-engines
             yarn build
@@ -95,9 +96,9 @@ workflows:
           requires: [build, cypress/install]
           context: dev.swipeme.io
           executor: with-dynamodb
-          yarn: true
+          package-manager: yarn
+          start-command: yarn serve
           install-command: yarn install --ignore-engines
-          start: yarn serve
           wait-on: http://localhost:3000/local
           command-prefix: yarn percy exec --
           store_artifacts: true
