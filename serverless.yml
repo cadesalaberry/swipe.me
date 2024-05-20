@@ -19,13 +19,13 @@ plugins:
   - serverless-bundle # should be before dynamodb and offline
   - serverless-finch # should be before dynamodb and offline
   - serverless-dynamodb-local
-  - serverless-offline  # should be last in list
+  - serverless-offline # should be last in list
   - offline-invalidate # HACK: invalidate cache in dev to support serverless hot-reload
 
 custom:
   remover:
-     buckets:
-       - ${self:custom.client.bucketName}
+    buckets:
+      - ${self:custom.client.bucketName}
   client:
     bucketName: ${self:custom.computed.s3Name}.swipeme.io
     distributionFolder: packages/client/dist
@@ -97,7 +97,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: local
   region: eu-west-1
   # Deprecation warning: Resolution of lambda version hashes was improved with better algorithm, which will be used in next major release.
@@ -126,14 +126,14 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - { "Fn::GetAtt": ["DecksDynamoDBTable", "Arn"] }
-        - { "Fn::GetAtt": ["SingleDynamoDBTable", "Arn"] }
+        - { 'Fn::GetAtt': ['DecksDynamoDBTable', 'Arn'] }
+        - { 'Fn::GetAtt': ['SingleDynamoDBTable', 'Arn'] }
     - Effect: Allow
       Action:
         - 'cognito-idp:AdminUpdateUserAttributes' # To update username
         - 'cognito-idp:AdminGetUser' # To get user attributes
       Resource:
-        - { "Fn::GetAtt": ["CognitoUserPool", "Arn"] }
+        - { 'Fn::GetAtt': ['CognitoUserPool', 'Arn'] }
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
