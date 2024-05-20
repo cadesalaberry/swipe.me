@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@1
+  cypress: cypress-io/cypress@3.3.1
 
 # using service containers on CircleCI
 # https://circleci.com/docs/2.0/databases/
@@ -11,21 +11,21 @@ executors:
     docker:
       # image used to install source code,
       # run our server and run Cypress tests
-      - image: cypress/base:14.17.3
+      - image: cypress/base:20.9
         environment:
           WITH_DYNAMODB: true
 
       # image used to run Dynamodb in a separate container
       - image: amazon/dynamodb-local:1.17.0
         # https://stackoverflow.com/questions/29558948/dynamo-local-from-node-aws-all-operations-fail-cannot-do-operations-on-a-non-e
-        command: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]
+        command: ['-jar', 'DynamoDBLocal.jar', '-inMemory', '-sharedDb']
         environment:
           WITH_DYNAMODB: true
 
 jobs:
   build:
     docker:
-      - image: cimg/node:14.18
+      - image: cimg/node:20.9
     steps:
       - checkout
       - restore_cache:
@@ -59,7 +59,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:14.18
+      - image: cimg/node:20.9
     steps:
       - checkout
       - restore_cache:
@@ -81,27 +81,29 @@ workflows:
     jobs:
       - build:
           context: dev.swipeme.io
-      - cypress/install:
-          context: dev.swipeme.io
-          executor: cypress/base-14
-          yarn: true
-          install-command: |
-            yarn install --ignore-engines
-            yarn build
-            yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
-            yarn brancher
-            yarn client:build
+      # - cypress/install:
+      #     context: dev.swipeme.io
+      #     executor: cypress/default
+      #     package-manager: yarn
+      #     start-command: yarn serve
+      #     install-command: |
+      #       yarn install --ignore-engines
+      #       yarn build
+      #       yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
+      #       yarn brancher
+      #       yarn client:build
       - cypress/run:
-          requires: [build, cypress/install]
+          requires: [build]
+          # requires: [build, cypress/install]
           context: dev.swipeme.io
-          executor: with-dynamodb
-          yarn: true
-          install-command: yarn install --ignore-engines
-          start: yarn serve
-          wait-on: http://localhost:3000/local
-          command-prefix: yarn percy exec --
-          store_artifacts: true
-          record: true
+          # executor: with-dynamodb
+          package-manager: yarn
+          start-command: yarn serve
+          # install-command: yarn install --ignore-engines
+          # wait-on: http://localhost:3000/local
+          # command-prefix: yarn percy exec --
+          # store_artifacts: true
+          # record: true
       - deploy:
           requires: [cypress/run]
           context: dev.swipeme.io

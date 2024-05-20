@@ -13,8 +13,8 @@
     "compile": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "@swipeme.io/common": "file:../common",
-    "@swipeme.io/tools": "file:../tools",
+    "@swipeme.io/common": "1.0.0",
+    "@swipeme.io/tools": "1.0.0",
     "aws-sdk": "^2.1049.0",
     "aws-serverless-express": "^3.4.0",
     "cors": "^2.8.5",
