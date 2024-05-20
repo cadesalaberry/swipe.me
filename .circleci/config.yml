@@ -11,7 +11,7 @@ executors:
     docker:
       # image used to install source code,
       # run our server and run Cypress tests
-      - image: cypress/base:20.9.0
+      - image: cypress/base:20.9
         environment:
           WITH_DYNAMODB: true
 
@@ -81,28 +81,29 @@ workflows:
     jobs:
       - build:
           context: dev.swipeme.io
-      - cypress/install:
-          context: dev.swipeme.io
-          executor: cypress/base-20
-          package-manager: yarn
-          start-command: yarn serve
-          install-command: |
-            yarn install --ignore-engines
-            yarn build
-            yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
-            yarn brancher
-            yarn client:build
+      # - cypress/install:
+      #     context: dev.swipeme.io
+      #     executor: cypress/default
+      #     package-manager: yarn
+      #     start-command: yarn serve
+      #     install-command: |
+      #       yarn install --ignore-engines
+      #       yarn build
+      #       yarn add file:packages/tools -W --ignore-engines --frozen-lockfile --dev
+      #       yarn brancher
+      #       yarn client:build
       - cypress/run:
-          requires: [build, cypress/install]
+          requires: [build]
+          # requires: [build, cypress/install]
           context: dev.swipeme.io
-          executor: with-dynamodb
+          # executor: with-dynamodb
           package-manager: yarn
           start-command: yarn serve
-          install-command: yarn install --ignore-engines
-          wait-on: http://localhost:3000/local
-          command-prefix: yarn percy exec --
-          store_artifacts: true
-          record: true
+          # install-command: yarn install --ignore-engines
+          # wait-on: http://localhost:3000/local
+          # command-prefix: yarn percy exec --
+          # store_artifacts: true
+          # record: true
       - deploy:
           requires: [cypress/run]
           context: dev.swipeme.io
